@@ -1,0 +1,32 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFrameworks>netstandard2.0;netstandard2.1;net6.0</TargetFrameworks>
+    <AssemblyName>PipServices4.Components</AssemblyName>
+    <RootNamespace>PipServices4.Components</RootNamespace>
+    <ApplicationIcon />
+    <Win32Resource />
+    <Version>0.0.1</Version>
+    <Authors>Sergey Seroukhov, Volodymyr Tkachenko, Alex Mazur, Andrew Harrington, Alexey Dvoykin, Danyil Tretiakov</Authors>
+    <Copyright>Conceptual Vision Consulting LLC. 2017-2023</Copyright>
+    <Description>Component definitions for Pip.Services in .NET</Description>
+    <Company>Conceptual Vision Consulting LLC.</Company>
+    <Product>PipServices4.Components</Product>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <PackageProjectUrl>https://github.com/pip-services4-dotnet/pip-services4-components-dotnet</PackageProjectUrl>
+    <PackageIconUrl>https://raw.githubusercontent.com/pip-services/pip-services/master/design/Icon.png</PackageIconUrl>
+    <PackageTags>PipServices V4 microservices toolkit</PackageTags>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <DebugType>full</DebugType>
+    <DebugSymbols>true</DebugSymbols>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Handlebars.Net" Version="2.0.9" />
+    <PackageReference Include="YamlDotNet" Version="11.2.1" />
+    <PackageReference Include="PipServices4.Commons" Version="0.0.1" />
+  </ItemGroup>
+</Project>

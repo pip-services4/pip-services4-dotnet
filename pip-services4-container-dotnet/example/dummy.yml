@@ -1,0 +1,16 @@
+---
+- descriptor: "pip-services4:logger:console:default:1.0"
+  level: "trace"
+
+- descriptor: "pip-services4-dummies:controller:default:ctrl1:1.0"
+  message: "Hello {{ USER }} from dummy controller #1"
+
+- descriptor: "pip-services4-dummies:controller:default:ctrl2:1.0"
+#- type: "PipServices4.Container.DummyController"
+  message: "Hello {{ USER }} from dummy controller #2"
+
+{{#THIRD_CONTROLLER}}
+- descriptor: "pip-services4-dummies:controller:default:ctrl3:1.0"
+#- type: "PipServices4.Container.DummyController"
+  message: "Hello {{ USER }} from dummy controller #3"
+{{/THIRD_CONTROLLER}}
