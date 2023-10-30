@@ -77,6 +77,8 @@ jobs:
     - name: Execute publish script
       shell: bash
       run: pip-services4-data-dotnet/script-delivery-ps/authoring/publish/publish.ps1
+      env:
+        NUGET_KEY: ${{ secrets.NUGET_KEY }}
 
     - name: Execute tag script
       shell: bash
