@@ -1,6 +1,14 @@
 {
     "name": "pip-services4-logic-dotnet",
-    "registry": "pipdevs",
+    "type": "module",
+    "language": "dotnet",
+    "registry": "pipservices",
     "version": "0.0.1",
-    "build": 0
+    "build": 0,
+    "artifacts": [
+        {
+            "name":  "<name>",
+            "type": "nuget"
+        }
+    ]
 }
