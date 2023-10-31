@@ -6,7 +6,7 @@ on:
       - main
     paths:
     - 'pip-services4-container-dotnet/**'
-    - 'pip-services4-container-dotnet/!README.md'
+    - '!pip-services4-container-dotnet/README.md'
   workflow_dispatch:
 
 env:

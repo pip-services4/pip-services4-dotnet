@@ -6,7 +6,7 @@ on:
       - main
     paths:
     - 'pip-services4-observability-dotnet/**'
-    - 'pip-services4-observability-dotnet/!README.md'
+    - '!pip-services4-observability-dotnet/README.md'
   workflow_dispatch:
 
 env:
