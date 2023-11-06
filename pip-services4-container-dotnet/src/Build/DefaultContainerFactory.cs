@@ -4,7 +4,7 @@ using PipServices4.Components.Refer;
 using PipServices4.Config.Auth;
 using PipServices4.Config.Config;
 using PipServices4.Config.Connect;
-using PipServices4.Logic.Cache;
+using PipServices4.Logic.Build;
 using PipServices4.Observability.Count;
 using PipServices4.Observability.Log;
 using PipServices4.Observability.Trace;
@@ -38,7 +38,7 @@ namespace PipServices4.Container.Build
 			Add(new DefaultCountersFactory());
 			Add(new DefaultTracerFactory());
 			Add(new DefaultConfigReaderFactory());
-			Add(new DefaultCacheFactory());
+			Add(new DefaultLogicFactory());
 			Add(new DefaultCredentialStoreFactory());
 			Add(new DefaultDiscoveryFactory());
 		}
