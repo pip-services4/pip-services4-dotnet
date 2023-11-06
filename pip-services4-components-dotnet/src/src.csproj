@@ -6,7 +6,7 @@
     <RootNamespace>PipServices4.Components</RootNamespace>
     <ApplicationIcon />
     <Win32Resource />
-    <Version>0.0.1</Version>
+    <Version>0.0.2</Version>
     <Authors>Sergey Seroukhov, Volodymyr Tkachenko, Alex Mazur, Andrew Harrington, Alexey Dvoykin, Danyil Tretiakov</Authors>
     <Copyright>Conceptual Vision Consulting LLC. 2017-2023</Copyright>
     <Description>Component definitions for Pip.Services in .NET</Description>
