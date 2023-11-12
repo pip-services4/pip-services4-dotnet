@@ -1,4 +1,5 @@
 using PipServices4.Commons.Errors;
+using PipServices4.Components.Context;
 using System;
 using System.Collections.Generic;
 using System.Runtime.Serialization;
@@ -129,6 +130,30 @@ namespace PipServices4.Data.Validate
 
             if (hasErrors)
                 throw new ValidationException(traceId, results);
+        }
+
+        /// <summary>
+        /// Throws ValidationException based on errors in validation results. If
+        /// validation results have no errors, than no exception is thrown.
+        /// </summary>
+        /// <param name="context">(optional) execution context to trace execution through call chain.
+        /// <param name="results">list of validation results that may contain errors</param>
+        /// <param name="strict">true to treat warnings as errors.</param>
+        /// See <see cref="ValidationResult"/>, <see cref="ValidationException"/>
+        public static void ThrowExceptionIfNeeded(IContext context, IList<ValidationResult> results, bool strict)
+        {
+            var hasErrors = false;
+            foreach (var result in results)
+            {
+                if (result.Type == ValidationResultType.Error)
+                    hasErrors = true;
+
+                if (strict && result.Type == ValidationResultType.Warning)
+                    hasErrors = true;
+            }
+
+            if (hasErrors)
+                throw new ValidationException(context != null ? ContextResolver.GetTraceId(context) : null, results);
         }
     }
 }
