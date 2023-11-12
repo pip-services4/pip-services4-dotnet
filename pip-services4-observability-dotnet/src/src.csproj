@@ -6,7 +6,7 @@
     <AssemblyName>PipServices4.Observability</AssemblyName>
     <ApplicationIcon />
     <Win32Resource />
-    <Version>0.0.1</Version>
+    <Version>0.0.2</Version>
     <Authors>Sergey Seroukhov, Denis Kuznetsov</Authors>
     <Copyright>Conceptual Vision Consulting LLC. 2017-2023</Copyright>
     <Description>Observability components for Pip.Services in .NET</Description>
