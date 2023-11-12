@@ -32,7 +32,7 @@ namespace PipServices4.Commons.Errors
     /// - category: one of 12 standard error categories of errors
     /// - status: numeric HTTP status code for REST invocations
     /// - code: a unique error code, usually defined as "MY_ERROR_CODE"
-    /// - correlation_id: a unique transaction id to trace execution through a call chain
+    /// - trace_id: a unique transaction id to trace execution through a call chain
     /// - details: map with error parameters that can help to recreate meaningful error description in other languages
     /// - stack_trace: a stack trace
     /// - cause: original error that is wrapped by this exception
@@ -105,7 +105,7 @@ namespace PipServices4.Commons.Errors
             base.GetObjectData(info, context);
 
             info.AddValue("category", Category);
-            info.AddValue("correlation_id", TraceId);
+            info.AddValue("trace_id", TraceId);
             info.AddValue("cause", Cause);
             info.AddValue("code", Code);
             info.AddValue("status", Status);
@@ -118,7 +118,7 @@ namespace PipServices4.Commons.Errors
         public string Category { get; set; }
 
         /** A unique transaction id to trace execution throug call chain */
-        [JsonProperty("correlation_id")]
+        [JsonProperty("trace_id")]
         public string TraceId { get; set; }
 
         /** Original error wrapped by this exception */
