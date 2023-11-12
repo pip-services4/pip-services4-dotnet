@@ -1,6 +1,7 @@
 using System.Linq;
 using System.Collections.Generic;
 using PipServices4.Commons.Reflect;
+using PipServices4.Components.Context;
 
 namespace PipServices4.Data.Validate
 {
@@ -164,14 +165,26 @@ namespace PipServices4.Data.Validate
         /// <summary>
         ///  Validates the given value and returns a <see cref="ValidationException"/> if errors were found.
         /// </summary>
-        /// <param name="correlationId">(optional) transaction id to trace execution through call chain.</param>
+        /// <param name="traceId">(optional) transaction id to trace execution through call chain.</param>
         /// <param name="value">a value to be validated.</param>
         /// <param name="strict">true to treat warnings as errors.</param>
         /// <returns>validation exception.</returns>
-        public ValidationException ValidateAndReturnException(string correlationId, object value, bool strict = false)
+        public ValidationException ValidateAndReturnException(string traceId, object value, bool strict = false)
         {
             var results = this.Validate(value);
-            return ValidationException.FromResults(correlationId, results, strict);
+            return ValidationException.FromResults(traceId, results, strict);
+        }
+
+        /// <summary>
+        ///  Validates the given value and returns a <see cref="ValidationException"/> if errors were found.
+        /// </summary>
+        /// <param name="context">(optional) execution context to trace execution through call chain.</param>
+        /// <param name="value">a value to be validated.</param>
+        /// <param name="strict">true to treat warnings as errors.</param>
+        /// <returns>validation exception.</returns>
+        public ValidationException ValidateAndReturnException(IContext context, object value, bool strict = false)
+        {
+            return ValidateAndReturnException(context != null ? ContextResolver.GetTraceId(context) : null, value, strict);
         }
 
         /// <summary>
@@ -189,14 +202,25 @@ namespace PipServices4.Data.Validate
         /// <summary>
         /// Validates the given value and returns a ValidationException if errors were found.
         /// </summary>
-        /// <param name="correlationId">(optional) transaction id to trace execution through call chain.</param>
+        /// <param name="traceId">(optional) transaction id to trace execution through call chain.</param>
         /// <param name="value">a value to be validated.</param>
         /// <param name="strict">true to treat warnings as errors.</param>
-        public void ValidateAndThrowException(string correlationId, object value, bool strict = false)
+        public void ValidateAndThrowException(string traceId, object value, bool strict = false)
         {
             var results = Validate(value);
 
-            ValidationException.ThrowExceptionIfNeeded(correlationId, results, strict);
+            ValidationException.ThrowExceptionIfNeeded(traceId, results, strict);
+        }
+
+        /// <summary>
+        /// Validates the given value and returns a ValidationException if errors were found.
+        /// </summary>
+        /// <param name="context">(optional) execution context to trace execution through call chain.</param>
+        /// <param name="value">a value to be validated.</param>
+        /// <param name="strict">true to treat warnings as errors.</param>
+        public void ValidateAndThrowException(IContext context, object value, bool strict = false)
+        {
+            ValidateAndThrowException(context != null ? ContextResolver.GetTraceId(context) : null, value, strict);
         }
     }
 }

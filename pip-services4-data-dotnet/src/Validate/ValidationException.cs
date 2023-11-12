@@ -24,12 +24,12 @@ namespace PipServices4.Data.Validate
         /// <summary>
         /// Creates a new instance of validation exception and assigns its values.
         /// </summary>
-        /// <param name="correlationId">(optional) a unique transaction id to trace execution
+        /// <param name="traceId">(optional) a unique transaction id to trace execution
         /// through call chain.</param>
         /// <param name="results">(optional) a list of validation results</param>
         /// See <see cref="ValidationResult"/>
-        public ValidationException(string correlationId, IList<ValidationResult> results) :
-            this(correlationId, ComposeMessage(results))
+        public ValidationException(string traceId, IList<ValidationResult> results) :
+            this(traceId, ComposeMessage(results))
         {
             WithDetails("results", results);
         }
@@ -37,12 +37,12 @@ namespace PipServices4.Data.Validate
         /// <summary>
         /// Creates a new instance of validation exception and assigns its values.
         /// </summary>
-        /// <param name="correlationId">(optional) a unique transaction id to trace execution
+        /// <param name="traceId">(optional) a unique transaction id to trace execution
         /// through call chain.</param>
         /// <param name="message">(optional) a human-readable description of the error.</param>
         /// See <see cref="ValidationResult"/>
-        public ValidationException(string correlationId, string message) :
-            base(correlationId, "INVALID_DATA", message)
+        public ValidationException(string traceId, string message) :
+            base(traceId, "INVALID_DATA", message)
         {
         }
 
@@ -84,12 +84,12 @@ namespace PipServices4.Data.Validate
         /// Creates a new ValidationException based on errors in validation results.
         /// If validation results have no errors, than null is returned.
         /// </summary>
-        /// <param name="correlationId">(optional) transaction id to trace execution through call chain.</param>
+        /// <param name="traceId">(optional) transaction id to trace execution through call chain.</param>
         /// <param name="results">list of validation results that may contain errors</param>
         /// <param name="strict">true to treat warnings as errors.</param>
         /// <returns>a newly created ValidationException or null if no errors in found.</returns>
         /// See <see cref="ValidationResult"/>
-        public static ValidationException FromResults(string correlationId, List<ValidationResult> results, bool strict)
+        public static ValidationException FromResults(string traceId, List<ValidationResult> results, bool strict)
         {
             var hasErrors = false;
 
@@ -104,18 +104,18 @@ namespace PipServices4.Data.Validate
                     hasErrors = true;
             }
 
-            return hasErrors ? new ValidationException(correlationId, results) : null;
+            return hasErrors ? new ValidationException(traceId, results) : null;
         }
 
         /// <summary>
         /// Throws ValidationException based on errors in validation results. If
         /// validation results have no errors, than no exception is thrown.
         /// </summary>
-        /// <param name="correlationId">(optional) transaction id to trace execution through call chain.</param>
+        /// <param name="traceId">(optional) transaction id to trace execution through call chain.</param>
         /// <param name="results">list of validation results that may contain errors</param>
         /// <param name="strict">true to treat warnings as errors.</param>
         /// See <see cref="ValidationResult"/>, <see cref="ValidationException"/>
-        public static void ThrowExceptionIfNeeded(string correlationId, IList<ValidationResult> results, bool strict)
+        public static void ThrowExceptionIfNeeded(string traceId, IList<ValidationResult> results, bool strict)
         {
             var hasErrors = false;
             foreach (var result in results)
@@ -128,7 +128,7 @@ namespace PipServices4.Data.Validate
             }
 
             if (hasErrors)
-                throw new ValidationException(correlationId, results);
+                throw new ValidationException(traceId, results);
         }
     }
 }

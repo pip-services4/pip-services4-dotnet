@@ -20,7 +20,7 @@ namespace PipServices4.Data.Data
     ///     string version {get; set;}
     ///     ...
     /// }
-    /// public void updateData(string correlationId, MyData item) 
+    /// public void updateData(string traceId, MyData item) 
     /// {
     ///     ...
     ///     
