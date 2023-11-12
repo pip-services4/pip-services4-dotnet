@@ -1,3 +1,4 @@
+using PipServices4.Components.Context;
 using System.Threading.Tasks;
 
 namespace PipServices4.Components.Exec
@@ -10,7 +11,7 @@ namespace PipServices4.Components.Exec
     /// class EchoComponent: IExecutable 
     /// {
     ///     ...
-    ///     public void Execute(string correlationId, Parameters args)
+    ///     public void Execute(IContext context, Parameters args)
     ///     {
     ///         var result = args.GetAsObject("message");
     ///     }
@@ -27,9 +28,9 @@ namespace PipServices4.Components.Exec
         /// <summary>
         /// Executes component with arguments and receives execution result.
         /// </summary>
-        /// <param name="correlationId">(optional) transaction id to trace execution through call chain.</param>
+        /// <param name="context">(optional) execution context to trace execution through call chain.</param>
         /// <param name="args">execution arguments.</param>
         /// <returns>execution result</returns>
-        Task<object> ExecuteAsync(string correlationId, Parameters args);
+        Task<object> ExecuteAsync(IContext context, Parameters args);
     }
 }

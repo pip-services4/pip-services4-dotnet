@@ -1,3 +1,4 @@
+using PipServices4.Components.Context;
 using System.Threading.Tasks;
 
 namespace PipServices4.Components.Run
@@ -16,7 +17,7 @@ namespace PipServices4.Components.Run
     ///     
     ///     ... // The _client can be lazy created
     ///     
-    ///     public void Close(string correlationId)
+    ///     public void Close(IContext context)
     ///     {
     ///         if (this._client != null)
     ///         {   
@@ -33,7 +34,7 @@ namespace PipServices4.Components.Run
         /// <summary>
         /// Closes component and frees used resources.
         /// </summary>
-        /// <param name="correlationId">(optional) transaction id to trace execution through call chain.</param>
-        Task CloseAsync(string correlationId);
+        /// <param name="context">(optional) execution context to trace execution through call chain.</param>
+        Task CloseAsync(IContext context);
     }
 }

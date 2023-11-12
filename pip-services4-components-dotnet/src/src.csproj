@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFrameworks>netstandard2.0;netstandard2.1;net6.0</TargetFrameworks>
@@ -6,7 +6,7 @@
     <RootNamespace>PipServices4.Components</RootNamespace>
     <ApplicationIcon />
     <Win32Resource />
-    <Version>0.0.2</Version>
+    <Version>0.0.3</Version>
     <Authors>Sergey Seroukhov, Volodymyr Tkachenko, Alex Mazur, Andrew Harrington, Alexey Dvoykin, Danyil Tretiakov</Authors>
     <Copyright>Conceptual Vision Consulting LLC. 2017-2023</Copyright>
     <Description>Component definitions for Pip.Services in .NET</Description>
@@ -26,7 +26,7 @@
 
   <ItemGroup>
     <PackageReference Include="Handlebars.Net" Version="2.0.9" />
+    <PackageReference Include="PipServices4.Commons" Version="0.0.2" />
     <PackageReference Include="YamlDotNet" Version="11.2.1" />
-    <PackageReference Include="PipServices4.Commons" Version="0.0.1" />
   </ItemGroup>
 </Project>

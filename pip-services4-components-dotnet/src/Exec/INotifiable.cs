@@ -1,3 +1,4 @@
+using PipServices4.Components.Context;
 using System.Threading.Tasks;
 
 namespace PipServices4.Components.Exec
@@ -11,7 +12,7 @@ namespace PipServices4.Components.Exec
     /// class MyComponent: INotifable 
     /// {
     ///     ...
-    ///     public void Notify(string correlationId, Parameters args)
+    ///     public void Notify(IContext context, Parameters args)
     ///     {
     ///         Console.WriteLine("Occured event " + args.GetAsString("event"));
     ///     }
@@ -27,8 +28,8 @@ namespace PipServices4.Components.Exec
         /// <summary>
         /// Notifies the component about occured event.
         /// </summary>
-        /// <param name="correlationId">(optional) transaction id to trace execution through call chain.</param>
+        /// <param name="context">(optional) execution context to trace execution through call chain.</param>
         /// <param name="args">notification arguments.</param>
-        Task NotifyAsync(string correlationId, Parameters args);
+        Task NotifyAsync(IContext context, Parameters args);
     }
 }

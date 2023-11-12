@@ -1,4 +1,5 @@
 using PipServices4.Commons.Errors;
+using PipServices4.Components.Context;
 using System;
 using System.Runtime.Serialization;
 
@@ -35,11 +36,11 @@ namespace PipServices4.Components.Refer
         /// <summary>
         /// Creates an error instance and assigns its values.
         /// </summary>
-        /// <param name="correlationId">(optional) a unique transaction id to trace execution
+        /// <param name="traceId">(optional) a unique transaction id to trace execution
         /// through call chain.</param>
         /// <param name="locator">the locator to find reference to dependent component.</param>
-        public ReferenceException(string correlationId, object locator)
-            : base(correlationId, "REF_ERROR", "Failed to obtain reference to " + locator)
+        public ReferenceException(string traceId, object locator)
+            : base(traceId, "REF_ERROR", "Failed to obtain reference to " + locator)
         {
             WithDetails("locator", locator);
         }
@@ -47,15 +48,15 @@ namespace PipServices4.Components.Refer
         /// <summary>
         /// Creates an error instance and assigns its values.
         /// </summary>
-        /// <param name="correlationId">(optional) a unique transaction id to trace execution
+        /// <param name="traceId">(optional) a unique transaction id to trace execution
         /// through call chain.</param>
         /// <param name="message">(optional) a human-readable description of the error.</param>
-        public ReferenceException(string correlationId, string message)
-            : base(correlationId, "REF_ERROR", message)
+        public ReferenceException(string traceId, string message)
+            : base(traceId, "REF_ERROR", message)
         { }
 
-        public ReferenceException(string correlationId, string code, string message)
-            : base(correlationId, code, message)
+        public ReferenceException(string traceId, string code, string message)
+            : base(traceId, code, message)
         { }
 
 #if !CORE_NET

@@ -1,3 +1,4 @@
+using PipServices4.Components.Context;
 using System.Threading.Tasks;
 
 namespace PipServices4.Components.Run
@@ -19,7 +20,7 @@ namespace PipServices4.Components.Run
     ///         return this._client != null;
     ///     }
     ///     
-    ///     public void Open(string correlationId)
+    ///     public void Open(IContext context)
     ///     {
     ///         if (this.isOpen())
     ///         {
@@ -28,7 +29,7 @@ namespace PipServices4.Components.Run
     ///         ...
     ///     }
     ///     
-    ///     public void Close(string correlationId)
+    ///     public void Close(IContext context)
     ///     {
     ///         if (this._client != null)
     ///         {
@@ -53,7 +54,7 @@ namespace PipServices4.Components.Run
         /// <summary>
         /// Opens the component.
         /// </summary>
-        /// <param name="correlationId">(optional) transaction id to trace execution through call chain.</param>
-        Task OpenAsync(string correlationId);
+        /// <param name="context">(optional) execution context to trace execution through call chain.</param>
+        Task OpenAsync(IContext context);
     }
 }

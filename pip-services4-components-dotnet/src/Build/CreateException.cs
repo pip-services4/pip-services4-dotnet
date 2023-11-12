@@ -1,4 +1,5 @@
 using PipServices4.Commons.Errors;
+using PipServices4.Components.Context;
 using System;
 using System.Runtime.Serialization;
 
@@ -26,10 +27,10 @@ namespace PipServices4.Components.Build
         /// <summary>
         /// Creates an error instance and assigns its values.
         /// </summary>
-        /// <param name="correlationId">(optional) a unique transaction id to trace execution through call chain.</param>
+        /// <param name="traceId">(optional) a unique transaction id to trace execution through call chain.</param>
         /// <param name="locator">locator of the component that cannot be created.</param>
-        public CreateException(string correlationId, object locator) 
-            : base(correlationId, "CANNOT_CREATE", "Requested component " + locator + " cannot be created")
+        public CreateException(string traceId, object locator) 
+            : base(traceId, "CANNOT_CREATE", "Requested component " + locator + " cannot be created")
         {
             WithDetails("locator", locator);
         }
@@ -37,10 +38,10 @@ namespace PipServices4.Components.Build
         /// <summary>
         /// Creates an error instance and assigns its values.
         /// </summary>
-        /// <param name="correlationId">(optional) a unique transaction id to trace execution through call chain.</param>
+        /// <param name="context">(optional) a unique transaction id to trace execution through call chain.</param>
         /// <param name="message">human-readable error.</param>
-        public CreateException(string correlationId, string message) 
-            : base(correlationId, "CANNOT_CREATE", message)
+        public CreateException(string traceId, string message) 
+            : base(traceId, "CANNOT_CREATE", message)
         { }
 
 #if !CORE_NET

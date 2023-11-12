@@ -1,3 +1,4 @@
+using PipServices4.Components.Context;
 using System.Collections;
 using System.Threading.Tasks;
 
@@ -53,13 +54,13 @@ namespace PipServices4.Components.Run
         /// To be opened components must implement IOpenable interface. If they don't the
         /// call to this method has no effect.
         /// </summary>
-        /// <param name="correlationId">(optional) transaction id to trace execution through call chain.</param>
+        /// <param name="context">(optional) execution context to trace execution through call chain.</param>
         /// <param name="component">the component that is to be opened.</param>
-        public static async Task OpenOneAsync(string correlationId, object component)
+        public static async Task OpenOneAsync(IContext context, object component)
         {
             var openable = component as IOpenable;
             if (openable != null)
-                await openable.OpenAsync(correlationId);
+                await openable.OpenAsync(context);
         }
 
         /// <summary>
@@ -68,14 +69,14 @@ namespace PipServices4.Components.Run
         /// To be opened components must implement IOpenable interface. If they don't the
         /// call to this method has no effect.
         /// </summary>
-        /// <param name="correlationId">(optional) transaction id to trace execution through call chain.</param>
+        /// <param name="context">(optional) execution context to trace execution through call chain.</param>
         /// <param name="component">the list of components that is to be opened.</param>
-        public static async Task OpenAsync(string correlationId, IEnumerable components)
+        public static async Task OpenAsync(IContext context, IEnumerable components)
         {
             if (components == null) return;
 
             foreach (var component in components)
-                await OpenOneAsync(correlationId, component);
+                await OpenOneAsync(context, component);
         }
     }
 }

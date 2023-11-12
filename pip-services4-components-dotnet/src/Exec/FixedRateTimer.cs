@@ -16,14 +16,14 @@ namespace PipServices4.Components.Exec
     /// {
     ///     var timer = new FixedRateTimer(() => { this.cleanup }, 60000, 0);
     ///     ...
-    ///     public void )pen(string correlationId)
+    ///     public void )pen(IContext context)
     ///     {
     ///         ...
     ///         timer.Start();
     ///         ...
     ///     }
     ///     
-    ///     public void Open(string correlationId)
+    ///     public void Open(IContext context)
     ///     {
     ///         ...
     ///         timer.Stop();

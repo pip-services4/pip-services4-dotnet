@@ -1,3 +1,4 @@
+using PipServices4.Components.Context;
 using System.Threading.Tasks;
 
 namespace PipServices4.Components.Run
@@ -14,7 +15,7 @@ namespace PipServices4.Components.Run
     /// {
     ///     var _state = new Object[]{};
     ///     ...
-    ///     public void Clear(string correlationId)
+    ///     public void Clear(IContext context)
     ///     {
     ///         this._state = new Object[] { };
     ///     }
@@ -26,7 +27,7 @@ namespace PipServices4.Components.Run
         /// <summary>
         /// Clears component state.
         /// </summary>
-        /// <param name="correlationId">(optional) transaction id to trace execution through call chain.</param>
-        Task ClearAsync(string correlationId);
+        /// <param name="context">(optional) execution context to trace execution through call chain.</param>
+        Task ClearAsync(IContext context);
     }
 }

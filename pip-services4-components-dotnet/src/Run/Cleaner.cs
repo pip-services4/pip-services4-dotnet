@@ -1,3 +1,4 @@
+using PipServices4.Components.Context;
 using System.Collections;
 using System.Threading.Tasks;
 
@@ -14,14 +15,14 @@ namespace PipServices4.Components.Run
         /// To be cleaned state components must implement ICleanable interface. If they
         /// don't the call to this method has no effect.
         /// </summary>
-        /// <param name="correlationId">(optional) transaction id to trace execution through call chain.</param>
+        /// <param name="context">(optional) execution context to trace execution through call chain.</param>
         /// <param name="component">a component to be cleaned</param>
         /// See <see cref="ICleanable"/>
-        public static async Task ClearOneAsync(string correlationId, object component)
+        public static async Task ClearOneAsync(IContext context, object component)
         {
             var cleanable = component as ICleanable;
             if (cleanable != null)
-                await cleanable.ClearAsync(correlationId);
+                await cleanable.ClearAsync(context);
         }
 
         /// <summary>
@@ -29,15 +30,15 @@ namespace PipServices4.Components.Run
         /// To be cleaned state components must implement ICleanable interface. If they
         /// don't the call to this method has no effect.
         /// </summary>
-        /// <param name="correlationId">(optional) transaction id to trace execution through call chain.</param>
+        /// <param name="context">(optional) execution context to trace execution through call chain.</param>
         /// <param name="components">a list of components to be cleaned</param>
         /// See <see cref="ClearOneAsync(string, object)"/>, <see cref="ICleanable"/>
-        public static async Task ClearAsync(string correlationId, IEnumerable components)
+        public static async Task ClearAsync(IContext context, IEnumerable components)
         {
             if (components == null) return;
 
             foreach (var component in components)
-                await ClearOneAsync(correlationId, component);
+                await ClearOneAsync(context, component);
         }
     }
 }
