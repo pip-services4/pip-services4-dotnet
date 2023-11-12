@@ -1,4 +1,5 @@
 using PipServices4.Commons.Errors;
+using PipServices4.Components.Context;
 using System;
 
 namespace PipServices4.Observability.Trace
@@ -32,7 +33,7 @@ namespace PipServices4.Observability.Trace
 		/// <summary>
 		/// The transaction id to trace execution through call chain.
 		/// </summary>
-		public string CorrelationId;
+		public IContext context;
 
 		/// <summary>
 		/// The duration of the operation in milliseconds

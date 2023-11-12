@@ -1,3 +1,4 @@
+using PipServices4.Components.Context;
 using PipServices4.Components.Refer;
 using System;
 using System.Collections.Generic;
@@ -28,9 +29,9 @@ namespace PipServices4.Observability.Log
 	///         this._logger.SetReferences(references);
 	///         ...
 	///     }
-	///     public void MyMethod(String correlationId)
+	///     public void MyMethod(IContext context)
 	///     {
-	///         this._logger.Debug(correlationId, "Called method mycomponent.mymethod");
+	///         this._logger.Debug(context, "Called method mycomponent.mymethod");
 	///         ...
 	///     }
 	/// }
@@ -73,13 +74,13 @@ namespace PipServices4.Observability.Log
 		/// Writes a log message to the logger destination(s).
 		/// </summary>
 		/// <param name="level">a log level.</param>
-		/// <param name="correlationId">(optional) transaction id to trace execution through call chain.</param>
+		/// <param name="context">(optional) transaction id to trace execution through call chain.</param>
 		/// <param name="error">an error object associated with this message.</param>
 		/// <param name="message">a human-readable message to log.</param>
-		protected override void Write(LogLevel level, string correlationId, Exception error, string message)
+		protected override void Write(LogLevel level, IContext context, Exception error, string message)
 		{
 			foreach (var logger in _loggers)
-				logger.Log(level, correlationId, error, message);
+				logger.Log(level, context, error, message);
 		}
 	}
 }

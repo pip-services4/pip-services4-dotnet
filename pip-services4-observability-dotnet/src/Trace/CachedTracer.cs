@@ -60,12 +60,12 @@ namespace PipServices4.Observability.Trace
 		/// <summary>
 		/// Writes a log message to the logger destination.
 		/// </summary>
-		/// <param name="correlationId">(optional) transaction id to trace execution through call chain.</param>
+		/// <param name="context">(optional) transaction id to trace execution through call chain.</param>
 		/// <param name="component">a name of called component</param>
 		/// <param name="operation">a name of the executed operation. </param>
 		/// <param name="error">an error object associated with this trace.</param>
 		/// <param name="duration">execution duration in milliseconds. </param>
-		protected void Write(string correlationId, string component, string operation, Exception error, long duration)
+		protected void Write(IContext context, string component, string operation, Exception error, long duration)
 		{
 			ErrorDescription errorDesc = error != null ? ErrorDescriptionFactory.Create(error) : null;
 			OperationTrace trace = new OperationTrace
@@ -74,7 +74,7 @@ namespace PipServices4.Observability.Trace
 				Source = _source,
 				Component = component,
 				Operation = operation,
-				CorrelationId = correlationId,
+				context = context,
 				Duration = duration,
 				Error = errorDesc
 			};
@@ -86,38 +86,38 @@ namespace PipServices4.Observability.Trace
 		/// <summary>
 		/// Records an operation trace with its name and duration
 		/// </summary>
-		/// <param name="correlationId">(optional) transaction id to trace execution through call chain.</param>
+		/// <param name="context">(optional) transaction id to trace execution through call chain.</param>
 		/// <param name="component">a name of called component</param>
 		/// <param name="operation">a name of the executed operation. </param>
 		/// <param name="duration">execution duration in milliseconds. </param>
-		public void Trace(string correlationId, string component, string operation, long duration)
+		public void Trace(IContext context, string component, string operation, long duration)
 		{
-			Write(correlationId, component, operation, null, duration);
+			Write(context, component, operation, null, duration);
 		}
 
 		/// <summary>
 		/// Records an operation failure with its name, duration and error
 		/// </summary>
-		/// <param name="correlationId">(optional) transaction id to trace execution through call chain.</param>
+		/// <param name="context">(optional) transaction id to trace execution through call chain.</param>
 		/// <param name="component">a name of called component</param>
 		/// <param name="operation">a name of the executed operation. </param>
 		/// <param name="error">an error object associated with this trace.</param>
 		/// <param name="duration">execution duration in milliseconds. </param>
-		public void Failure(string correlationId, string component, string operation, Exception error, long duration)
+		public void Failure(IContext context, string component, string operation, Exception error, long duration)
 		{
-			Write(correlationId, component, operation, error, duration);
+			Write(context, component, operation, error, duration);
 		}
 
 		/// <summary>
 		/// Begings recording an operation trace
 		/// </summary>
-		/// <param name="correlationId">(optional) transaction id to trace execution through call chain.</param>
+		/// <param name="context">(optional) transaction id to trace execution through call chain.</param>
 		/// <param name="component">a name of called component</param>
 		/// <param name="operation">a name of the executed operation. </param>
 		/// <returns></returns>
-		public TraceTiming BeginTrace(string correlationId, string component, string operation)
+		public TraceTiming BeginTrace(IContext context, string component, string operation)
 		{
-			return new TraceTiming(correlationId, component, operation, this);
+			return new TraceTiming(context, component, operation, this);
 		}
 
 		/// <summary>

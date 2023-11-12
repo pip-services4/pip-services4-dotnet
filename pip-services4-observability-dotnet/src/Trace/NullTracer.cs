@@ -1,3 +1,4 @@
+using PipServices4.Components.Context;
 using System;
 
 namespace PipServices4.Observability.Trace
@@ -19,24 +20,24 @@ namespace PipServices4.Observability.Trace
 		/// <summary>
 		/// Begings recording an operation trace
 		/// </summary>
-		/// <param name="correlationId">(optional) transaction id to trace execution through call chain.</param>
+		/// <param name="context">(optional) transaction id to trace execution through call chain.</param>
 		/// <param name="component">a name of called component</param>
 		/// <param name="operation">a name of the executed operation. </param>
 		/// <returns>a trace timing object.</returns>
-		public TraceTiming BeginTrace(string correlationId, string component, string operation)
+		public TraceTiming BeginTrace(IContext context, string component, string operation)
 		{
-			return new TraceTiming(correlationId, component, operation, this);
+			return new TraceTiming(context, component, operation, this);
 		}
 
 		/// <summary>
 		/// Records an operation failure with its name, duration and error
 		/// </summary>
-		/// <param name="correlationId"> (optional) transaction id to trace execution through call chain.</param>
+		/// <param name="context"> (optional) transaction id to trace execution through call chain.</param>
 		/// <param name="component">a name of called component</param>
 		/// <param name="operation">a name of the executed operation. </param>
 		/// <param name="error">an error object associated with this trace.</param>
 		/// <param name="duration">execution duration in milliseconds. </param>
-		public void Failure(string correlationId, string component, string operation, Exception error, long duration)
+		public void Failure(IContext context, string component, string operation, Exception error, long duration)
 		{
 			// Do nothing...
 		}
@@ -44,11 +45,11 @@ namespace PipServices4.Observability.Trace
 		/// <summary>
 		/// Records an operation trace with its name and duration
 		/// </summary>
-		/// <param name="correlationId">(optional) transaction id to trace execution through call chain.</param>
+		/// <param name="context">(optional) transaction id to trace execution through call chain.</param>
 		/// <param name="component">a name of called component</param>
 		/// <param name="operation">a name of the executed operation. </param>
 		/// <param name="duration">execution duration in milliseconds. </param>
-		public void Trace(string correlationId, string component, string operation, long duration)
+		public void Trace(IContext context, string component, string operation, long duration)
 		{
 			// Do nothing...
 		}

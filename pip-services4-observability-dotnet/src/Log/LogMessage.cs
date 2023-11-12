@@ -1,4 +1,5 @@
 using PipServices4.Commons.Errors;
+using PipServices4.Components.Context;
 using System;
 using System.Runtime.Serialization;
 
@@ -23,8 +24,8 @@ namespace PipServices4.Observability.Log
 		public string Level { get; set; }
 
 		/** The transaction id to trace execution through call chain. */
-		[DataMember(Name = "correlation_id")]
-		public string CorrelationId { get; set; }
+		[DataMember(Name = "trace_id")]
+		public string TraceId { get; set; }
 
 		/** The description of the captured error. */
 		[DataMember(Name = "error")]

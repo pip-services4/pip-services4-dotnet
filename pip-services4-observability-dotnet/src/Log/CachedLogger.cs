@@ -1,5 +1,6 @@
 using PipServices4.Commons.Errors;
 using PipServices4.Components.Config;
+using PipServices4.Components.Context;
 using System;
 using System.Collections.Generic;
 
@@ -36,12 +37,14 @@ namespace PipServices4.Observability.Log
 		/// Writes a log message to the logger destination.
 		/// </summary>
 		/// <param name="level">a log level.</param>
-		/// <param name="correlationId">(optional) transaction id to trace execution through call chain.</param>
+		/// <param name="context">(optional) transaction id to trace execution through call chain.</param>
 		/// <param name="error">an error object associated with this message.</param>
 		/// <param name="message">a human-readable message to log.</param>
-		protected override void Write(LogLevel level, string correlationId, Exception error, string message)
+		protected override void Write(LogLevel level, IContext context, Exception error, string message)
 		{
-			ErrorDescription errorDescription = error != null ? ErrorDescriptionFactory.Create(error, correlationId) : null;
+			string traceId = context != null ? ContextResolver.GetTraceId(context) : null;
+
+            ErrorDescription errorDescription = error != null ? ErrorDescriptionFactory.Create(error, traceId) : null;
 			LogMessage logMessage = new LogMessage()
 			{
 				Time = DateTime.UtcNow,
@@ -49,8 +52,8 @@ namespace PipServices4.Observability.Log
 				Source = _source,
 				Error = errorDescription,
 				Message = message,
-				CorrelationId = correlationId
-			};
+				TraceId = traceId,
+            };
 
 			lock (_lock)
 			{

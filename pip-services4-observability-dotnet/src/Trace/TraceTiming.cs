@@ -1,3 +1,4 @@
+using PipServices4.Components.Context;
 using System;
 
 namespace PipServices4.Observability.Trace
@@ -25,20 +26,20 @@ namespace PipServices4.Observability.Trace
 	{
 		private long _start;
 		private ITracer _tracer;
-		private string _correlationId;
+		private IContext _context;
 		private string _component;
 		private string _operation;
 
 		/// <summary>
 		/// Creates a new instance of the timing callback object.
 		/// </summary>
-		/// <param name="correlationId">(optional) transaction id to trace execution through call chain.</param>
+		/// <param name="context">(optional) transaction id to trace execution through call chain.</param>
 		/// <param name="component">an associated component name</param>
 		/// <param name="operation">an associated operation name</param>
 		/// <param name="tracer">a callback that shall be called when endTiming is called.</param>
-		public TraceTiming(string correlationId, string component, string operation, ITracer tracer = null)
+		public TraceTiming(IContext context, string component, string operation, ITracer tracer = null)
 		{
-			_correlationId = correlationId;
+			_context = context;
 			_component = component;
 			_operation = operation;
 			_tracer = tracer;
@@ -54,7 +55,7 @@ namespace PipServices4.Observability.Trace
 			if (_tracer != null)
 			{
 				long elapsed = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds() - _start;
-				_tracer.Trace(_correlationId, _component, _operation, elapsed);
+				_tracer.Trace(_context, _component, _operation, elapsed);
 			}
 		}
 
@@ -68,7 +69,7 @@ namespace PipServices4.Observability.Trace
 			if (_tracer != null)
 			{
 				long elapsed = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds() - _start;
-				_tracer.Failure(_correlationId, _component, _operation, error, elapsed);
+				_tracer.Failure(_context, _component, _operation, error, elapsed);
 			}
 		}
 	}

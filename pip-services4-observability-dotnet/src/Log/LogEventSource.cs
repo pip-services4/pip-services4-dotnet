@@ -1,3 +1,4 @@
+using PipServices4.Components.Context;
 using System.Diagnostics.Tracing;
 using System.Threading.Tasks;
 
@@ -35,16 +36,16 @@ namespace PipServices4.Observability.Log
 #if UNSAFE
         unsafe
 #endif
-		void PerformWriteEvent(int eventId, string correlationId, string message)
+		void PerformWriteEvent(int eventId, IContext context, string message)
 		{
 #if !UNSAFE
-			WriteEvent(eventId, correlationId, message);
+			WriteEvent(eventId, context, message);
 #else
             const int numArgs = 2;
-            fixed (pCorrelationId = correlationId, pMessage = message)
+            fixed (pcontext = context, pMessage = message)
             {
                 EventData* eventData = stackalloc EventData[numArgs];
-                eventData[0] = new EventData { DataPointer = (IntPtr) pCorrelationId, Size = SizeInBytes(correlationId) };
+                eventData[0] = new EventData { DataPointer = (IntPtr) pcontext, Size = SizeInBytes(context) };
                 eventData[1] = new EventData { DataPointer = (IntPtr) pMessage, Size = SizeInBytes(message) };
 
                 WriteEventCore(eventId, numArgs, eventData);
@@ -54,44 +55,44 @@ namespace PipServices4.Observability.Log
 
 		private const int FatalEventId = 1000;
 		[Event(FatalEventId, Message = "{0} : {1}", Level = EventLevel.Critical, Keywords = Keywords.Fatal)]
-		public void Fatal(string correlationId, string message)
+		public void Fatal(IContext context, string message)
 		{
-			PerformWriteEvent(FatalEventId, correlationId ?? "---", message ?? "");
+			PerformWriteEvent(FatalEventId, context, message ?? "");
 		}
 
 		private const int ErrorEventId = 1001;
 		[Event(ErrorEventId, Message = "{0} : {1}", Level = EventLevel.Error, Keywords = Keywords.Error)]
-		public void Error(string correlationId, string message)
+		public void Error(IContext context, string message)
 		{
-			PerformWriteEvent(ErrorEventId, correlationId ?? "---", message ?? "");
+			PerformWriteEvent(ErrorEventId, context, message ?? "");
 		}
 
 		private const int WarnEventId = 1002;
 		[Event(WarnEventId, Message = "{0} : {1}", Level = EventLevel.Warning, Keywords = Keywords.Warning)]
-		public void Warn(string correlationId, string message)
+		public void Warn(IContext context, string message)
 		{
-			PerformWriteEvent(WarnEventId, correlationId ?? "---", message ?? "");
+			PerformWriteEvent(WarnEventId, context, message ?? "");
 		}
 
 		private const int InfoEventId = 1003;
 		[Event(InfoEventId, Message = "{0} : {1}", Level = EventLevel.Informational, Keywords = Keywords.Informational)]
-		public void Info(string correlationId, string message)
+		public void Info(IContext context, string message)
 		{
-			PerformWriteEvent(InfoEventId, correlationId ?? "---", message ?? "");
+			PerformWriteEvent(InfoEventId, context, message ?? "");
 		}
 
 		private const int DebugEventId = 1004;
 		[Event(DebugEventId, Message = "{0} : {1}", Level = EventLevel.Verbose, Keywords = Keywords.Debug)]
-		public void Debug(string correlationId, string message)
+		public void Debug(IContext context, string message)
 		{
-			PerformWriteEvent(DebugEventId, correlationId ?? "---", message ?? "");
+			PerformWriteEvent(DebugEventId, context, message ?? "");
 		}
 
 		private const int TraceEventId = 1005;
 		[Event(TraceEventId, Message = "{0} : {1}", Level = EventLevel.Verbose, Keywords = Keywords.Trace)]
-		public void Trace(string correlationId, string message)
+		public void Trace(IContext context, string message)
 		{
-			PerformWriteEvent(TraceEventId, correlationId ?? "---", message ?? "");
+			PerformWriteEvent(TraceEventId, context, message ?? "");
 		}
 
 	}

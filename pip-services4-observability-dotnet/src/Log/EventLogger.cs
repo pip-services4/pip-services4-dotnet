@@ -1,10 +1,11 @@
+using PipServices4.Components.Context;
 using System;
 
 namespace PipServices4.Observability.Log
 {
 	public class EventLogger : Logger
 	{
-		protected override void Write(LogLevel level, string correlationId, Exception error, string message)
+		protected override void Write(LogLevel level, IContext context, Exception error, string message)
 		{
 			if (error != null)
 			{
@@ -17,22 +18,22 @@ namespace PipServices4.Observability.Log
 			switch (level)
 			{
 				case LogLevel.Fatal:
-					LogEventSource.Current.Fatal(correlationId, message);
+					LogEventSource.Current.Fatal(context, message);
 					break;
 				case LogLevel.Error:
-					LogEventSource.Current.Error(correlationId, message);
+					LogEventSource.Current.Error(context, message);
 					break;
 				case LogLevel.Warn:
-					LogEventSource.Current.Warn(correlationId, message);
+					LogEventSource.Current.Warn(context, message);
 					break;
 				case LogLevel.Info:
-					LogEventSource.Current.Info(correlationId, message);
+					LogEventSource.Current.Info(context, message);
 					break;
 				case LogLevel.Debug:
-					LogEventSource.Current.Debug(correlationId, message);
+					LogEventSource.Current.Debug(context, message);
 					break;
 				case LogLevel.Trace:
-					LogEventSource.Current.Trace(correlationId, message);
+					LogEventSource.Current.Trace(context, message);
 					break;
 			}
 		}

@@ -1,4 +1,5 @@
 using PipServices4.Commons.Convert;
+using PipServices4.Components.Context;
 using System;
 using System.Text;
 
@@ -34,16 +35,18 @@ namespace PipServices4.Observability.Log
 		/// Writes a log message to the logger destination(s).
 		/// </summary>
 		/// <param name="level">a log level.</param>
-		/// <param name="correlationId">(optional) transaction id to trace execution through call chain.</param>
+		/// <param name="context">(optional) transaction id to trace execution through call chain.</param>
 		/// <param name="error">an error object associated with this message.</param>
 		/// <param name="message">a human-readable message to log.</param>
-		protected override void Write(LogLevel level, string correlationId, Exception error, string message)
+		protected override void Write(LogLevel level, IContext context, Exception error, string message)
 		{
 			if (Level < level) return;
 
-			var build = new StringBuilder();
+            string traceId = context != null ? ContextResolver.GetTraceId(context) : null;
+
+            var build = new StringBuilder();
 			build.Append('[');
-			build.Append(correlationId != null ? correlationId : "---");
+			build.Append(traceId != null ? traceId : "---");
 			build.Append(':');
 			build.Append(level.ToString());
 			build.Append(':');

@@ -1,3 +1,4 @@
+using PipServices4.Components.Context;
 using PipServices4.Observability.Log;
 using System;
 using Xunit;
@@ -40,8 +41,8 @@ namespace PipServices4.Observability.test.Log
 			}
 			catch (Exception ex)
 			{
-				Logger.Fatal("123", ex, "Fatal error");
-				Logger.Error("123", ex, "Recoverable error");
+				Logger.Fatal(Context.FromTraceId("123"), ex, "Fatal error");
+				Logger.Error(Context.FromTraceId("123"), ex, "Recoverable error");
 			}
 		}
 	}

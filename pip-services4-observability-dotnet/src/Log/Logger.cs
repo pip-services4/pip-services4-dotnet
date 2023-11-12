@@ -74,7 +74,7 @@ namespace PipServices4.Observability.Log
 				_source = contextInfo.Name;
 		}
 
-		protected abstract void Write(LogLevel level, string correlationId, Exception error, string message);
+		protected abstract void Write(LogLevel level, IContext context, Exception error, string message);
 
 		/// <summary>
 		/// Composes an human-readable error description
@@ -105,168 +105,168 @@ namespace PipServices4.Observability.Log
 		/// Formats the log message and writes it to the logger destination.
 		/// </summary>
 		/// <param name="level">a log level</param>
-		/// <param name="correlationId">(optional) transaction id to trace execution through call chain.</param>
+		/// <param name="context">(optional) transaction id to trace execution through call chain.</param>
 		/// <param name="error">an error object associated with this message.</param>
 		/// <param name="message">a human-readable message to log.</param>
 		/// <param name="args">arguments to parameterize the message.</param>
-		protected void FormatAndWrite(LogLevel level, string correlationId, Exception error, string message, object[] args)
+		protected void FormatAndWrite(LogLevel level, IContext context, Exception error, string message, object[] args)
 		{
 			var mes = !string.IsNullOrWhiteSpace(message) ? message : string.Empty;
 			if (args != null && args.Length > 0)
 				mes = string.Format(mes, args);
 
-			Write(level, correlationId, error, mes);
+			Write(level, context, error, mes);
 		}
 
 		/// <summary>
 		/// Logs a message at specified log level.
 		/// </summary>
 		/// <param name="level">a log level.</param>
-		/// <param name="correlationId">(optional) transaction id to trace execution through call chain.</param>
+		/// <param name="context">(optional) transaction id to trace execution through call chain.</param>
 		/// <param name="error">an error object associated with this message.</param>
 		/// <param name="message">a human-readable message to log.</param>
 		/// <param name="args">arguments to parameterize the message.</param>
-		public void Log(LogLevel level, string correlationId, Exception error, string message, params object[] args)
+		public void Log(LogLevel level, IContext context, Exception error, string message, params object[] args)
 		{
-			FormatAndWrite(level, correlationId, error, message, args);
+			FormatAndWrite(level, context, error, message, args);
 		}
 
 		/// <summary>
 		/// Logs fatal (unrecoverable) message that caused the process to crash.
 		/// </summary>
-		/// <param name="correlationId">(optional) transaction id to trace execution through call chain.</param>
+		/// <param name="context">(optional) transaction id to trace execution through call chain.</param>
 		/// <param name="message">a human-readable message to log.</param>
 		/// <param name="args">arguments to parameterize the message.</param>
-		public void Fatal(string correlationId, string message, params object[] args)
+		public void Fatal(IContext context, string message, params object[] args)
 		{
-			FormatAndWrite(LogLevel.Fatal, correlationId, null, message, args);
+			FormatAndWrite(LogLevel.Fatal, context, null, message, args);
 		}
 
 		/// <summary>
 		/// Logs fatal (unrecoverable) message that caused the process to crash.
 		/// </summary>
-		/// <param name="correlationId">(optional) transaction id to trace execution through call chain.</param>
+		/// <param name="context">(optional) transaction id to trace execution through call chain.</param>
 		/// <param name="error">an error object associated with this message.</param>
 		/// <param name="message">a human-readable message to log.</param>
 		/// <param name="args">arguments to parameterize the message.</param>
-		public void Fatal(string correlationId, Exception error, string message = null, params object[] args)
+		public void Fatal(IContext context, Exception error, string message = null, params object[] args)
 		{
-			FormatAndWrite(LogLevel.Fatal, correlationId, error, message, args);
+			FormatAndWrite(LogLevel.Fatal, context, error, message, args);
 		}
 
 		/// <summary>
 		/// Logs recoverable application error.
 		/// </summary>
-		/// <param name="correlationId">(optional) transaction id to trace execution through call chain.</param>
+		/// <param name="context">(optional) transaction id to trace execution through call chain.</param>
 		/// <param name="message">a human-readable message to log.</param>
 		/// <param name="args">arguments to parameterize the message.</param>
-		public void Error(string correlationId, string message, params object[] args)
+		public void Error(IContext context, string message, params object[] args)
 		{
-			FormatAndWrite(LogLevel.Error, correlationId, null, message, args);
+			FormatAndWrite(LogLevel.Error, context, null, message, args);
 		}
 
 		/// <summary>
 		/// Logs recoverable application error.
 		/// </summary>
-		/// <param name="correlationId">(optional) transaction id to trace execution through call chain.</param>
+		/// <param name="context">(optional) transaction id to trace execution through call chain.</param>
 		/// <param name="error">an error object associated with this message.</param>
 		/// <param name="message">a human-readable message to log.</param>
 		/// <param name="args">arguments to parameterize the message.</param>
-		public void Error(string correlationId, Exception error, string message = null, params object[] args)
+		public void Error(IContext context, Exception error, string message = null, params object[] args)
 		{
-			FormatAndWrite(LogLevel.Error, correlationId, error, message, args);
+			FormatAndWrite(LogLevel.Error, context, error, message, args);
 		}
 
 		/// <summary>
 		/// Logs a warning that may or may not have a negative impact.
 		/// </summary>
-		/// <param name="correlationId">(optional) transaction id to trace execution through call chain.</param>
+		/// <param name="context">(optional) transaction id to trace execution through call chain.</param>
 		/// <param name="message">a human-readable message to log.</param>
 		/// <param name="args">arguments to parameterize the message.</param>
-		public void Warn(string correlationId, string message, params object[] args)
+		public void Warn(IContext context, string message, params object[] args)
 		{
-			FormatAndWrite(LogLevel.Warn, correlationId, null, message, args);
+			FormatAndWrite(LogLevel.Warn, context, null, message, args);
 		}
 
 		/// <summary>
 		/// Logs a warning that may or may not have a negative impact.
 		/// </summary>
-		/// <param name="correlationId">(optional) transaction id to trace execution through call chain.</param>
+		/// <param name="context">(optional) transaction id to trace execution through call chain.</param>
 		/// <param name="error">an error object associated with this message.</param>
 		/// <param name="message">a human-readable message to log.</param>
 		/// <param name="args">arguments to parameterize the message.</param>
-		public void Warn(string correlationId, Exception error, string message = null, params object[] args)
+		public void Warn(IContext context, Exception error, string message = null, params object[] args)
 		{
-			FormatAndWrite(LogLevel.Warn, correlationId, error, message, args);
+			FormatAndWrite(LogLevel.Warn, context, error, message, args);
 		}
 
 		/// <summary>
 		/// Logs an important information message
 		/// </summary>
-		/// <param name="correlationId">(optional) transaction id to trace execution through call chain.</param>
+		/// <param name="context">(optional) transaction id to trace execution through call chain.</param>
 		/// <param name="message">a human-readable message to log.</param>
 		/// <param name="args">arguments to parameterize the message.</param>
-		public void Info(string correlationId, string message, params object[] args)
+		public void Info(IContext context, string message, params object[] args)
 		{
-			FormatAndWrite(LogLevel.Info, correlationId, null, message, args);
+			FormatAndWrite(LogLevel.Info, context, null, message, args);
 		}
 
 		/// <summary>
 		/// Logs an important information message
 		/// </summary>
-		/// <param name="correlationId">(optional) transaction id to trace execution through call chain.</param>
+		/// <param name="context">(optional) transaction id to trace execution through call chain.</param>
 		/// <param name="error">an error object associated with this message.</param>
 		/// <param name="message">a human-readable message to log.</param>
 		/// <param name="args">arguments to parameterize the message.</param>
-		public void Info(string correlationId, Exception error, string message = null, params object[] args)
+		public void Info(IContext context, Exception error, string message = null, params object[] args)
 		{
-			FormatAndWrite(LogLevel.Info, correlationId, error, message, args);
+			FormatAndWrite(LogLevel.Info, context, error, message, args);
 		}
 
 		/// <summary>
 		/// Logs a high-level debug information for troubleshooting.
 		/// </summary>
-		/// <param name="correlationId">(optional) transaction id to trace execution through call chain.</param>
+		/// <param name="context">(optional) transaction id to trace execution through call chain.</param>
 		/// <param name="message">a human-readable message to log.</param>
 		/// <param name="args">arguments to parameterize the message.</param>
-		public void Debug(string correlationId, string message, params object[] args)
+		public void Debug(IContext context, string message, params object[] args)
 		{
-			FormatAndWrite(LogLevel.Debug, correlationId, null, message, args);
+			FormatAndWrite(LogLevel.Debug, context, null, message, args);
 		}
 
 		/// <summary>
 		/// Logs a high-level debug information for troubleshooting.
 		/// </summary>
-		/// <param name="correlationId">(optional) transaction id to trace execution through call chain.</param>
+		/// <param name="context">(optional) transaction id to trace execution through call chain.</param>
 		/// <param name="error">an error object associated with this message.</param>
 		/// <param name="message">a human-readable message to log.</param>
 		/// <param name="args">arguments to parameterize the message.</param>
-		public void Debug(string correlationId, Exception error, string message = null, params object[] args)
+		public void Debug(IContext context, Exception error, string message = null, params object[] args)
 		{
-			FormatAndWrite(LogLevel.Debug, correlationId, error, message, args);
+			FormatAndWrite(LogLevel.Debug, context, error, message, args);
 		}
 
 		/// <summary>
 		/// Logs a low-level debug information for troubleshooting.
 		/// </summary>
-		/// <param name="correlationId">(optional) transaction id to trace execution through call chain.</param>
+		/// <param name="context">(optional) transaction id to trace execution through call chain.</param>
 		/// <param name="message">a human-readable message to log.</param>
 		/// <param name="args">arguments to parameterize the message.</param>
-		public void Trace(string correlationId, string message, params object[] args)
+		public void Trace(IContext context, string message, params object[] args)
 		{
-			FormatAndWrite(LogLevel.Trace, correlationId, null, message, args);
+			FormatAndWrite(LogLevel.Trace, context, null, message, args);
 		}
 
 		/// <summary>
 		/// Logs a low-level debug information for troubleshooting.
 		/// </summary>
-		/// <param name="correlationId">(optional) transaction id to trace execution through call chain.</param>
+		/// <param name="context">(optional) transaction id to trace execution through call chain.</param>
 		/// <param name="error">an error object associated with this message.</param>
 		/// <param name="message">a human-readable message to log.</param>
 		/// <param name="args">arguments to parameterize the message.</param>
-		public void Trace(string correlationId, Exception error, string message = null, params object[] args)
+		public void Trace(IContext context, Exception error, string message = null, params object[] args)
 		{
-			FormatAndWrite(LogLevel.Trace, correlationId, error, message, args);
+			FormatAndWrite(LogLevel.Trace, context, error, message, args);
 		}
 	}
 }
