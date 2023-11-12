@@ -40,12 +40,12 @@ namespace PipServices4.Commons.Errors
         /// <summary>
         /// Creates an error instance and assigns its values.
         /// </summary>
-        /// <param name="correlationId">(optional) a unique transaction id to trace execution through call chain.</param>
+        /// <param name="traceId">(optional) a unique transaction id to trace execution through call chain.</param>
         /// <param name="code">(optional) a unique error code. Default: "UNKNOWN"</param>
         /// <param name="message">(optional) a human-readable description of the error.</param>
         /// <param name="innerException">an error object</param>
-        public InvalidStateException(string correlationId = null, string code = null, string message = null, Exception innerException = null) 
-            : base(ErrorCategory.InvalidState, correlationId, code, message)
+        public InvalidStateException(string traceId = null, string code = null, string message = null, Exception innerException = null) 
+            : base(ErrorCategory.InvalidState, traceId, code, message)
         {
             Status = 500;
             WithCause(innerException);

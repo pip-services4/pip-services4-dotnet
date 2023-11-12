@@ -14,7 +14,7 @@ namespace PipServices4.Commons.Test.Errors
 
         public ApplicationExceptionFactoryTest()
         {
-            _descr.CorrelationId = "correlationId";
+            _descr.TraceId = "traceId";
             _descr.Code= "code";
             _descr.Message = "message";
             _descr.Status = 777;

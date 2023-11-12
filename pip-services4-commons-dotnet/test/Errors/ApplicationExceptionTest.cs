@@ -15,7 +15,7 @@ namespace PipServices4.Commons.Test.Errors
         private readonly Exception _ex;
 
         private const string Category = "category";
-        private const string CorrelationId = "correlationId";
+        private const string TraceId = "traceId";
         private const string Code = "code";
         private const string Message = "message";
 
@@ -23,7 +23,7 @@ namespace PipServices4.Commons.Test.Errors
         {
             _ex = new Exception("Couse exception");
 
-            _appEx = new ApplicationException(Category, CorrelationId, Code, Message);
+            _appEx = new ApplicationException(Category, TraceId, Code, Message);
         }
 
         [Fact]
@@ -41,7 +41,7 @@ namespace PipServices4.Commons.Test.Errors
         public void Constructor_CheckParameters_IsOk()
         {
             Assert.Equal(Category, _appEx.Category);
-            Assert.Equal(CorrelationId, _appEx.CorrelationId);
+            Assert.Equal(TraceId, _appEx.TraceId);
             Assert.Equal(Code, _appEx.Code);
             Assert.Equal(Message, _appEx.Message);
         }
@@ -58,14 +58,14 @@ namespace PipServices4.Commons.Test.Errors
         }
 
         [Fact]
-        public void WithCorrelationId_Check_IsOk()
+        public void WithTraceId_Check_IsOk()
         {
-            var newCorrelationId = "newCorrelationId";
+            var newTraceId = "newTraceId";
 
-            var appEx = _appEx.WithCorrelationId(newCorrelationId);
+            var appEx = _appEx.WithTraceId(newTraceId);
 
             Assert.Equal(_appEx, appEx);
-            Assert.Equal(newCorrelationId, appEx.CorrelationId);
+            Assert.Equal(newTraceId, appEx.TraceId);
         }
 
         [Fact]
@@ -125,7 +125,7 @@ namespace PipServices4.Commons.Test.Errors
             var restoredException = JsonConvert.DeserializeObject<InternalException>(jsonString);
 
             Assert.IsType<InternalException>(restoredException);
-            Assert.Equal(ex.CorrelationId, restoredException.CorrelationId);
+            Assert.Equal(ex.TraceId, restoredException.TraceId);
             Assert.Equal(ex.Code, restoredException.Code);
             Assert.Equal(ex.Message, restoredException.Message);
         }

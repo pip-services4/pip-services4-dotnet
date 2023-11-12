@@ -15,7 +15,7 @@ namespace PipServices4.Commons.Test.Errors
             var key = "key";
             var details = "details";
 
-            var ex = new ApplicationException("category", "correlationId", "code", "message")
+            var ex = new ApplicationException("category", "traceId", "code", "message")
             {
                 Status = 777,
                 Cause = "cause",
@@ -27,7 +27,7 @@ namespace PipServices4.Commons.Test.Errors
 
             Assert.NotNull(descr);
             Assert.Equal(ex.Category, descr.Category);
-            Assert.Equal(ex.CorrelationId, descr.CorrelationId);
+            Assert.Equal(ex.TraceId, descr.TraceId);
             Assert.Equal(ex.Code, descr.Code);
             Assert.Equal(ex.Message, descr.Message);
             Assert.Equal(ex.Status, descr.Status);
@@ -49,7 +49,7 @@ namespace PipServices4.Commons.Test.Errors
             Assert.Equal(ex.Message, descr.Message);
             Assert.Equal(500, descr.Status);
             Assert.Equal(ex.StackTrace, descr.StackTrace);
-            Assert.Null(descr.CorrelationId);
+            Assert.Null(descr.TraceId);
 
             ex = new Exception("message");
             ex.Data.Add("key", "value");
@@ -62,7 +62,7 @@ namespace PipServices4.Commons.Test.Errors
             Assert.Equal(ex.Message, withCorrelation.Message);
             Assert.Equal(500, withCorrelation.Status);
             Assert.Equal(ex.StackTrace, withCorrelation.StackTrace);
-            Assert.Equal(correlation, withCorrelation.CorrelationId);
+            Assert.Equal(correlation, withCorrelation.TraceId);
             Assert.Equal(ex.Data, withCorrelation.Details);
         }
     }

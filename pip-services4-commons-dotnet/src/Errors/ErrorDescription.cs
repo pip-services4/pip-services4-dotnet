@@ -38,8 +38,8 @@ namespace PipServices4.Commons.Errors
         public StringValueMap Details { get; set; }
 
         /** A unique transaction id to trace execution throug call chain */
-        [DataMember(Name = "correlation_id")]
-        public string CorrelationId { get; set; }
+        [DataMember(Name = "trace_id")]
+        public string TraceId { get; set; }
 
         /** Original error wrapped by this exception */
         [DataMember(Name = "cause")]

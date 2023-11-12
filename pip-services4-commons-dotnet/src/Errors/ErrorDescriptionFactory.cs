@@ -30,7 +30,7 @@ namespace PipServices4.Commons.Errors
                 Code = ex.Code,
                 Message = ex.Message,
                 Details = ex.Details,
-                CorrelationId = ex.CorrelationId,
+                TraceId = ex.TraceId,
                 Cause = ex.Cause,
                 StackTrace = ex.StackTrace
             };
@@ -40,9 +40,9 @@ namespace PipServices4.Commons.Errors
         /// Creates a serializable ErrorDescription from throwable object with unknown error category.
         /// </summary>
         /// <param name="ex">an error object</param>
-        /// <param name="correlationId">(optional) a unique transaction id to trace execution through call chain.</param>
+        /// <param name="traceId">(optional) a unique transaction id to trace execution through call chain.</param>
         /// <returns>a serializeable ErrorDescription object that describes the error.</returns>
-        public static ErrorDescription Create(Exception ex, string correlationId = null)
+        public static ErrorDescription Create(Exception ex, string traceId = null)
         {
             return new ErrorDescription()
             {
@@ -53,7 +53,7 @@ namespace PipServices4.Commons.Errors
                 Message = ex.Message,
                 Details = new StringValueMap(ex.Data),
                 StackTrace = ex.StackTrace,
-                CorrelationId = correlationId,
+                TraceId = traceId,
                 Cause = ex.InnerException != null ? ComposeCause(ex.InnerException) : null
             };
         }

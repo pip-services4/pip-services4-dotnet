@@ -72,18 +72,18 @@ namespace PipServices4.Commons.Errors
         /// Creates a new instance of application exception and assigns its values.
         /// </summary>
         /// <param name="category">(optional) a standard error category. Default: Unknown</param>
-        /// <param name="correlationId">(optional) a unique transaction id to trace execution
+        /// <param name="traceId">(optional) a unique transaction id to trace execution
         /// through call chain.</param>
         /// <param name="code">(optional) a unique error code. Default: "UNKNOWN"</param>
         /// <param name="message">(optional) a human-readable description of the error.</param>
-        public ApplicationException(string category = null, string correlationId = null, string code = null, string message = null)
+        public ApplicationException(string category = null, string traceId = null, string code = null, string message = null)
             : base(message ?? "Unknown error")
         {
             Code = "UNKNOWN";
             Status = 500;
 
             Category = category ?? ErrorCategory.Unknown;
-            CorrelationId = correlationId;
+            TraceId = traceId;
             Code = code;
         }
 
@@ -92,7 +92,7 @@ namespace PipServices4.Commons.Errors
             : base(info, context)
         {
             Category = info.GetString("category");
-            CorrelationId = info.GetString("correlation_id");
+            TraceId = info.GetString("trace_id");
             Cause = info.GetString("cause");
             Code = info.GetString("code");
             Status = info.GetInt32("status");
@@ -105,7 +105,7 @@ namespace PipServices4.Commons.Errors
             base.GetObjectData(info, context);
 
             info.AddValue("category", Category);
-            info.AddValue("correlation_id", CorrelationId);
+            info.AddValue("correlation_id", TraceId);
             info.AddValue("cause", Cause);
             info.AddValue("code", Code);
             info.AddValue("status", Status);
@@ -119,7 +119,7 @@ namespace PipServices4.Commons.Errors
 
         /** A unique transaction id to trace execution throug call chain */
         [JsonProperty("correlation_id")]
-        public string CorrelationId { get; set; }
+        public string TraceId { get; set; }
 
         /** Original error wrapped by this exception */
         [JsonProperty("cause")]
@@ -169,11 +169,11 @@ namespace PipServices4.Commons.Errors
         /// This method returns reference to this exception to implement Builder pattern
         /// to chain additional calls.
         /// </summary>
-        /// <param name="correlationId">a unique transaction id to trace error through call chain</param>
+        /// <param name="traceId">a unique transaction id to trace error through call chain</param>
         /// <returns>this exception object</returns>
-        public ApplicationException WithCorrelationId(string correlationId)
+        public ApplicationException WithTraceId(string traceId)
         {
-            CorrelationId = correlationId;
+            TraceId = traceId;
             return this;
         }
 
