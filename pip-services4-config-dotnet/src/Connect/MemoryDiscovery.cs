@@ -1,4 +1,5 @@
 using PipServices4.Components.Config;
+using PipServices4.Components.Context;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -97,10 +98,10 @@ namespace PipServices4.Config.Connect
         /// <summary>
         /// Registers connection parameters into the discovery service.
         /// </summary>
-        /// <param name="correlationId">(optional) transaction id to trace execution through call chain.</param>
+        /// <param name="context">(optional) execution context to trace execution through call chain.</param>
         /// <param name="key">a key to uniquely identify the connection parameters.</param>
         /// <param name="connection">a connection to be registered.</param>
-        public async Task RegisterAsync(string correlationId, string key, ConnectionParams connection)
+        public async Task RegisterAsync(IContext context, string key, ConnectionParams connection)
         {
             lock (_lock)
             {
@@ -118,10 +119,10 @@ namespace PipServices4.Config.Connect
         /// <summary>
         /// Resolves a single connection parameters by its key.
         /// </summary>
-        /// <param name="correlationId">(optional) transaction id to trace execution through call chain.</param>
+        /// <param name="context">(optional) execution context to trace execution through call chain.</param>
         /// <param name="key">a key to uniquely identify the connection.</param>
         /// <returns>a resolved connection.</returns>
-        public async Task<ConnectionParams> ResolveOneAsync(string correlationId, string key)
+        public async Task<ConnectionParams> ResolveOneAsync(IContext context, string key)
         {
             ConnectionParams connection = null;
 
@@ -143,10 +144,10 @@ namespace PipServices4.Config.Connect
         /// <summary>
         /// Resolves all connection parameters by their key.
         /// </summary>
-        /// <param name="correlationId">(optional) transaction id to trace execution through call chain.</param>
+        /// <param name="context">(optional) execution context to trace execution through call chain.</param>
         /// <param name="key">a key to uniquely identify the connection.</param>
         /// <returns>a list with resolved connections.</returns>
-        public async Task<List<ConnectionParams>> ResolveAllAsync(string correlationId, string key)
+        public async Task<List<ConnectionParams>> ResolveAllAsync(IContext context, string key)
         {
             var connections = new List<ConnectionParams>();
 

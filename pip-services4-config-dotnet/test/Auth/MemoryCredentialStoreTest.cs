@@ -1,4 +1,5 @@
 using PipServices4.Components.Config;
+using PipServices4.Components.Context;
 using PipServices4.Config.Auth;
 using Xunit;
 
@@ -21,8 +22,8 @@ namespace PipServices4.Config.test.Auth
             var credentialStore = new MemoryCredentialStore();
             credentialStore.ReadCredentials(config);
 
-            var cred1 = await credentialStore.LookupAsync("123", "key1");
-            var cred2 = await credentialStore.LookupAsync("123", "key2");
+            var cred1 = await credentialStore.LookupAsync(Context.FromTraceId("123"), "key1");
+            var cred2 = await credentialStore.LookupAsync(Context.FromTraceId("123"), "key2");
 
             Assert.Equal("user1", cred1.Username);
             Assert.Equal("pass1", cred1.Password);
@@ -38,7 +39,7 @@ namespace PipServices4.Config.test.Auth
 
             await credentialStore.StoreAsync(null, "key3", credConfig);
 
-            var cred3 = await credentialStore.LookupAsync("123", "key3");
+            var cred3 = await credentialStore.LookupAsync(Context.FromTraceId("123"), "key3");
 
             Assert.Equal("user3", cred3.Username);
             Assert.Equal("pass3", cred3.Password);

@@ -1,4 +1,5 @@
 using PipServices4.Components.Config;
+using PipServices4.Components.Context;
 using PipServices4.Config.Connect;
 using System.Linq;
 using Xunit;
@@ -21,12 +22,12 @@ namespace PipServices4.Config.test.Connect
             discovery.Configure(config);
 
             // Resolve one
-            var connection = await discovery.ResolveOneAsync("123", "key1");
+            var connection = await discovery.ResolveOneAsync(Context.FromTraceId("123"), "key1");
 
             Assert.Equal("10.1.1.100", connection.Host);
             Assert.Equal(8080, connection.Port);
 
-            connection = await discovery.ResolveOneAsync("123", "key2");
+            connection = await discovery.ResolveOneAsync(Context.FromTraceId("123"), "key2");
 
             Assert.Equal("10.1.1.101", connection.Host);
             Assert.Equal(8082, connection.Port);
@@ -37,7 +38,7 @@ namespace PipServices4.Config.test.Connect
                 ConnectionParams.FromTuples("host", "10.3.3.151")
             );
 
-            var connections = await discovery.ResolveAllAsync("123", "key1");
+            var connections = await discovery.ResolveAllAsync(Context.FromTraceId("123"), "key1");
 
             Assert.True(connections.Count > 1);
         }

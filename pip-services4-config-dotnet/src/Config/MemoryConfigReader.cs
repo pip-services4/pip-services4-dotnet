@@ -1,4 +1,5 @@
 using PipServices4.Components.Config;
+using PipServices4.Components.Context;
 using PipServices4.Components.Exec;
 
 namespace PipServices4.Config.Config
@@ -52,10 +53,10 @@ namespace PipServices4.Config.Config
         /// <summary>
         /// Reads configuration and parameterize it with given values.
         /// </summary>
-        /// <param name="correlationId">(optional) transaction id to trace execution through call chain.</param>
+        /// <param name="context">(optional) execution context to trace execution through call chain.</param>
         /// <param name="parameters">values to parameters the configuration or null to skip parameterization.</param>
         /// <returns>ConfigParams configuration.</returns>
-        public virtual ConfigParams ReadConfig(string correlationId, ConfigParams parameters)
+        public virtual ConfigParams ReadConfig(IContext context, ConfigParams parameters)
         {
             return new ConfigParams(_config);
         }

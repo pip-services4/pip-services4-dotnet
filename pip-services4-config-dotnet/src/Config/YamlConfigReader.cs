@@ -1,5 +1,6 @@
 using PipServices4.Commons.Errors;
 using PipServices4.Components.Config;
+using PipServices4.Components.Context;
 using System;
 using System.IO;
 using YamlDotNet.Serialization;
@@ -44,13 +45,15 @@ namespace PipServices4.Config.Config
         /// <summary>
         /// Reads configuration file, parameterizes its content and converts it into JSON object.
         /// </summary>
-        /// <param name="correlationId">(optional) transaction id to trace execution through call chain.</param>
+        /// <param name="context">(optional) execution context to trace execution through call chain.</param>
         /// <param name="parameters">values to parameters the configuration.</param>
         /// <returns>a JSON object with configuration.</returns>
-        private object ReadObject(string correlationId, ConfigParams parameters)
+        private object ReadObject(IContext context, ConfigParams parameters)
         {
+            var traceId = context != null ? ContextResolver.GetTraceId(context) : null;
+            
             if (Path == null)
-                throw new ConfigException(correlationId, "NO_PATH", "Missing config file path");
+                throw new ConfigException(traceId, "NO_PATH", "Missing config file path");
 
             try
             {
@@ -66,7 +69,7 @@ namespace PipServices4.Config.Config
             catch (Exception ex)
             {
                 throw new FileException(
-                    correlationId,
+                    traceId,
                     "READ_FAILED",
                     "Failed reading configuration " + Path + ": " + ex
                 )
@@ -78,38 +81,38 @@ namespace PipServices4.Config.Config
         /// <summary>
         /// Reads configuration and parameterize it with given values.
         /// </summary>
-        /// <param name="correlationId">(optional) transaction id to trace execution through call chain.</param>
+        /// <param name="context">(optional) execution context to trace execution through call chain.</param>
         /// <param name="parameters">values to parameters the configuration</param>
         /// <returns>ConfigParams configuration.</returns>
-        public override ConfigParams ReadConfig(string correlationId, ConfigParams parameters)
+        public override ConfigParams ReadConfig(IContext context, ConfigParams parameters)
         {
-            var value = ReadObject(correlationId, parameters);
+            var value = ReadObject(context, parameters);
             return ConfigParams.FromValue(value);
         }
 
         /// <summary>
         /// Reads configuration file, parameterizes its content and converts it into JSON object.
         /// </summary>
-        /// <param name="correlationId">(optional) transaction id to trace execution through call chain.</param>
+        /// <param name="context">(optional) execution context to trace execution through call chain.</param>
         /// <param name="path">a path to configuration file.</param>
         /// <param name="parameters">values to parameters the configuration.</param>
         /// <returns>a JSON object with configuration.</returns>
-        public static object ReadObject(string correlationId, string path, ConfigParams parameters)
+        public static object ReadObject(IContext context, string path, ConfigParams parameters)
         {
-            return new YamlConfigReader(path).ReadObject(correlationId, parameters);
+            return new YamlConfigReader(path).ReadObject(context, parameters);
         }
 
         /// <summary>
         /// Reads configuration from a file, parameterize it with given values 
         /// and returns a new ConfigParams object.
         /// </summary>
-        /// <param name="correlationId">(optional) transaction id to trace execution through call chain.</param>
+        /// <param name="context">(optional) execution context to trace execution through call chain.</param>
         /// <param name="path">a path to configuration file.</param>
         /// <param name="parameters">values to parameters the configuration</param>
         /// <returns>ConfigParams configuration.</returns>
-        public static ConfigParams ReadConfig(string correlationId, string path, ConfigParams parameters)
+        public static ConfigParams ReadConfig(IContext context, string path, ConfigParams parameters)
         {
-            return new YamlConfigReader(path).ReadConfig(correlationId, parameters);
+            return new YamlConfigReader(path).ReadConfig(context, parameters);
         }
     }
 }

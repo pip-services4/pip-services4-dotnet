@@ -1,5 +1,6 @@
 using PipServices4.Commons.Errors;
 using PipServices4.Components.Config;
+using PipServices4.Components.Context;
 using PipServices4.Components.Refer;
 using PipServices4.Config.Auth;
 using System;
@@ -75,10 +76,12 @@ namespace PipServices4.Config.Connect
             _credentialResolver.Configure(config);
         }
 
-        private void ValidateConnection(string correlationId, ConnectionParams connection, CredentialParams credential)
+        private void ValidateConnection(IContext context, ConnectionParams connection, CredentialParams credential)
         {
+            var traceId = context != null ? ContextResolver.GetTraceId(context) : null;
+
             if (connection == null)
-                throw new ConfigException(correlationId, "NO_CONNECTION", "HTTP connection is not set");
+                throw new ConfigException(traceId, "NO_CONNECTION", "HTTP connection is not set");
 
             var uri = connection.Uri;
             if (!string.IsNullOrEmpty(uri))
@@ -88,17 +91,17 @@ namespace PipServices4.Config.Connect
             if ("http" != protocol && "https" != protocol)
             {
                 throw new ConfigException(
-                        correlationId, "WRONG_PROTOCOL", "Protocol is not supported by REST connection")
+                        traceId, "WRONG_PROTOCOL", "Protocol is not supported by REST connection")
                     .WithDetails("protocol", protocol);
             }
 
             var host = connection.Host;
             if (host == null)
-                throw new ConfigException(correlationId, "NO_HOST", "Connection host is not set");
+                throw new ConfigException(traceId, "NO_HOST", "Connection host is not set");
 
             var port = connection.Port;
             if (port == 0)
-                throw new ConfigException(correlationId, "NO_PORT", "Connection port is not set");
+                throw new ConfigException(traceId, "NO_PORT", "Connection port is not set");
 
             // Check HTTPS credentials
             if (protocol == "https")
@@ -107,7 +110,7 @@ namespace PipServices4.Config.Connect
                 if (credential == null)
                 {
                     throw new ConfigException(
-                        correlationId, "NO_CREDENTIAL", "SSL certificates are not configured for HTTPS protocol");
+                        traceId, "NO_CREDENTIAL", "SSL certificates are not configured for HTTPS protocol");
                 }
 
                 // Sometimes when we use https we are on an internal network and do not want to have to deal with security.
@@ -117,13 +120,13 @@ namespace PipServices4.Config.Connect
                     if (credential.GetAsNullableString("ssl_password") == null)
                     {
                         throw new ConfigException(
-                            correlationId, "NO_SSL_PASSWORD", "SSL password is not configured in credentials");
+                            traceId, "NO_SSL_PASSWORD", "SSL password is not configured in credentials");
                     }
 
                     if (credential.GetAsNullableString("ssl_pfx_file") == null)
                     {
                         throw new ConfigException(
-                            correlationId, "NO_SSL_PFX_FILE", "SSL pfx file is not configured in credentials");
+                            traceId, "NO_SSL_PFX_FILE", "SSL pfx file is not configured in credentials");
                     }
                 }
             }
@@ -161,13 +164,13 @@ namespace PipServices4.Config.Connect
         /// Resolves a single component connection. If connections are configured to be
         /// retrieved from Discovery service it finds a IDiscovery and resolves the connection there.
         /// </summary>
-        /// <param name="correlationId">(optional) transaction id to trace execution through call chain.</param>
+        /// <param name="context">(optional) execution context to trace execution through call chain.</param>
         /// <returns>resolved connection.</returns>
-        public async Task<ConnectionParams> ResolveAsync(string correlationId)
+        public async Task<ConnectionParams> ResolveAsync(IContext context)
         {
-            var connection = await _connectionResolver.ResolveAsync(correlationId);
-            var credential = await _credentialResolver.LookupAsync(correlationId);
-            ValidateConnection(correlationId, connection, credential);
+            var connection = await _connectionResolver.ResolveAsync(context);
+            var credential = await _credentialResolver.LookupAsync(context);
+            ValidateConnection(context, connection, credential);
             UpdateConnection(connection, credential);
             return connection;
         }
@@ -176,15 +179,15 @@ namespace PipServices4.Config.Connect
         /// Resolves all component connection. If connections are configured to be
         /// retrieved from Discovery service it finds a IDiscovery and resolves the connection there.
         /// </summary>
-        /// <param name="correlationId">(optional) transaction id to trace execution through call chain.</param>
+        /// <param name="context">(optional) execution context to trace execution through call chain.</param>
         /// <returns>resolved connections.</returns>
-        public async Task<List<ConnectionParams>> ResolveAllAsync(string correlationId)
+        public async Task<List<ConnectionParams>> ResolveAllAsync(IContext context)
         {
-            var connections = await _connectionResolver.ResolveAllAsync(correlationId);
-            var credential = await _credentialResolver.LookupAsync(correlationId);
+            var connections = await _connectionResolver.ResolveAllAsync(context);
+            var credential = await _credentialResolver.LookupAsync(context);
             foreach (var connection in connections)
             {
-                ValidateConnection(correlationId, connection, credential);
+                ValidateConnection(context, connection, credential);
                 UpdateConnection(connection, credential);
             }
 
@@ -195,14 +198,14 @@ namespace PipServices4.Config.Connect
         /// Registers the given connection in all referenced discovery services. This
         /// method can be used for dynamic service discovery.
         /// </summary>
-        /// <param name="correlationId">(optional) transaction id to trace execution through call chain.</param>
-        public async Task RegisterAsync(string correlationId)
+        /// <param name="context">(optional) execution context to trace execution through call chain.</param>
+        public async Task RegisterAsync(IContext context)
         {
-            var connection = await _connectionResolver.ResolveAsync(correlationId);
-            var credential = await _credentialResolver.LookupAsync(correlationId);
-            ValidateConnection(correlationId, connection, credential);
+            var connection = await _connectionResolver.ResolveAsync(context);
+            var credential = await _credentialResolver.LookupAsync(context);
+            ValidateConnection(context, connection, credential);
 
-            await _connectionResolver.RegisterAsync(correlationId, connection);
+            await _connectionResolver.RegisterAsync(context, connection);
         }
     }
 }

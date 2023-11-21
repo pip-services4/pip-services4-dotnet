@@ -1,4 +1,5 @@
 using PipServices4.Components.Config;
+using PipServices4.Components.Context;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -79,11 +80,11 @@ namespace PipServices4.Config.Auth
         /// <summary>
         /// Stores credential parameters into the store.
         /// </summary>
-        /// <param name="correlationId">(optional) transaction id to trace execution through call chain.</param>
+        /// <param name="context">(optional) execution context to trace execution through call chain.</param>
         /// <param name="key">a key to uniquely identify the credential parameters.</param>
         /// <param name="credential">a credential parameters to be stored.</param>
         /// <returns></returns>
-        public async Task StoreAsync(string correlationId, string key, CredentialParams credential)
+        public async Task StoreAsync(IContext context, string key, CredentialParams credential)
         {
             lock (_lock)
             {
@@ -99,10 +100,10 @@ namespace PipServices4.Config.Auth
         /// <summary>
         /// Lookups credential parameters by its key.
         /// </summary>
-        /// <param name="correlationId">(optional) transaction id to trace execution through call chain.</param>
+        /// <param name="context">(optional) execution context to trace execution through call chain.</param>
         /// <param name="key">a key to uniquely identify the credential parameters.</param>
         /// <returns>resolved credential parameters or null if nothing was found.</returns>
-        public async Task<CredentialParams> LookupAsync(string correlationId, string key)
+        public async Task<CredentialParams> LookupAsync(IContext context, string key)
         {
             CredentialParams credential = null;
 

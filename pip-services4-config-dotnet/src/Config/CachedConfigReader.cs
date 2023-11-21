@@ -1,4 +1,5 @@
 using PipServices4.Components.Config;
+using PipServices4.Components.Context;
 using PipServices4.Components.Exec;
 using System;
 
@@ -21,24 +22,24 @@ namespace PipServices4.Config.Config
             Timeout = config.GetAsLongWithDefault("timeout", Timeout);
         }
 
-        protected abstract ConfigParams PerformReadConfig(string correlationId, ConfigParams parameters);
+        protected abstract ConfigParams PerformReadConfig(IContext context, ConfigParams parameters);
 
-        public ConfigParams ReadConfig(string correlationId, ConfigParams parameters)
+        public ConfigParams ReadConfig(IContext context, ConfigParams parameters)
         {
             if (_config != null && DateTime.UtcNow.Ticks < _lastRead + TimeSpan.FromMilliseconds(Timeout).Ticks)
             {
                 return _config;
             }
 
-            _config = PerformReadConfig(correlationId, parameters);
+            _config = PerformReadConfig(context, parameters);
             _lastRead = DateTime.UtcNow.Ticks;
 
             return _config;
         }
 
-        public ConfigParams ReadConfigSection(string correlationId, ConfigParams parameters, string section)
+        public ConfigParams ReadConfigSection(IContext context, ConfigParams parameters, string section)
         {
-            var config = ReadConfig(correlationId, parameters);
+            var config = ReadConfig(context, parameters);
             return config != null ? config.GetSection(section) : null;
         }
 

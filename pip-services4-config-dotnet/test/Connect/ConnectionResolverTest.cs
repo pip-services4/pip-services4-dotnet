@@ -1,5 +1,6 @@
 using PipServices4.Commons.Errors;
 using PipServices4.Components.Config;
+using PipServices4.Components.Context;
 using PipServices4.Components.Refer;
 using PipServices4.Config.Connect;
 using System;
@@ -38,18 +39,18 @@ namespace PipServices4.Config.test.Connect
         public void TestRegister()
         {
             var connectionParams = new ConnectionParams();
-            _connectionResolver.RegisterAsync("correlationId", connectionParams).Wait();
+            _connectionResolver.RegisterAsync(Context.FromTraceId("context"), connectionParams).Wait();
             var configList = _connectionResolver.GetAll();
 
             Assert.Single(configList);
 
             connectionParams.DiscoveryKey = "Discovery key value";
-            _connectionResolver.RegisterAsync("correlationId", connectionParams).Wait();
+            _connectionResolver.RegisterAsync(Context.FromTraceId("context"), connectionParams).Wait();
             configList = _connectionResolver.GetAll();
 
             Assert.Equal(2, configList.Count());
 
-            _connectionResolver.RegisterAsync("correlationId", connectionParams).Wait();
+            _connectionResolver.RegisterAsync(Context.FromTraceId("context"), connectionParams).Wait();
             configList = _connectionResolver.GetAll();
             var configFirst = configList.FirstOrDefault();
             var configLast = configList.LastOrDefault();
@@ -64,7 +65,7 @@ namespace PipServices4.Config.test.Connect
         [Fact]
         public void TestResolve()
         {
-            var connectionParams = _connectionResolver.ResolveAsync("correlationId").Result;
+            var connectionParams = _connectionResolver.ResolveAsync(Context.FromTraceId("context")).Result;
 
             Assert.Equal("http", connectionParams.Get("protocol"));
             Assert.Equal("localhost", connectionParams.Get("host"));
@@ -81,7 +82,7 @@ namespace PipServices4.Config.test.Connect
             _connectionResolver = new ConnectionResolver(restConfigDiscovery, references);
             try
             {
-                _connectionResolver.ResolveAsync("correlationId").Wait();
+                _connectionResolver.ResolveAsync(Context.FromTraceId("context")).Wait();
             }
             catch (Exception ex)
             {

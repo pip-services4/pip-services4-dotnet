@@ -1,5 +1,6 @@
 using PipServices4.Commons.Errors;
 using PipServices4.Components.Config;
+using PipServices4.Components.Context;
 using PipServices4.Components.Refer;
 using PipServices4.Config.Auth;
 using System.Collections.Generic;
@@ -88,17 +89,17 @@ namespace PipServices4.Config.Connect
         /// <summary>
         /// Resolves connection options from connection and credential parameters.
         /// </summary>
-        /// <param name="correlationId">(optional) transaction id to trace execution through call chain.</param>
+        /// <param name="context">(optional) execution context to trace execution through call chain.</param>
         /// <returns>resolved options or throw error</returns>
-        public async Task<ConfigParams> ResolveAsync(string correlationId)
+        public async Task<ConfigParams> ResolveAsync(IContext context)
         {
-            List<ConnectionParams> connections = await _connectionResolver.ResolveAllAsync(correlationId);
+            List<ConnectionParams> connections = await _connectionResolver.ResolveAllAsync(context);
 
             // Validate if cluster (multiple connections) is supported
             if (connections.Count > 0 && !_clusterSupported)
             {
                 throw new ConfigException(
-                            correlationId,
+                            context != null ? ContextResolver.GetTraceId(context) : null,
                             "MULTIPLE_CONNECTIONS_NOT_SUPPORTED",
                             "Multiple (cluster) connections are not supported"
                         );
@@ -106,13 +107,13 @@ namespace PipServices4.Config.Connect
 
             // Validate connections
             foreach (var connection in connections)
-                ValidateConnection(correlationId, connection);
+                ValidateConnection(context, connection);
 
-            CredentialParams credential = await _credentialResolver.LookupAsync(correlationId);
+            CredentialParams credential = await _credentialResolver.LookupAsync(context);
             credential = credential != null ? credential : new CredentialParams();
 
             // Validate credential
-            ValidateCredential(correlationId, credential);
+            ValidateCredential(context, credential);
 
             var options = ComposeOptions(connections, credential, _options);
 
@@ -122,19 +123,19 @@ namespace PipServices4.Config.Connect
         /// <summary>
         /// Composes Composite connection options from connection and credential parameters.
         /// </summary>
-        /// <param name="correlationId">(optional) transaction id to trace execution through call chain.</param>
+        /// <param name="context">(optional) execution context to trace execution through call chain.</param>
         /// <param name="connections">connection parameters</param>
         /// <param name="credential">credential parameters</param>
         /// <param name="parameters">optional parameters</param>
         /// <returns>resolved options or throw error</returns>
-        public ConfigParams Compose(string correlationId, IList<ConnectionParams> connections, CredentialParams credential, ConfigParams parameters)
+        public ConfigParams Compose(IContext context, IList<ConnectionParams> connections, CredentialParams credential, ConfigParams parameters)
         {
             // Validate connection parameters
             foreach (var connection in connections)
-                ValidateConnection(correlationId, connection);
+                ValidateConnection(context, connection);
 
             // Validate credential parameters
-            ValidateCredential(correlationId, credential);
+            ValidateCredential(context, credential);
 
             var options = ComposeOptions(connections, credential, parameters);
 
@@ -146,12 +147,14 @@ namespace PipServices4.Config.Connect
         /// This method can be overriden in child classes.
         /// Throw error if validation failed.
         /// </summary>
-        /// <param name="correlationId">(optional) transaction id to trace execution through call chain.</param>
+        /// <param name="context">(optional) execution context to trace execution through call chain.</param>
         /// <param name="connection">connection parameters to be validated</param>
-        protected void ValidateConnection(string correlationId, ConnectionParams connection)
+        protected void ValidateConnection(IContext context, ConnectionParams connection)
         {
+            var traceId = context != null ? ContextResolver.GetTraceId(context) : null;
+
             if (connection == null)
-                throw new ConfigException(correlationId, "NO_CONNECTION", "Connection parameters are not set is not set");
+                throw new ConfigException(traceId, "NO_CONNECTION", "Connection parameters are not set is not set");
 
             // URI usually contains all information
             var uri = connection.Uri;
@@ -159,18 +162,18 @@ namespace PipServices4.Config.Connect
 
             var protocol = connection.GetProtocolWithDefault(_defaultProtocol);
             if (protocol == null)
-                throw new ConfigException(correlationId, "NO_PROTOCOL", "Connection protocol is not set");
+                throw new ConfigException(traceId, "NO_PROTOCOL", "Connection protocol is not set");
 
             if (_supportedProtocols != null && _supportedProtocols.IndexOf(protocol) < 0)
-                throw new ConfigException(correlationId, "UNSUPPORTED_PROTOCOL", "The protocol " + protocol + " is not supported");
+                throw new ConfigException(traceId, "UNSUPPORTED_PROTOCOL", "The protocol " + protocol + " is not supported");
 
             var host = connection.Host;
             if (host == null)
-                throw new ConfigException(correlationId, "NO_HOST", "Connection host is not set");
+                throw new ConfigException(traceId, "NO_HOST", "Connection host is not set");
 
             var port = connection.GetPortWithDefault(_defaultPort);
             if (port == 0)
-                throw new ConfigException(correlationId, "NO_PORT", "Connection port is not set");
+                throw new ConfigException(traceId, "NO_PORT", "Connection port is not set");
         }
 
         /// <summary>
@@ -178,9 +181,9 @@ namespace PipServices4.Config.Connect
         /// This method can be overriden in child classes.
         /// Throw error if validation failed.
         /// </summary>
-        /// <param name="correlationId">(optional) transaction id to trace execution through call chain.</param>
+        /// <param name="context">(optional) execution context to trace execution through call chain.</param>
         /// <param name="credential">credential parameters to be validated</param>
-        protected void ValidateCredential(string correlationId, CredentialParams credential)
+        protected void ValidateCredential(IContext context, CredentialParams credential)
         {
             return;
         }

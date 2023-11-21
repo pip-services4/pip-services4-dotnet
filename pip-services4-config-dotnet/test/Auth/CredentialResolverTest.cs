@@ -1,4 +1,5 @@
 using PipServices4.Components.Config;
+using PipServices4.Components.Context;
 using PipServices4.Components.Refer;
 using PipServices4.Config.Auth;
 using System;
@@ -33,7 +34,7 @@ namespace PipServices4.Config.test.Auth
         public void TestLookup()
         {
             var credentialResolver = new CredentialResolver();
-            var credential = credentialResolver.LookupAsync("correlationId").Result;
+            var credential = credentialResolver.LookupAsync(Context.FromTraceId("context")).Result;
             Assert.Null(credential);
 
             var restConfigWithoutStoreKey = ConfigParams.FromTuples(
@@ -42,7 +43,7 @@ namespace PipServices4.Config.test.Auth
                 "credential.access_key", "key"
             );
             credentialResolver = new CredentialResolver(restConfigWithoutStoreKey);
-            credential = credentialResolver.LookupAsync("correlationId").Result;
+            credential = credentialResolver.LookupAsync(Context.FromTraceId("context")).Result;
 
             Assert.Equal("Negrienko", credential.Get("username"));
             Assert.Equal("qwerty", credential.Get("password"));
@@ -53,7 +54,7 @@ namespace PipServices4.Config.test.Auth
             credentialResolver.SetReferences(new References());
             try
             {
-                credential = credentialResolver.LookupAsync("correlationId").Result;
+                credential = credentialResolver.LookupAsync(Context.FromTraceId("context")).Result;
             }
             catch (Exception)
             {

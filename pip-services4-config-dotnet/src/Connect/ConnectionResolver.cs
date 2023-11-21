@@ -1,5 +1,6 @@
 using PipServices4.Commons.Errors;
 using PipServices4.Components.Config;
+using PipServices4.Components.Context;
 using PipServices4.Components.Refer;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -100,7 +101,7 @@ namespace PipServices4.Config.Connect
             _connections.Add(connection);
         }
 
-        private async Task<bool> RegisterInDiscoveryAsync(string correlationId, ConnectionParams connection)
+        private async Task<bool> RegisterInDiscoveryAsync(IContext context, ConnectionParams connection)
         {
             if (!connection.UseDiscovery) return false;
 
@@ -111,7 +112,7 @@ namespace PipServices4.Config.Connect
             if (discoveries == null) return false;
 
             foreach (var discovery in discoveries)
-                await discovery.RegisterAsync(correlationId, key, connection);
+                await discovery.RegisterAsync(context, key, connection);
 
             return true;
         }
@@ -120,17 +121,17 @@ namespace PipServices4.Config.Connect
         /// Registers the given connection in all referenced discovery services. This
         /// method can be used for dynamic service discovery.
         /// </summary>
-        /// <param name="correlationId">(optional) transaction id to trace execution through call chain.</param>
+        /// <param name="context">(optional) execution context to trace execution through call chain.</param>
         /// <param name="connection">a connection to register.</param>
-        public async Task RegisterAsync(string correlationId, ConnectionParams connection)
+        public async Task RegisterAsync(IContext context, ConnectionParams connection)
         {
-            var result = await RegisterInDiscoveryAsync(correlationId, connection);
+            var result = await RegisterInDiscoveryAsync(context, connection);
 
             if (result)
                 _connections.Add(connection);
         }
 
-        private async Task<ConnectionParams> ResolveInDiscoveryAsync(string correlationId, ConnectionParams connection)
+        private async Task<ConnectionParams> ResolveInDiscoveryAsync(IContext context, ConnectionParams connection)
         {
             if (connection.UseDiscovery == false)
                 return null;
@@ -138,13 +139,15 @@ namespace PipServices4.Config.Connect
             var key = connection.DiscoveryKey;
             if (_references == null) return null;
 
+            var traceId = context != null ? ContextResolver.GetTraceId(context) : null;
+
             var discoveries = _references.GetOptional<IDiscovery>(new Descriptor("*", "discovery", "*", "*", "*"));
             if (discoveries.Count == 0)
-                throw new ConfigException(correlationId, "CANNOT_RESOLVE", "Discovery wasn't found to make resolution");
+                throw new ConfigException(traceId, "CANNOT_RESOLVE", "Discovery wasn't found to make resolution");
 
             foreach (var discovery in discoveries)
             {
-                var resolvedConnection = await discovery.ResolveOneAsync(correlationId, key);
+                var resolvedConnection = await discovery.ResolveOneAsync(context, key);
                 if (resolvedConnection != null)
                     return resolvedConnection;
             }
@@ -156,9 +159,9 @@ namespace PipServices4.Config.Connect
         /// Resolves a single component connection. If connections are configured to be
         /// retrieved from Discovery service it finds a IDiscovery and resolves the connection there.
         /// </summary>
-        /// <param name="correlationId">(optional) transaction id to trace execution through call chain.</param>
+        /// <param name="context">(optional) execution context to trace execution through call chain.</param>
         /// <returns>resolved connection parameters or null if nothing was found.</returns>
-        public async Task<ConnectionParams> ResolveAsync(string correlationId)
+        public async Task<ConnectionParams> ResolveAsync(IContext context)
         {
             if (_connections.Count == 0) return null;
 
@@ -174,7 +177,7 @@ namespace PipServices4.Config.Connect
             {
                 if (connection.UseDiscovery)
                 {
-                    var resolvedConnection = await ResolveInDiscoveryAsync(correlationId, connection);
+                    var resolvedConnection = await ResolveInDiscoveryAsync(context, connection);
                     if (resolvedConnection != null)
                     {
                         // Merge configured and new parameters
@@ -187,7 +190,7 @@ namespace PipServices4.Config.Connect
             return null;
         }
 
-        private async Task<List<ConnectionParams>> ResolveAllInDiscoveryAsync(string correlationId, ConnectionParams connection)
+        private async Task<List<ConnectionParams>> ResolveAllInDiscoveryAsync(IContext context, ConnectionParams connection)
         {
             var result = new List<ConnectionParams>();
 
@@ -199,11 +202,13 @@ namespace PipServices4.Config.Connect
 
             var discoveries = _references.GetOptional<IDiscovery>(new Descriptor("*", "discovery", "*", "*", "*"));
             if (discoveries.Count == 0)
-                throw new ConfigException(correlationId, "CANNOT_RESOLVE", "Discovery wasn't found to make resolution");
+                throw new ConfigException(
+                    context != null ? ContextResolver.GetTraceId(context) : null
+                    , "CANNOT_RESOLVE", "Discovery wasn't found to make resolution");
 
             foreach (var discovery in discoveries)
             {
-                var resolvedConnections = await discovery.ResolveAllAsync(correlationId, key);
+                var resolvedConnections = await discovery.ResolveAllAsync(context, key);
                 if (resolvedConnections != null)
                     result.AddRange(resolvedConnections);
             }
@@ -215,9 +220,9 @@ namespace PipServices4.Config.Connect
         /// Resolves all component connection. If connections are configured to be
         /// retrieved from Discovery service it finds a IDiscovery and resolves the connection there.
         /// </summary>
-        /// <param name="correlationId">(optional) transaction id to trace execution through call chain.</param>
+        /// <param name="context">(optional) execution context to trace execution through call chain.</param>
         /// <returns>a list of resolved connections.</returns>
-        public async Task<List<ConnectionParams>> ResolveAllAsync(string correlationId)
+        public async Task<List<ConnectionParams>> ResolveAllAsync(IContext context)
         {
             var resolved = new List<ConnectionParams>();
             var toResolve = new List<ConnectionParams>();
@@ -237,7 +242,7 @@ namespace PipServices4.Config.Connect
 
             foreach (var connection in toResolve)
             {
-                var resolvedConnections = await ResolveAllInDiscoveryAsync(correlationId, connection);
+                var resolvedConnections = await ResolveAllInDiscoveryAsync(context, connection);
 
                 foreach (var resolvedConnection in resolvedConnections)
                 {

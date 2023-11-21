@@ -1,4 +1,5 @@
 using PipServices4.Components.Config;
+using PipServices4.Components.Context;
 using PipServices4.Components.Refer;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -97,23 +98,25 @@ namespace PipServices4.Config.Auth
             _credentials.Add(connection);
         }
 
-        private async Task<CredentialParams> LookupInStoresAsync(string correlationId, CredentialParams credential)
+        private async Task<CredentialParams> LookupInStoresAsync(IContext context, CredentialParams credential)
         {
             if (credential.UseCredentialStore == false) return null;
 
             var key = credential.StoreKey;
             if (_references == null) return null;
 
+            var traceId = context != null ? ContextResolver.GetTraceId(context) : null;
+
             var components = _references.GetOptional(new Descriptor("*", "credential_store", "*", "*", "*"));
             if (components.Count == 0)
-                throw new ReferenceException(correlationId, "Credential store wasn't found to make lookup");
+                throw new ReferenceException(traceId, "Credential store wasn't found to make lookup");
 
             foreach (var component in components)
             {
                 var store = component as ICredentialStore;
                 if (store != null)
                 {
-                    var resolvedCredential = await store.LookupAsync(correlationId, key);
+                    var resolvedCredential = await store.LookupAsync(context, key);
                     if (resolvedCredential != null)
                         return resolvedCredential;
                 }
@@ -127,9 +130,9 @@ namespace PipServices4.Config.Auth
         /// retrieved from Credential store it finds a ICredentialStore and lookups
         /// credentials there.
         /// </summary>
-        /// <param name="correlationId">(optional) transaction id to trace execution through call chain.</param>
+        /// <param name="context">(optional) execution context to trace execution through call chain.</param>
         /// <returns>resolved credential parameters or null if nothing was found.</returns>
-        public async Task<CredentialParams> LookupAsync(string correlationId)
+        public async Task<CredentialParams> LookupAsync(IContext context)
         {
             if (_credentials.Count == 0) return null;
 
@@ -145,7 +148,7 @@ namespace PipServices4.Config.Auth
             {
                 if (credential.UseCredentialStore)
                 {
-                    var resolvedConnection = await LookupInStoresAsync(correlationId, credential);
+                    var resolvedConnection = await LookupInStoresAsync(context, credential);
                     if (resolvedConnection != null)
                         return resolvedConnection;
                 }
