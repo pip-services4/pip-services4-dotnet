@@ -321,7 +321,7 @@ namespace PipServices4.Sqlserver.Persistence
         /// <summary>
         /// Opens the component.
         /// </summary>
-        /// <param name="correlationId">(optional) transaction id to trace execution through call chain.</param>
+        /// <param name="context">(optional) execution context to trace execution through call chain.</param>
         public virtual async Task OpenAsync(IContext context)
         {
             if (IsOpen()) return;
@@ -354,7 +354,7 @@ namespace PipServices4.Sqlserver.Persistence
         /// <summary>
         /// Closes component and frees used resources.
         /// </summary>
-        /// <param name="correlationId">(optional) transaction id to trace execution through call chain.</param>
+        /// <param name="context">(optional) execution context to trace execution through call chain.</param>
         public virtual async Task CloseAsync(IContext context)
         {
             if (IsOpen())
@@ -373,7 +373,7 @@ namespace PipServices4.Sqlserver.Persistence
         /// <summary>
         /// Clears component state.
         /// </summary>
-        /// <param name="correlationId">(optional) transaction id to trace execution through call chain.</param>
+        /// <param name="context">(optional) execution context to trace execution through call chain.</param>
         public virtual async Task ClearAsync(IContext context)
         {
             // Return error if collection is not set
@@ -512,7 +512,7 @@ namespace PipServices4.Sqlserver.Persistence
         /// This method shall be called by a public getPageByFilter method from child
         /// class that receives FilterParams and converts them into a filter function.
         /// </summary>
-        /// <param name="correlationId">(optional) transaction id to trace execution through call chain.</param>
+        /// <param name="context">(optional) execution context to trace execution through call chain.</param>
         /// <param name="filterDefinition">(optional) a filter JSON object</param>
         /// <param name="paging">(optional) paging parameters</param>
         /// <param name="sortDefinition">(optional) sorting JSON object</param>
@@ -559,7 +559,7 @@ namespace PipServices4.Sqlserver.Persistence
         /// This method shall be called by a public getCountByFilter method from child class that
         /// receives FilterParams and converts them into a filter function.
         /// </summary>
-        /// <param name="correlationId">(optional) transaction id to trace execution through call chain.</param>
+        /// <param name="context">(optional) execution context to trace execution through call chain.</param>
         /// <param name="filter">(optional) a filter JSON object</param>
         /// <returns></returns>
         protected virtual async Task<long> GetCountByFilterAsync(IContext context, string filter)
@@ -582,7 +582,7 @@ namespace PipServices4.Sqlserver.Persistence
         /// This method shall be called by a public getListByFilter method from child class that
         /// receives FilterParams and converts them into a filter function.
         /// </summary>
-        /// <param name="correlationId">(optional) transaction id to trace execution through call chain.</param>
+        /// <param name="context">(optional) execution context to trace execution through call chain.</param>
         /// <param name="filter">(optional) a filter JSON object</param>
         /// <param name="sort">(optional) sorting JSON object</param>
         /// <param name="select">(optional) projection JSON object</param>
@@ -614,7 +614,7 @@ namespace PipServices4.Sqlserver.Persistence
         /// This method shall be called by a public getOneRandom method from child class
         /// that receives FilterParams and converts them into a filter function.
         /// </summary>
-        /// <param name="correlationId">(optional) transaction id to trace execution through call chain.</param>
+        /// <param name="context">(optional) execution context to trace execution through call chain.</param>
         /// <param name="filterDefinition">(optional) a filter JSON object</param>
         /// <returns>a random item by filter.</returns>
         protected virtual async Task<T> GetOneRandomAsync(IContext context, string filter)
@@ -651,7 +651,7 @@ namespace PipServices4.Sqlserver.Persistence
         /// <summary>
         /// Creates a data item.
         /// </summary>
-        /// <param name="correlationId">(optional) transaction id to trace execution through call chain.</param>
+        /// <param name="context">(optional) execution context to trace execution through call chain.</param>
         /// <param name="item">an item to be created.</param>
         /// <returns>created item.</returns>
         public virtual async Task<T> CreateAsync(IContext context, T item)
@@ -683,7 +683,7 @@ namespace PipServices4.Sqlserver.Persistence
         /// This method shall be called by a public deleteByFilter method from child
         /// class that receives FilterParams and converts them into a filter function.
         /// </summary>
-        /// <param name="correlationId">(optional) transaction id to trace execution through call chain.</param>
+        /// <param name="context">(optional) execution context to trace execution through call chain.</param>
         /// <param name="filterDefinition">(optional) a filter JSON object.</param>
         public virtual async Task DeleteByFilterAsync(IContext context, string filter)
         {

@@ -56,7 +56,7 @@ namespace PipServices4.Sqlserver.Persistence
         ///// <summary>
         ///// Updates only few selected fields in a data item.
         ///// </summary>
-        ///// <param name="correlationId">(optional) transaction id to trace execution through call chain.</param>
+        ///// <param name="context">(optional) execution context to trace execution through call chain.</param>
         ///// <param name="id">an id of data item to be updated.</param>
         ///// <param name="data">a map with fields to be updated.</param>
         ///// <returns>updated item</returns>

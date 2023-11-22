@@ -6,7 +6,7 @@
     <RootNamespace>PipServices4.SqlServer</RootNamespace>
     <ApplicationIcon />
     <Win32Resource />
-    <Version>0.0.1</Version>
+    <Version>0.0.2</Version>
     <Authors>Sergey Seroukhov, Denis Kuznetsov, Serhii Khoroshykh, Aleksey Dvoykin</Authors>
     <Copyright>Conceptual Vision Consulting LLC. 2017-2023</Copyright>
     <Description>SqlServer components for Pip.Services in .NET</Description>

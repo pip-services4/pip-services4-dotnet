@@ -145,7 +145,7 @@ namespace PipServices4.Sqlserver.Connect
         /// <summary>
         /// Resolves SqlServer connection string from connection and credential parameters.
         /// </summary>
-        /// <param name="correlationId">(optional) transaction id to trace execution through call chain.</param>
+        /// <param name="context">(optional) execution context to trace execution through call chain.</param>
         /// <returns>resolved connection string.</returns>
         public async Task<string> ResolveAsync(IContext context)
         {

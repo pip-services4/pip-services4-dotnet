@@ -78,7 +78,7 @@ namespace PipServices4.Sqlserver.Persistence
     ///     
     ///     public GetPageByFilter(IContext context, FilterParams filter, PagingParams paging)
     ///     {
-    ///         base.GetPageByFilter(correlationId, this.ComposeFilter(filter), paging, null, null);
+    ///         base.GetPageByFilter(context, this.ComposeFilter(filter), paging, null, null);
     ///     }
     /// }
     /// 
@@ -114,7 +114,7 @@ namespace PipServices4.Sqlserver.Persistence
         /// <summary>
         /// Gets a list of data items retrieved by given unique ids.
         /// </summary>
-        /// <param name="correlationId">(optional) transaction id to trace execution through call chain.</param>
+        /// <param name="context">(optional) execution context to trace execution through call chain.</param>
         /// <param name="ids">ids of data items to be retrieved</param>
         /// <returns>a data list of results by ids.</returns>
         public virtual async Task<List<T>> GetListByIdsAsync(IContext context, K[] ids)
@@ -132,7 +132,7 @@ namespace PipServices4.Sqlserver.Persistence
         /// <summary>
         /// Gets a data item by its unique id.
         /// </summary>
-        /// <param name="correlationId">(optional) transaction id to trace execution through call chain.</param>
+        /// <param name="context">(optional) execution context to trace execution through call chain.</param>
         /// <param name="id">an id of data item to be retrieved.</param>
         /// <returns>a data item by id.</returns>
         public virtual async Task<T> GetOneByIdAsync(IContext context, K id)
@@ -158,7 +158,7 @@ namespace PipServices4.Sqlserver.Persistence
         /// <summary>
         /// Creates a data item.
         /// </summary>
-        /// <param name="correlationId">(optional) transaction id to trace execution through call chain.</param>
+        /// <param name="context">(optional) execution context to trace execution through call chain.</param>
         /// <param name="item">an item to be created.</param>
         /// <returns>created item.</returns>
         public override async Task<T> CreateAsync(IContext context, T item)
@@ -172,7 +172,7 @@ namespace PipServices4.Sqlserver.Persistence
         /// <summary>
         /// Sets a data item. If the data item exists it updates it, otherwise it create a new data item.
         /// </summary>
-        /// <param name="correlationId">(optional) transaction id to trace execution through call chain.</param>
+        /// <param name="context">(optional) execution context to trace execution through call chain.</param>
         /// <param name="item">an item to be set.</param>
         /// <returns>updated item.</returns>
         public virtual async Task<T> SetAsync(IContext context, T item)
@@ -217,7 +217,7 @@ namespace PipServices4.Sqlserver.Persistence
         /// <summary>
         /// Updates a data item.
         /// </summary>
-        /// <param name="correlationId">(optional) transaction id to trace execution through call chain.</param>
+        /// <param name="context">(optional) execution context to trace execution through call chain.</param>
         /// <param name="item">an item to be updated.</param>
         /// <returns>updated item.</returns>
         public virtual async Task<T> UpdateAsync(IContext context, T item)
@@ -244,7 +244,7 @@ namespace PipServices4.Sqlserver.Persistence
         /// <summary>
         /// Updates only few selected fields in a data item.
         /// </summary>
-        /// <param name="correlationId">(optional) transaction id to trace execution through call chain.</param>
+        /// <param name="context">(optional) execution context to trace execution through call chain.</param>
         /// <param name="id">an id of data item to be updated.</param>
         /// <param name="data">a map with fields to be updated.</param>
         /// <returns>updated item</returns>
@@ -272,7 +272,7 @@ namespace PipServices4.Sqlserver.Persistence
         /// <summary>
         /// Deleted a data item by it's unique id.
         /// </summary>
-        /// <param name="correlationId">(optional) transaction id to trace execution through call chain.</param>
+        /// <param name="context">(optional) execution context to trace execution through call chain.</param>
         /// <param name="id">an id of the item to be deleted</param>
         /// <returns>deleted item.</returns>
         public virtual async Task<T> DeleteByIdAsync(IContext context, K id)
@@ -292,7 +292,7 @@ namespace PipServices4.Sqlserver.Persistence
         /// <summary>
         /// Deletes multiple data items by their unique ids.
         /// </summary>
-        /// <param name="correlationId">(optional) transaction id to trace execution through call chain.</param>
+        /// <param name="context">(optional) execution context to trace execution through call chain.</param>
         /// <param name="ids">ids of data items to be deleted.</param>
         public virtual async Task DeleteByIdsAsync(IContext context, K[] ids)
         {
