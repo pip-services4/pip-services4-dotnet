@@ -1,0 +1,14 @@
+{
+  "name": "pip-services4-mongodb-dotnet",
+  "type": "module",
+  "language": "dotnet",
+  "registry": "pipservices",
+  "version": "0.0.1",
+  "build": 0,
+  "artifacts": [
+    {
+      "name": "<name>",
+      "type": "nuget"
+    }
+  ]
+}
