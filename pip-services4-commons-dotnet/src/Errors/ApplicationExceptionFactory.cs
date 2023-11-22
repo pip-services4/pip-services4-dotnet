@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 
 namespace PipServices4.Commons.Errors
 {
@@ -43,6 +43,8 @@ namespace PipServices4.Commons.Errors
                 error = new NotFoundException(description.TraceId, description.Code, description.Message);
             else if (description.Category == ErrorCategory.Unsupported)
                 error = new UnsupportedException(description.TraceId, description.Code, description.Message);
+            else if (description.Category == ErrorCategory.TooManyRequests)
+                error = new TooManyRequestsException(description.TraceId, description.Code, description.Message);
             else
             {
                 error = new UnknownException(description.TraceId, description.Code, description.Message)

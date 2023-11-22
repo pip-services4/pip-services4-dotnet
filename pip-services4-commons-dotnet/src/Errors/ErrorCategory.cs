@@ -1,4 +1,4 @@
-namespace PipServices4.Commons.Errors
+﻿namespace PipServices4.Commons.Errors
 {
     /// <summary>
     /// Defines standard error categories to application exceptions supported by PipServices toolkit.
@@ -67,5 +67,10 @@ namespace PipServices4.Commons.Errors
         /// Errors caused by calls to unsupported or not yet implemented functionality.
         /// </summary>
         public const string Unsupported = "Unsupported";
+
+        /// <summary>
+        /// Errors caused by too many requests.
+        /// </summary>
+        public const string TooManyRequests = "TooManyRequests";
     }
 }
