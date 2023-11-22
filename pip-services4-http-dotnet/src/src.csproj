@@ -1,0 +1,34 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFrameworks>netstandard2.0;netstandard2.1;net6.0</TargetFrameworks>
+    <RootNamespace>PipServices4.Http</RootNamespace>
+    <AssemblyName>PipServices4.Http</AssemblyName>
+    <ApplicationIcon />
+    <Win32Resource />
+    <Version>0.0.1</Version>
+    <Authors>Sergey Seroukhov, Volodymyr Tkachenko, Alex Mazur, Danyil Tretiakov</Authors>
+    <Copyright>Conceptual Vision Consulting LLC. 2017-2023</Copyright>
+    <Description>Http components for Pip.Services in .NET</Description>
+    <Company>Conceptual Vision Consulting LLC.</Company>
+    <Product>PipServices4.Http</Product>
+    <PackageLicenseUrl>http://opensource.org/licenses/MIT</PackageLicenseUrl>
+    <PackageProjectUrl>https://github.com/pip-services4-dotnet/pip-services4-persistence-dotnet</PackageProjectUrl>
+    <PackageIconUrl>https://raw.githubusercontent.com/pip-services/pip-services/master/design/Icon.png</PackageIconUrl>
+    <PackageTags>PipServices V4 microservices toolkit</PackageTags>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <UserSecretsId>1f4abc75-6631-4d3e-b951-85b8f3b592ed</UserSecretsId>
+  </PropertyGroup>
+
+  <ItemGroup>
+	<PackageReference Include="Microsoft.AspNetCore.Cors" Version="2.2.0" />
+	<PackageReference Include="Microsoft.AspNetCore.ResponseCompression" Version="2.2.0" />
+	<PackageReference Include="Microsoft.AspNetCore" Version="2.2.0" />
+	<PackageReference Include="PipServices4.Commons" Version="0.0.3" />
+    <PackageReference Include="PipServices4.Components" Version="0.0.3" />
+    <PackageReference Include="PipServices4.Config" Version="0.0.2" />
+    <PackageReference Include="PipServices4.Data" Version="0.0.3" />
+    <PackageReference Include="PipServices4.Observability" Version="0.0.2" />
+    <PackageReference Include="PipServices4.Rpc" Version="0.0.1" />
+  </ItemGroup>
+</Project>
