@@ -1,5 +1,6 @@
 using System.Threading.Tasks;
 using PipServices4.Commons.Data;
+using PipServices4.Components.Context;
 
 namespace PipServices4.Persistence.Write
 {
@@ -13,10 +14,10 @@ namespace PipServices4.Persistence.Write
         /// <summary>
         /// Updates only few selected fields in a data item.
         /// </summary>
-        /// <param name="correlation_id">(optional) transaction id to trace execution through call chain.</param>
+        /// <param name="context">(optional) execution context to trace execution through call chain.</param>
         /// <param name="id">an id of data item to be updated.</param>
         /// <param name="data">a map with fields to be updated.</param>
         /// <returns>updated item.</returns>
-        Task<T> UpdatePartially(string correlation_id, K id, AnyValueMap data);
+        Task<T> UpdatePartially(IContext context, K id, AnyValueMap data);
     }
 }
