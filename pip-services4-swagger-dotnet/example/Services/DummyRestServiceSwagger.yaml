@@ -1,0 +1,281 @@
+﻿openapi: '3.1.0'
+info:
+  title: 'Dummy'
+  description: 'Dummy microservice (OpenApiSpecFromResource)'
+  version: '1'
+paths:
+  /dummy/get_dummies:
+    post:
+      tags:
+        - dummy
+      operationId: 'get_dummies'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              properties:
+                correlation_id:
+                  type: 'string'
+                filter:
+                  type: 'object'
+                paging:
+                  type: 'object'
+                  properties:
+                    skip:
+                      type: 'integer'
+                      format: 'int64'
+                    take:
+                      type: 'integer'
+                      format: 'int64'
+                    total:
+                      type: 'boolean'
+      responses:
+        200:
+          description: 'Successful response'
+          content:
+            application/json:
+              schema:
+                type: 'object'
+  /dummy/get_dummy_by_id:
+    post:
+      tags:
+        - dummy
+      operationId: 'get_dummy_by_id'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              properties:
+                dummy_id:
+                  type: 'string'
+              required:
+                - dummy_id
+      responses:
+        200:
+          description: 'Successful response'
+          content:
+            application/json:
+              schema:
+                type: 'object'
+  /dummy/create_dummy:
+    post:
+      tags:
+        - dummy
+      operationId: 'create_dummy'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              properties:
+                dummy:
+                  type: 'object'
+                  properties:
+                    id:
+                      type: 'string'
+                    key:
+                      type: 'string'
+                    content:
+                      type: 'string'
+                    flag:
+                      type: 'boolean'
+                    param:
+                      type: 'object'
+                      properties:
+                        name:
+                          type: 'string'
+                        value:
+                          type: 'number'
+                          format: 'double'
+                    items:
+                      type: 'array'
+                      items:
+                        type: 'object'
+                        properties:
+                          name:
+                            type: 'string'
+                          count:
+                            type: 'integer'
+                            format: 'int32'
+                    tags:
+                      type: 'array'
+                      items:
+                        type: 'string'
+                    date:
+                      type: 'string'
+                      format: 'date-time'
+              required:
+                - dummy
+      responses:
+        200:
+          description: 'Successful response'
+          content:
+            application/json:
+              schema:
+                type: 'object'
+  /dummy/update_dummy:
+    post:
+      tags:
+        - dummy
+      operationId: 'update_dummy'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              properties:
+                dummy:
+                  type: 'object'
+                  properties:
+                    id:
+                      type: 'string'
+                    key:
+                      type: 'string'
+                    content:
+                      type: 'string'
+                    flag:
+                      type: 'boolean'
+                    param:
+                      type: 'object'
+                      properties:
+                        name:
+                          type: 'string'
+                        value:
+                          type: 'number'
+                          format: 'double'
+                    items:
+                      type: 'array'
+                      items:
+                        type: 'object'
+                        properties:
+                          name:
+                            type: 'string'
+                          count:
+                            type: 'integer'
+                            format: 'int32'
+                    tags:
+                      type: 'array'
+                      items:
+                        type: 'string'
+                    date:
+                      type: 'string'
+                      format: 'date-time'
+              required:
+                - dummy
+      responses:
+        200:
+          description: 'Successful response'
+          content:
+            application/json:
+              schema:
+                type: 'object'
+  /dummy/delete_dummy:
+    post:
+      tags:
+        - dummy
+      operationId: 'delete_dummy'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              properties:
+                dummy_id:
+                  type: 'string'
+              required:
+                - dummy_id
+      responses:
+        200:
+          description: 'Successful response'
+          content:
+            application/json:
+              schema:
+                type: 'object'
+  /dummy/create_dummy_without_validation:
+    post:
+      tags:
+        - dummy
+      operationId: 'create_dummy_without_validation'
+      responses:
+        200:
+          description: 'Successful response'
+          content:
+            application/json:
+              schema:
+                type: 'object'
+  /dummy/raise_commandset_error:
+    post:
+      tags:
+        - dummy
+      operationId: 'raise_commandset_error'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              properties:
+                dummy:
+                  type: 'object'
+                  properties:
+                    id:
+                      type: 'string'
+                    key:
+                      type: 'string'
+                    content:
+                      type: 'string'
+                    flag:
+                      type: 'boolean'
+                    param:
+                      type: 'object'
+                      properties:
+                        name:
+                          type: 'string'
+                        value:
+                          type: 'number'
+                          format: 'double'
+                    items:
+                      type: 'array'
+                      items:
+                        type: 'object'
+                        properties:
+                          name:
+                            type: 'string'
+                          count:
+                            type: 'integer'
+                            format: 'int32'
+                    tags:
+                      type: 'array'
+                      items:
+                        type: 'string'
+                    date:
+                      type: 'string'
+                      format: 'date-time'
+              required:
+                - dummy
+      responses:
+        200:
+          description: 'Successful response'
+          content:
+            application/json:
+              schema:
+                type: 'object'
+  /dummy/raise_exception:
+    post:
+      tags:
+        - dummy
+      operationId: 'raise_exception'
+      responses:
+        200:
+          description: 'Successful response'
+          content:
+            application/json:
+              schema:
+                type: 'object'
+  /dummy/ping_dummy:
+    post:
+      tags:
+        - dummy
+      operationId: 'ping_dummy'
+      responses:
+        200:
+          description: 'Successful response'
+          content:
+            application/json:
+              schema:
+                type: 'object'
