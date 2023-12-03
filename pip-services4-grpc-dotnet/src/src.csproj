@@ -1,0 +1,47 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFrameworks>netstandard2.0;netstandard2.1;net6.0</TargetFrameworks>
+    <RootNamespace>PipServices4.Grpc</RootNamespace>
+    <AssemblyName>PipServices4.Grpc</AssemblyName>
+    <ApplicationIcon />
+    <Win32Resource />
+    <Version>0.0.1</Version>
+    <Authors>Sergey Seroukhov, Denis Kuznetsov</Authors>
+    <Copyright>Conceptual Vision Consulting LLC. 2017-2023</Copyright>
+    <Description>gRPC remote procedure calls for Pip.Services in .NET</Description>
+    <Company>Conceptual Vision Consulting LLC.</Company>
+    <Product>PipServices4.Grpc</Product>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <PackageProjectUrl>https://github.com/pip-services4-dotnet/pip-services4-grpc-dotnet</PackageProjectUrl>
+    <PackageIconUrl>https://raw.githubusercontent.com/pip-services/pip-services/master/design/Icon.png</PackageIconUrl>
+    <PackageTags>PipServices V4 microservices toolkit</PackageTags>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+  </PropertyGroup>
+
+  <!--<ItemGroup>
+    <None Remove="Protos\commandable.proto" />
+    <None Remove="Protos\Commandable.cs" />
+    <None Remove="Protos\CommandableGrpc.cs" />
+  </ItemGroup>-->
+
+  <ItemGroup>
+    <PackageReference Include="Google.Protobuf" Version="3.13.0" />
+    <PackageReference Include="Grpc" Version="2.33.1" />
+    <PackageReference Include="Grpc.Tools" Version="2.33.1">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+		<PackageReference Include="Grpc.Core" Version="2.33.1" />
+    <PackageReference Include="Microsoft.AspNetCore.Cors" Version="2.2.0" />
+    <PackageReference Include="Microsoft.AspNetCore.ResponseCompression" Version="2.2.0" />
+    <PackageReference Include="PipServices4.Commons" Version="0.0.4" />
+    <PackageReference Include="PipServices4.Components" Version="0.0.3" />
+	  <PackageReference Include="PipServices4.Http" Version="0.0.1" />
+	  <PackageReference Include="PipServices4.Data" Version="0.0.3" />
+  </ItemGroup>
+
+  <!--<ItemGroup>
+    <Protobuf Include="Protos\commandable.proto" OutputDir="%(RelativeDir)\.." />
+  </ItemGroup>-->
+</Project>
