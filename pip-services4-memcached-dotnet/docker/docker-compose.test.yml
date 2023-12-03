@@ -1,0 +1,13 @@
+version: '3.3'
+
+services:
+  test:
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile.test
+    image: ${IMAGE:-pipdevs/test}
+    environment:
+      - MEMCACHED_SERVICE_HOST=memcached
+
+  memcached:
+    image: 'bitnami/memcached:latest'

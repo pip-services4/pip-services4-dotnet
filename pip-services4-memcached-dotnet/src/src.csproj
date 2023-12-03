@@ -1,0 +1,39 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFrameworks>netstandard2.0;netstandard2.1;net6.0</TargetFrameworks>
+    <AssemblyName>PipServices4.Memcached</AssemblyName>
+    <RootNamespace>PipServices4.Memcached</RootNamespace>
+    <ApplicationIcon />
+    <Win32Resource />
+    <Version>0.0.1</Version>
+    <Authors>Sergey Seroukhov, Alex Mazur, Danyil Tretiakov</Authors>
+    <Copyright>Conceptual Vision Consulting LLC. 2017-2020</Copyright>
+    <Description>Memcached components for Pip.Services in .NET</Description>
+    <Company>Conceptual Vision Consulting LLC.</Company>
+    <Product>PipServices4.Memcached</Product>
+    <PackageLicenseUrl>http://opensource.org/licenses/MIT</PackageLicenseUrl>
+    <PackageProjectUrl>https://github.com/pip-services4-dotnet/pip-services4-memcached-dotnet</PackageProjectUrl>
+    <PackageIconUrl>https://raw.githubusercontent.com/pip-services/pip-services/master/design/Icon.png</PackageIconUrl>
+    <PackageTags>PipServices V4 microservices toolkit</PackageTags>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+  </PropertyGroup>
+
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <DebugSymbols>true</DebugSymbols>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <DebugType>full</DebugType>
+    <DebugSymbols>true</DebugSymbols>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="VIEApps.Enyim.Caching" Version="2.0.2012.4" />
+    <PackageReference Include="PipServices4.Commons" Version="0.0.2" />
+    <PackageReference Include="PipServices4.Components" Version="0.0.3" />
+	<PackageReference Include="PipServices4.Config" Version="0.0.2" />
+	<PackageReference Include="PipServices4.Logic" Version="0.0.3" />
+    <PackageReference Include="PipServices4.Data" Version="0.0.3" />
+  </ItemGroup>
+</Project>
