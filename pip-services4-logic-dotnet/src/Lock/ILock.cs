@@ -1,3 +1,5 @@
+using PipServices4.Components.Context;
+
 namespace PipServices4.Logic.Lock
 {
 	/// <summary>
@@ -11,26 +13,26 @@ namespace PipServices4.Logic.Lock
 		/// Makes a single attempt to acquire a lock by its key.
 		/// It returns immediately a positive or negative result.
 		/// </summary>
-		/// <param name="correlationId">(optional) transaction id to trace execution through call chain.</param>
+		/// <param name="context">(optional) execution context to trace execution through call chain.</param>
 		/// <param name="key">a unique lock key to acquire.</param>
 		/// <param name="ttl">a lock timeout (time to live) in milliseconds.</param>
 		/// <returns>a lock result</returns>
-		bool TryAcquireLock(string correlationId, string key, long ttl);
+		bool TryAcquireLock(IContext context, string key, long ttl);
 
 		/// <summary>
 		/// Makes multiple attempts to acquire a lock by its key within give time interval.
 		/// </summary>
-		/// <param name="correlationId">(optional) transaction id to trace execution through call chain.</param>
+		/// <param name="context">(optional) execution context to trace execution through call chain.</param>
 		/// <param name="key">a unique lock key to acquire.</param>
 		/// <param name="ttl">a lock timeout (time to live) in milliseconds.</param>
 		/// <param name="timeout">a lock acquisition timeout.</param>
-		void AcquireLock(string correlationId, string key, long ttl, long timeout);
+		void AcquireLock(IContext context, string key, long ttl, long timeout);
 
 		/// <summary>
 		/// Releases prevously acquired lock by its key.
 		/// </summary>
-		/// <param name="correlationId">(optional) transaction id to trace execution through call chain.</param>
+		/// <param name="context">(optional) execution context to trace execution through call chain.</param>
 		/// <param name="key">a unique lock key to acquire.</param>
-		void ReleaseLock(string correlationId, string key);
+		void ReleaseLock(IContext context, string key);
 	}
 }

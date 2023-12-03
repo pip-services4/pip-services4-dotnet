@@ -1,3 +1,4 @@
+using PipServices4.Components.Context;
 using System;
 using System.Collections.Generic;
 
@@ -35,11 +36,11 @@ namespace PipServices4.Logic.Lock
 		/// Makes a single attempt to acquire a lock by its key.
 		/// It returns immediately a positive or negative result.
 		/// </summary>
-		/// <param name="correlationId">(optional) transaction id to trace execution through call chain.</param>
+		/// <param name="context">(optional) execution context to trace execution through call chain.</param>
 		/// <param name="key">a unique lock key to acquire.</param>
 		/// <param name="ttl">a lock timeout (time to live) in milliseconds.</param>
 		/// <returns>a lock result</returns>
-		public override bool TryAcquireLock(string correlationId, string key, long ttl)
+		public override bool TryAcquireLock(IContext context, string key, long ttl)
 		{
 			var now = DateTime.UtcNow.Ticks;
 
@@ -62,9 +63,9 @@ namespace PipServices4.Logic.Lock
 		/// <summary>
 		/// Releases prevously acquired lock by its key.
 		/// </summary>
-		/// <param name="correlationId">(optional) transaction id to trace execution through call chain.</param>
+		/// <param name="context">(optional) execution context to trace execution through call chain.</param>
 		/// <param name="key">a unique lock key to acquire.</param>
-		public override void ReleaseLock(string correlationId, string key)
+		public override void ReleaseLock(IContext context, string key)
 		{
 			lock (_locks)
 			{

@@ -1,4 +1,5 @@
 using PipServices4.Components.Config;
+using PipServices4.Components.Context;
 using PipServices4.Components.Refer;
 using PipServices4.Components.Run;
 using System.Threading.Tasks;
@@ -41,8 +42,8 @@ namespace PipServices4.Logic.Cache
 		/// <summary>
 		/// Closes component, disconnects it from services, disposes resources
 		/// </summary>
-		/// <param name="correlationId">a unique transaction id to trace calls across components</param>
-		public virtual Task CloseAsync(string correlationId)
+		/// <param name="context">a unique transaction id to trace calls across components</param>
+		public virtual Task CloseAsync(IContext context)
 		{
 			return Task.Delay(0);
 		}
@@ -58,8 +59,8 @@ namespace PipServices4.Logic.Cache
 		/// <summary>
 		/// Opens component, establishes connections to services
 		/// </summary>
-		/// <param name="correlationId">a unique transaction id to trace calls across components</param>
-		public virtual Task OpenAsync(string correlationId)
+		/// <param name="context">a unique transaction id to trace calls across components</param>
+		public virtual Task OpenAsync(IContext context)
 		{
 			return Task.Delay(0);
 		}
@@ -67,32 +68,32 @@ namespace PipServices4.Logic.Cache
 		/// <summary>
 		/// Removes an object from cache.
 		/// </summary>
-		/// <param name="correlationId"></param>
+		/// <param name="context"></param>
 		/// <param name="key">Unique key identifying the object.</param>
-		public abstract Task RemoveAsync(string correlationId, string key);
+		public abstract Task RemoveAsync(IContext context, string key);
 
 		/// <summary>
 		/// Retrieves a value from cache by unique key.
 		/// </summary>
 		/// <typeparam name="T"></typeparam>
-		/// <param name="correlationId"></param>
+		/// <param name="context"></param>
 		/// <param name="key">Unique key identifying a data object.</param>
 		/// <returns>
 		/// Cached value or null if the value is not found.
 		/// </returns>
-		public abstract Task<T> RetrieveAsync<T>(string correlationId, string key);
+		public abstract Task<T> RetrieveAsync<T>(IContext context, string key);
 
 		/// <summary>
 		/// Stores an object identified by a unique key in cache.
 		/// </summary>
 		/// <typeparam name="T"></typeparam>
-		/// <param name="correlationId"></param>
+		/// <param name="context"></param>
 		/// <param name="key">Unique key identifying a data object.</param>
 		/// <param name="value">The data object to store.</param>
 		/// <param name="timeout">Time to live for the object in milliseconds.</param>
 		/// <returns>
 		/// Cached value or null if the value is not stored.
 		/// </returns>
-		public abstract Task<T> StoreAsync<T>(string correlationId, string key, T value, long timeout);
+		public abstract Task<T> StoreAsync<T>(IContext context, string key, T value, long timeout);
 	}
 }

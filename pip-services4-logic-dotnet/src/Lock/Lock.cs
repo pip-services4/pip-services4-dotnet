@@ -1,5 +1,6 @@
 using PipServices4.Commons.Errors;
 using PipServices4.Components.Config;
+using PipServices4.Components.Context;
 using System;
 using System.Threading;
 
@@ -29,27 +30,27 @@ namespace PipServices4.Logic.Lock
 		/// Makes a single attempt to acquire a lock by its key.
 		/// It returns immediately a positive or negative result.
 		/// </summary>
-		/// <param name="correlationId">(optional) transaction id to trace execution through call chain.</param>
+		/// <param name="context">(optional) execution context to trace execution through call chain.</param>
 		/// <param name="key">a unique lock key to acquire.</param>
 		/// <param name="ttl">a lock timeout (time to live) in milliseconds.</param>
 		/// <returns>a lock result</returns>
-		public abstract bool TryAcquireLock(string correlationId, string key, long ttl);
+		public abstract bool TryAcquireLock(IContext context, string key, long ttl);
 
 		/// <summary>
 		/// Releases prevously acquired lock by its key.
 		/// </summary>
-		/// <param name="correlationId">(optional) transaction id to trace execution through call chain.</param>
+		/// <param name="context">(optional) execution context to trace execution through call chain.</param>
 		/// <param name="key">a unique lock key to acquire.</param>
-		public abstract void ReleaseLock(string correlationId, string key);
+		public abstract void ReleaseLock(IContext context, string key);
 
 		/// <summary>
 		/// Makes multiple attempts to acquire a lock by its key within give time interval.
 		/// </summary>
-		/// <param name="correlationId">(optional) transaction id to trace execution through call chain.</param>
+		/// <param name="context">(optional) execution context to trace execution through call chain.</param>
 		/// <param name="key">a unique lock key to acquire.</param>
 		/// <param name="ttl">a lock timeout (time to live) in milliseconds.</param>
 		/// <param name="timeout">a lock acquisition timeout.</param>
-		public void AcquireLock(string correlationId, string key, long ttl, long timeout)
+		public void AcquireLock(IContext context, string key, long ttl, long timeout)
 		{
 			var expireTime = DateTime.UtcNow.Ticks + TimeSpan.FromMilliseconds(timeout).Ticks;
 
@@ -57,7 +58,7 @@ namespace PipServices4.Logic.Lock
 			do
 			{
 				// Try to get lock first
-				if (TryAcquireLock(correlationId, key, ttl))
+				if (TryAcquireLock(context, key, ttl))
 					return;
 
 				// Sleep 
@@ -67,7 +68,7 @@ namespace PipServices4.Logic.Lock
 
 			// Throw exception
 			throw new ConflictException(
-				correlationId,
+                context != null ? ContextResolver.GetTraceId(context) : null,
 				"LOCK_TIMEOUT",
 				"Acquiring lock " + key + " failed on timeout"
 			).WithDetails("key", key);
