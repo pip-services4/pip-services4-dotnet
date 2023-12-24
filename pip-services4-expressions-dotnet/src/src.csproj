@@ -1,0 +1,41 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFrameworks>netstandard2.0;netstandard2.1;net6.0</TargetFrameworks>
+    <AssemblyName>PipServices4.Expressions</AssemblyName>
+    <RootNamespace>PipServices4.Expressions</RootNamespace>
+    <ApplicationIcon />
+    <Win32Resource />
+    <Version>0.0.1</Version>
+    <Authors>Sergey Seroukhov</Authors>
+    <Copyright>Conceptual Vision Consulting LLC. 2020-2021</Copyright>
+    <Description>Tokenizers, parsers and expression calculators for Pip.Services in .NET</Description>
+    <Company>Conceptual Vision Consulting LLC.</Company>
+    <Product>PipServices4.Expressions</Product>
+    <PackageLicenseUrl>http://opensource.org/licenses/MIT</PackageLicenseUrl>
+    <PackageProjectUrl>https://github.com/pip-services4-dotnet/pip-services4-expressions-dotnet</PackageProjectUrl>
+    <PackageIconUrl>https://raw.githubusercontent.com/pip-services/pip-services/master/design/Icon.png</PackageIconUrl>
+    <PackageTags>PipServices V4 microservices toolkit</PackageTags>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="PipServices4.Commons" Version="0.0.4" />
+    <PackageReference Include="PipServices4.Components" Version="0.0.3" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Variants\" />
+    <Folder Include="Tokenizers\" />
+    <Folder Include="Tokenizers\Utilities\" />
+    <Folder Include="Tokenizers\Generic\" />
+    <Folder Include="Calculator\" />
+    <Folder Include="Calculator\Functions\" />
+    <Folder Include="Calculator\Variables\" />
+    <Folder Include="Calculator\Tokenizers\" />
+    <Folder Include="Calculator\Parsers\" />
+    <Folder Include="Csv\" />
+    <Folder Include="Mustache\" />
+    <Folder Include="Mustache\Parsers" />
+    <Folder Include="Mustache\Tokenizers" />
+  </ItemGroup>
+</Project>
