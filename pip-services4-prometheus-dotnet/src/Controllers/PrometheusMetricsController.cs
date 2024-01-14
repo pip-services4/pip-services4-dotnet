@@ -7,7 +7,7 @@ using PipServices4.Observability.Count;
 using PipServices4.Prometheus.Count;
 using System.Threading.Tasks;
 
-namespace PipServices4.Prometheus.Services
+namespace PipServices4.Prometheus.Controllers
 {
     /// <summary>
     /// Service that exposes "/metrics" route for Prometheus to scap performance metrics.
@@ -45,7 +45,7 @@ namespace PipServices4.Prometheus.Services
     /// Console.Out.WriteLine("The Prometheus metrics service is accessible at http://+:8080/metrics");
     /// </code>
     /// </example>
-    public class PrometheusMetricsService : RestService
+    public class PrometheusMetricsController : RestController
     {
         private CachedCounters _cachedCounters;
         private string _source;
@@ -54,7 +54,7 @@ namespace PipServices4.Prometheus.Services
         /// <summary>
         /// Creates a new instance of this service.
         /// </summary>
-        public PrometheusMetricsService()
+        public PrometheusMetricsController()
         {
             _dependencyResolver.Put("cached-counters", new Descriptor("pip-services", "counters", "cached", "*", "1.0"));
             _dependencyResolver.Put("prometheus-counters", new Descriptor("pip-services", "counters", "prometheus", "*", "1.0"));

@@ -1,7 +1,7 @@
 using PipServices4.Components.Build;
 using PipServices4.Components.Refer;
 using PipServices4.Prometheus.Count;
-using PipServices4.Prometheus.Services;
+using PipServices4.Prometheus.Controllers;
 
 namespace PipServices4.Prometheus.Build
 {
@@ -15,7 +15,7 @@ namespace PipServices4.Prometheus.Build
     {
         public static readonly Descriptor Descriptor = new Descriptor("pip-services", "factory", "prometheus", "default", "1.0");
         public static readonly Descriptor PrometheusCountersDescriptor = new Descriptor("pip-services", "counters", "prometheus", "*", "1.0");
-        public static readonly Descriptor PrometheusMetricsServiceDescriptor = new Descriptor("pip-services", "metrics-service", "prometheus", "*", "1.0");
+        public static readonly Descriptor PrometheusMetricsControllerDescriptor = new Descriptor("pip-services", "metrics-controller", "prometheus", "*", "1.0");
 
         /// <summary>
         /// Create a new instance of the factory.
@@ -23,7 +23,7 @@ namespace PipServices4.Prometheus.Build
         public DefaultPrometheusFactory()
         {
             RegisterAsType(DefaultPrometheusFactory.PrometheusCountersDescriptor, typeof(PrometheusCounters));
-            RegisterAsType(DefaultPrometheusFactory.PrometheusMetricsServiceDescriptor, typeof(PrometheusMetricsService));
+            RegisterAsType(DefaultPrometheusFactory.PrometheusMetricsControllerDescriptor, typeof(PrometheusMetricsController));
         }
     }
 }

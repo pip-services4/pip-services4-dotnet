@@ -6,9 +6,9 @@
     <RootNamespace>PipServices4.Prometheus</RootNamespace>
     <ApplicationIcon />
     <Win32Resource />
-    <Version>0.0.1</Version>
+    <Version>0.0.2</Version>
     <Authors>Sergey Seroukhov, Alex Mazur, Andrew Harrington, Danyil Tretiakov</Authors>
-    <Copyright>Conceptual Vision Consulting LLC. 2017-2023</Copyright>
+    <Copyright>Conceptual Vision Consulting LLC. 2017-2024</Copyright>
     <Description>Prometheus components for Pip.Services in .NET</Description>
     <Company>Conceptual Vision Consulting LLC.</Company>
     <Product>PipServices4.Prometheus</Product>
@@ -31,7 +31,7 @@
   <ItemGroup>
     <PackageReference Include="PipServices4.Commons" Version="0.0.4" />
     <PackageReference Include="PipServices4.Components" Version="0.0.3" />
-    <PackageReference Include="PipServices4.Http" Version="0.0.1" />
+    <PackageReference Include="PipServices4.Http" Version="0.0.2" />
     <PackageReference Include="PipServices4.Rpc" Version="0.0.1" />
   </ItemGroup>
 </Project>

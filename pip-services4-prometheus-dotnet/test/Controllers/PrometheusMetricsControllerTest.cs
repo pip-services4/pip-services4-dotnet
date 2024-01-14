@@ -2,27 +2,27 @@ using PipServices4.Components.Config;
 using PipServices4.Components.Context;
 using PipServices4.Components.Refer;
 using PipServices4.Prometheus.Count;
-using PipServices4.Prometheus.Services;
+using PipServices4.Prometheus.Controllers;
 using System;
 using System.Threading.Tasks;
 using Xunit;
 
 namespace PipServices4.Prometheus.Test.Services
 {
-    public class PrometheusMetricsServiceTest : IDisposable
+    public class PrometheusMetricsControllerTest : IDisposable
     {
-        private PrometheusMetricsService _service;
+        private PrometheusMetricsController _controller;
         private PrometheusCounters _counters;
 
-        public PrometheusMetricsServiceTest()
+        public PrometheusMetricsControllerTest()
         {
             var config = ConfigParams.FromTuples(
                 "connection.protocol", "http",
                 "connection.host", "localhost",
                 "connection.port", "3000"
             );
-            _service = new PrometheusMetricsService();
-            _service.Configure(config);
+            _controller = new PrometheusMetricsController();
+            _controller.Configure(config);
 
             var contextInfo = new ContextInfo();
             contextInfo.Name = "Test";
@@ -33,20 +33,20 @@ namespace PipServices4.Prometheus.Test.Services
             var references = References.FromTuples(
                 new Descriptor("pip-services", "context-info", "default", "default", "1.0"), contextInfo,
                 new Descriptor("pip-services", "counters", "prometheus", "default", "1.0"), _counters,
-                new Descriptor("pip-services", "metrics-service", "prometheus", "default", "1.0"), _service
+                new Descriptor("pip-services", "metrics-controller", "prometheus", "default", "1.0"), _controller
             );
-            _service.SetReferences(references);
+            _controller.SetReferences(references);
 
 
             _counters.OpenAsync(null).Wait();
-            _service.OpenAsync(null).Wait();
+            _controller.OpenAsync(null).Wait();
 
             Task.Delay(500).Wait();
         }
 
         public void Dispose()
         {
-            _service.CloseAsync(null).Wait();
+            _controller.CloseAsync(null).Wait();
             _counters.CloseAsync(null).Wait();
         }
 
