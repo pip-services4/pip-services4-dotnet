@@ -6,7 +6,7 @@
     <RootNamespace>PipServices4.Redis</RootNamespace>
     <ApplicationIcon />
     <Win32Resource />
-    <Version>0.0.1</Version>
+    <Version>0.0.2</Version>
     <Authors>Sergey Seroukhov, Alex Mazur, Danyil Tretiakov</Authors>
     <Copyright>Conceptual Vision Consulting LLC. 2017-2023</Copyright>
     <Description>Redis components for Pip.Services in .NET</Description>
