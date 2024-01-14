@@ -3,7 +3,7 @@
     "type": "module",
     "language": "dotnet",
     "registry": "pipservices",
-    "version": "0.0.2",
+    "version": "0.0.3",
     "build": 0,
     "artifacts": [
         {

@@ -102,12 +102,12 @@ namespace PipServices4.Container.Containers
 		/// <summary>
 		/// Reads container configuration from JSON or YAML file and parameterizes it with given values.
 		/// </summary>
-		/// <param name="correlationId">(optional) transaction id to trace execution through call chain.</param>
+		/// <param name="context">(optional) execution context to trace execution through call chain.</param>
 		/// <param name="path">a path to configuration file</param>
 		/// <param name="parameters">values to parameters the configuration or null to skip parameterization.</param>
-		public void ReadConfigFromFile(string correlationId, string path, ConfigParams parameters)
+		public void ReadConfigFromFile(IContext context, string path, ConfigParams parameters)
 		{
-			_config = ContainerConfigReader.ReadFromFile(correlationId, path, parameters);
+			_config = ContainerConfigReader.ReadFromFile(context, path, parameters);
 		}
 
 		/// <summary>
@@ -159,19 +159,20 @@ namespace PipServices4.Container.Containers
 		/// <summary>
 		/// Opens the component.
 		/// </summary>
-		/// <param name="correlationId">(optional) transaction id to trace execution through call chain.</param>
+		/// <param name="context">(optional) execution context to trace execution through call chain.</param>
 		/// <returns></returns>
-		public async Task OpenAsync(string correlationId)
+		public async Task OpenAsync(IContext context)
 		{
 			if (_references != null)
-				throw new InvalidStateException(correlationId, "ALREADY_OPENED", "Container was already opened");
+				throw new InvalidStateException(context != null ? ContextResolver.GetTraceId(context) : null, 
+					"ALREADY_OPENED", "Container was already opened");
 
 			//if (_config == null)
-			//    throw new InvalidStateException(correlationId, "NO_CONFIG", "Container was not configured");
+			//    throw new InvalidStateException(context, "NO_CONFIG", "Container was not configured");
 
 			try
 			{
-				_logger.Trace(correlationId, "Starting container.");
+				_logger.Trace(context, "Starting container.");
 
 				// Create references with configured components
 				_references = new ContainerReferences();
@@ -183,17 +184,17 @@ namespace PipServices4.Container.Containers
 				var infoDescriptor = new Descriptor("*", "context-info", "*", "*", "*");
 				_info = _references.GetOneRequired<ContextInfo>(infoDescriptor);
 
-				await _references.OpenAsync(correlationId);
+				await _references.OpenAsync(context);
 
 				// Get reference to logger
 				_logger = new CompositeLogger(_references);
-				_logger.Info(correlationId, "Container {0} started.", _info.Name);
+				_logger.Info(context, "Container {0} started.", _info.Name);
 			}
 			catch (Exception ex)
 			{
-				_logger.Error(correlationId, ex, "Failed to start container");
+				_logger.Error(context, ex, "Failed to start container");
 
-				await CloseAsync(correlationId);
+				await CloseAsync(context);
 
 				throw;
 			}
@@ -202,26 +203,26 @@ namespace PipServices4.Container.Containers
 		/// <summary>
 		/// Closes component and frees used resources.
 		/// </summary>
-		/// <param name="correlationId">(optional) transaction id to trace execution through call chain.</param>
+		/// <param name="context">(optional) execution context to trace execution through call chain.</param>
 		/// <returns></returns>
-		public async Task CloseAsync(string correlationId)
+		public async Task CloseAsync(IContext context)
 		{
 			if (_references == null)
 				return;
 
 			try
 			{
-				_logger.Trace(correlationId, "Stopping {0} container", _info.Name);
+				_logger.Trace(context, "Stopping {0} container", _info.Name);
 
 				// Close and dereference components
-				await _references.CloseAsync(correlationId);
+				await _references.CloseAsync(context);
 				_references = null;
 
-				_logger.Info(correlationId, "Container {0} stopped", _info.Name);
+				_logger.Info(context, "Container {0} stopped", _info.Name);
 			}
 			catch (Exception ex)
 			{
-				_logger.Error(correlationId, ex, "Failed to stop container");
+				_logger.Error(context, ex, "Failed to stop container");
 				throw;
 			}
 		}

@@ -1,5 +1,6 @@
 using PipServices4.Commons.Errors;
 using PipServices4.Components.Config;
+using PipServices4.Components.Context;
 using PipServices4.Components.Run;
 using PipServices4.Data.Random;
 using System;
@@ -52,7 +53,7 @@ namespace PipServices4.Container.Test
 			return _timer != null;
 		}
 
-		public async Task OpenAsync(string correlationId)
+		public async Task OpenAsync(IContext context)
 		{
 			if (_timer != null)
 				await Task.Run(() => _timer.Dispose());
@@ -63,7 +64,7 @@ namespace PipServices4.Container.Test
 			_timer = new Timer(callback, null, 0, timeout);
 		}
 
-		public async Task CloseAsync(string correlationId)
+		public async Task CloseAsync(IContext context)
 		{
 			if (_timer != null)
 			{

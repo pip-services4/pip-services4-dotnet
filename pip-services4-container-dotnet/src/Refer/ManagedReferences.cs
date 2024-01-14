@@ -1,3 +1,4 @@
+using PipServices4.Components.Context;
 using PipServices4.Components.Refer;
 using PipServices4.Components.Run;
 using System.Threading.Tasks;
@@ -50,21 +51,21 @@ namespace PipServices4.Container.Refer
 		/// <summary>
 		/// Opens the component.
 		/// </summary>
-		/// <param name="correlationId">(optional) transaction id to trace execution through call chain.</param>
-		public async Task OpenAsync(string correlationId)
+		/// <param name="context">(optional) execution context to trace execution through call chain.</param>
+		public async Task OpenAsync(IContext context)
 		{
-			await _linker.OpenAsync(correlationId);
-			await _runner.OpenAsync(correlationId);
+			await _linker.OpenAsync(context);
+			await _runner.OpenAsync(context);
 		}
 
 		/// <summary>
 		/// Closes component and frees used resources.
 		/// </summary>
-		/// <param name="correlationId">(optional) transaction id to trace execution through call chain.</param>
-		public async Task CloseAsync(string correlationId)
+		/// <param name="context">(optional) execution context to trace execution through call chain.</param>
+		public async Task CloseAsync(IContext context)
 		{
-			await _runner.CloseAsync(correlationId);
-			await _linker.CloseAsync(correlationId);
+			await _runner.CloseAsync(context);
+			await _linker.CloseAsync(context);
 		}
 
 		/// <summary>

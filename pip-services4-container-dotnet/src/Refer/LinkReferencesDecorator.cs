@@ -1,3 +1,4 @@
+using PipServices4.Components.Context;
 using PipServices4.Components.Refer;
 using PipServices4.Components.Run;
 using System.Collections.Generic;
@@ -35,8 +36,8 @@ namespace PipServices4.Container.Refer
 		/// <summary>
 		/// true if the component has been opened and false otherwise.
 		/// </summary>
-		/// <param name="correlationId">(optional) transaction id to trace execution through call chain.</param>
-		public async Task OpenAsync(string correlationId)
+		/// <param name="context">(optional) execution context to trace execution through call chain.</param>
+		public async Task OpenAsync(IContext context)
 		{
 			if (!_opened)
 			{
@@ -51,8 +52,8 @@ namespace PipServices4.Container.Refer
 		/// <summary>
 		/// Closes component and frees used resources.
 		/// </summary>
-		/// <param name="correlationId">(optional) transaction id to trace execution through call chain.</param>
-		public async Task CloseAsync(string correlationId)
+		/// <param name="context">(optional) execution context to trace execution through call chain.</param>
+		public async Task CloseAsync(IContext context)
 		{
 			if (_opened)
 			{

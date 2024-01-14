@@ -1,3 +1,4 @@
+using PipServices4.Components.Context;
 using PipServices4.Components.Refer;
 using PipServices4.Components.Run;
 using System.Collections.Generic;
@@ -35,13 +36,13 @@ namespace PipServices4.Container.Refer
 		/// <summary>
 		/// Opens the component.
 		/// </summary>
-		/// <param name="correlationId">(optional) transaction id to trace execution through call chain.</param>
-		public async Task OpenAsync(string correlationId)
+		/// <param name="context">(optional) execution context to trace execution through call chain.</param>
+		public async Task OpenAsync(IContext context)
 		{
 			if (!_opened)
 			{
 				var components = base.GetAll();
-				await Opener.OpenAsync(correlationId, components);
+				await Opener.OpenAsync(context, components);
 				_opened = true;
 			}
 		}
@@ -49,13 +50,13 @@ namespace PipServices4.Container.Refer
 		/// <summary>
 		/// Closes component and frees used resources.
 		/// </summary>
-		/// <param name="correlationId">(optional) transaction id to trace execution through call chain.</param>
-		public async Task CloseAsync(string correlationId)
+		/// <param name="context">(optional) execution context to trace execution through call chain.</param>
+		public async Task CloseAsync(IContext context)
 		{
 			if (_opened)
 			{
 				var components = base.GetAll();
-				await Closer.CloseAsync(correlationId, components);
+				await Closer.CloseAsync(context, components);
 				_opened = false;
 			}
 		}

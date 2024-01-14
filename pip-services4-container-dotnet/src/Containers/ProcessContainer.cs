@@ -1,4 +1,5 @@
 using PipServices4.Components.Config;
+using PipServices4.Components.Context;
 using PipServices4.Observability.Log;
 using System;
 using System.Threading;
@@ -109,22 +110,22 @@ namespace PipServices4.Container.Containers
 		}
 
 		//public object AppDomain { get; private set; }
-		private void CaptureErrors(string correlationId)
+		private void CaptureErrors(IContext context)
 		{
 			//AppDomain.CurrentDomain.UnhandledException += (obj, e) =>
 			//{
-			//    _logger.Fatal(correlationId, e.ExceptionObject, "Process is terminated");
+			//    _logger.Fatal(context, e.ExceptionObject, "Process is terminated");
 			//    _exitEvent.Set();
 			//};
 		}
 
-		private void CaptureExit(string correlationId)
+		private void CaptureExit(IContext context)
 		{
-			_logger.Info(correlationId, "Press Control-C to stop the microservice...");
+			_logger.Info(context, "Press Control-C to stop the microservice...");
 
 			Console.CancelKeyPress += (sender, eventArgs) =>
 			{
-				_logger.Info(correlationId, "Goodbye!");
+				_logger.Info(context, "Goodbye!");
 
 				eventArgs.Cancel = true;
 				_exitEvent.Set();
@@ -152,15 +153,15 @@ namespace PipServices4.Container.Containers
 				return;
 			}
 
-			var correlationId = _info.Name;
+			var context = Context.FromTraceId(_info.Name);
 			var path = GetConfigPath(args);
 			var parameters = GetParameters(args);
-			this.ReadConfigFromFile(correlationId, path, parameters);
+			this.ReadConfigFromFile(context, path, parameters);
 
-			CaptureErrors(correlationId);
-			await OpenAsync(correlationId);
-			CaptureExit(correlationId);
-			await CloseAsync(correlationId);
+			CaptureErrors(context);
+			await OpenAsync(context);
+			CaptureExit(context);
+			await CloseAsync(context);
 		}
 
 	}
