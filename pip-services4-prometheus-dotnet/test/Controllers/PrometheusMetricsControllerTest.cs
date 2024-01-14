@@ -7,7 +7,7 @@ using System;
 using System.Threading.Tasks;
 using Xunit;
 
-namespace PipServices4.Prometheus.Test.Services
+namespace PipServices4.Prometheus.Test.Controllers
 {
     public class PrometheusMetricsControllerTest : IDisposable
     {
