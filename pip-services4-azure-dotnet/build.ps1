@@ -6,7 +6,7 @@ $ErrorActionPreference = "Stop"
 # Get component metadata and set necessary variables
 $component = Get-Content -Path "$PSScriptRoot/component.json" | ConvertFrom-Json
 $buildImage = "$($component.registry)/$($component.name):$($component.version)-$($component.build)-build"
-$container=$component.name
+$container = $component.name
 
 # Remove build files
 if (Test-Path -Path "$PSScriptRoot/obj") {
@@ -14,7 +14,7 @@ if (Test-Path -Path "$PSScriptRoot/obj") {
 }
 
 # Build docker image
-docker build -f "$PSScriptRoot/docker/Dockerfile.build" -t $buildImage .
+docker build -f "$PSScriptRoot/docker/Dockerfile.build" -t $buildImage $PSScriptRoot
 
 # Create and copy compiled files, then destroy
 docker create --name $container $buildImage
