@@ -1,32 +1,30 @@
 using Grpc.Core;
-using PipServices4.Grpc;
-using PipServices4.Grpc.Protos;
 using PipServices4.Commons.Convert;
+using PipServices4.Components.Context;
 using PipServices4.Components.Refer;
 using PipServices4.Data.Validate;
+using PipServices4.Grpc.Protos;
 using System.Linq;
 using System.Threading.Tasks;
 using ProtoDummy = PipServices4.Grpc.Protos.Dummy;
-using PipServices4.Components.Context;
-using System.Diagnostics;
 
-namespace PipServices4.Grpc.Services
+namespace PipServices4.Grpc.Controllers
 {
-    public class DummyGrpcService : GrpcService
+    public class DummyGrpcController : GrpcController
     {
-        private IDummyController _controller;
+        private IDummyService _service;
 
-        public DummyGrpcService()
+        public DummyGrpcController()
             : base("dummies")
         {
-            _dependencyResolver.Put("controller", new Descriptor("pip-services4-dummies", "controller", "default", "*", "*"));
+            _dependencyResolver.Put("service", new Descriptor("pip-services4-dummies", "service", "default", "*", "*"));
         }
 
         public override void SetReferences(IReferences references)
         {
             base.SetReferences(references);
 
-            _controller = _dependencyResolver.GetOneRequired<IDummyController>("controller");
+            _service = _dependencyResolver.GetOneRequired<IDummyService>("service");
         }
 
         public async Task<DummiesPage> GetDummiesAsync(DummiesPageRequest request, ServerCallContext context)
@@ -35,7 +33,7 @@ namespace PipServices4.Grpc.Services
             var filter = new Data.Query.FilterParams(request.Filter);
             var paging = new Data.Query.PagingParams(request.Paging.Skip, request.Paging.Take, request.Paging.Total);
 
-            var page = await _controller.GetPageByFilterAsync(Context.FromTraceId(traceId), filter, paging);
+            var page = await _service.GetPageByFilterAsync(Context.FromTraceId(traceId), filter, paging);
 
             var data = new Google.Protobuf.Collections.RepeatedField<ProtoDummy>();
 
@@ -48,28 +46,28 @@ namespace PipServices4.Grpc.Services
         public async Task<ProtoDummy> GetDummyByIdAsync(DummyIdRequest request, ServerCallContext context)
         {
             var traceId = request.TraceId;
-            var item = await _controller.GetOneByIdAsync(Context.FromTraceId(traceId), request.DummyId);
+            var item = await _service.GetOneByIdAsync(Context.FromTraceId(traceId), request.DummyId);
             return ConvertToPublic(item);
         }
 
         public async Task<ProtoDummy> CreateDummyAsync(DummyObjectRequest request, ServerCallContext context)
         {
             var traceId = request.TraceId;
-            var item = await _controller.CreateAsync(Context.FromTraceId(traceId), ConvertFromPublic(request.Dummy));
+            var item = await _service.CreateAsync(Context.FromTraceId(traceId), ConvertFromPublic(request.Dummy));
             return ConvertToPublic(item);
         }
 
         public async Task<ProtoDummy> UpdateDummyAsync(DummyObjectRequest request, ServerCallContext context)
         {
             var traceId = request.TraceId;
-            var item = await _controller.UpdateAsync(Context.FromTraceId(traceId), ConvertFromPublic(request.Dummy));
+            var item = await _service.UpdateAsync(Context.FromTraceId(traceId), ConvertFromPublic(request.Dummy));
             return ConvertToPublic(item);
         }
 
         public async Task<ProtoDummy> DeleteDummyByIdAsync(DummyIdRequest request, ServerCallContext context)
         {
             var traceId = request.TraceId;
-            var item = await _controller.DeleteByIdAsync(Context.FromTraceId(traceId), request.DummyId);
+            var item = await _service.DeleteByIdAsync(Context.FromTraceId(traceId), request.DummyId);
             return ConvertToPublic(item);
         }
 

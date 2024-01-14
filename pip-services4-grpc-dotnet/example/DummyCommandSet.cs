@@ -7,9 +7,9 @@ namespace PipServices4.Grpc
 {
     public class DummyCommandSet : CommandSet
     {
-        private IDummyController _controller;
+        private IDummyService _controller;
 
-        public DummyCommandSet(IDummyController controller)
+        public DummyCommandSet(IDummyService controller)
         {
             _controller = controller;
 

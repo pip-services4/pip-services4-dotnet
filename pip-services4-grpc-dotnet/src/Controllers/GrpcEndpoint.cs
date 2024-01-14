@@ -1,4 +1,4 @@
-using Grpc.Core;
+﻿using Grpc.Core;
 using Grpc.Core.Interceptors;
 using Microsoft.AspNetCore.Routing;
 using PipServices4.Commons.Errors;
@@ -189,9 +189,9 @@ namespace PipServices4.Grpc.Controllers
                 {
                     Ports = { new ServerPort(host, port, serverCredentials) }
                 };
-                
+
                 _logger.Info(context, "Opened gRPC service at {0}", _address);
-                
+
                 PerformRegistrations();
                 _server.Start();
 

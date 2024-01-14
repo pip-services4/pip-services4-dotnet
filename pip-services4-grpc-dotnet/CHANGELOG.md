@@ -4,4 +4,4 @@
 
 ### Features
 * **clients** GrpcClient, CommandableGrpcClient
-* **services** GrpcEndpoint, GrpcService, CommandableGrpcService
+* **controllers** GrpcEndpoint, GrpcController, CommandableGrpcController

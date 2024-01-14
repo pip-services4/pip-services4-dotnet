@@ -14,7 +14,7 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace PipServices4.Grpc.Services
+namespace PipServices4.Grpc.Controllers
 {
     /// <summary>
     /// Abstract service that receives remove calls via HTTP/REST protocol.
@@ -79,7 +79,7 @@ namespace PipServices4.Grpc.Services
     /// Console.Out.WriteLine("The REST service is running on port 8080");
     /// </code>
     /// </example>
-    public abstract class GrpcService : IOpenable, IConfigurable, IReferenceable, IUnreferenceable, IRegisterable
+    public abstract class GrpcController : IOpenable, IConfigurable, IReferenceable, IUnreferenceable, IRegisterable
     {
         private static readonly ConfigParams _defaultConfig = ConfigParams.FromTuples(
             "dependencies.endpoint", "*:endpoint:grpc:*:1.0"
@@ -111,7 +111,7 @@ namespace PipServices4.Grpc.Services
         private readonly ServerServiceDefinition.Builder _builder = ServerServiceDefinition.CreateBuilder();
         private readonly Dictionary<Type, object> _messageParsers = new Dictionary<Type, object>();
 
-        public GrpcService(string serviceName)
+        public GrpcController(string serviceName)
         {
             _serviceName = serviceName;
         }
@@ -287,7 +287,7 @@ namespace PipServices4.Grpc.Services
             where TRequest : class, IMessage<TRequest>, new()
             where TResponse : class, IMessage<TResponse>, new()
         {
-            UnaryServerMethod<TRequest, TResponse> actionWrapper = (TRequest request, ServerCallContext context) =>
+            UnaryServerMethod<TRequest, TResponse> actionWrapper = (request, context) =>
             {
                 if (schema != null)
                 {
@@ -296,7 +296,7 @@ namespace PipServices4.Grpc.Services
 
                     schema.ValidateAndThrowException(traceId, value);
                 }
-                
+
                 return action.Invoke(request, context);
             };
 
@@ -309,10 +309,10 @@ namespace PipServices4.Grpc.Services
         {
             var actionWrapper = action;
 
-			for (int index = _interceptors.Count - 1; index >= 0; index--)
-			{
+            for (int index = _interceptors.Count - 1; index >= 0; index--)
+            {
                 var interceptor = _interceptors[index];
-                actionWrapper = (TRequest request, ServerCallContext context) =>
+                actionWrapper = (request, context) =>
                 {
                     return interceptor.UnaryServerHandler(request, context, actionWrapper);
                 };
@@ -342,35 +342,35 @@ namespace PipServices4.Grpc.Services
         protected void RegisterMethodWithAuth<TRequest, TResponse>(string name, Schema schema, Interceptor authorize, UnaryServerMethod<TRequest, TResponse> action)
             where TRequest : class, IMessage<TRequest>, new()
             where TResponse : class, IMessage<TResponse>, new()
-		{
-			var actionWrapper = ApplyValidation(schema, action);
-			actionWrapper = (TRequest request, ServerCallContext context) =>
-			{
-				return authorize.UnaryServerHandler(request, context, actionWrapper);
-			};
-			actionWrapper = ApplyInterceptors(actionWrapper);
+        {
+            var actionWrapper = ApplyValidation(schema, action);
+            actionWrapper = (request, context) =>
+            {
+                return authorize.UnaryServerHandler(request, context, actionWrapper);
+            };
+            actionWrapper = ApplyInterceptors(actionWrapper);
 
-			AddMethod(name, actionWrapper);
-		}
+            AddMethod(name, actionWrapper);
+        }
 
-		private void AddMethod<TRequest, TResponse>(string name, UnaryServerMethod<TRequest, TResponse> action)
-			where TRequest : class, IMessage<TRequest>, new()
-			where TResponse : class, IMessage<TResponse>, new()
-		{
-			var requestParser = GetOrCreateMessageParser<TRequest>();
-			var responseParser = GetOrCreateMessageParser<TResponse>();
+        private void AddMethod<TRequest, TResponse>(string name, UnaryServerMethod<TRequest, TResponse> action)
+            where TRequest : class, IMessage<TRequest>, new()
+            where TResponse : class, IMessage<TResponse>, new()
+        {
+            var requestParser = GetOrCreateMessageParser<TRequest>();
+            var responseParser = GetOrCreateMessageParser<TResponse>();
 
-			var method = new Method<TRequest, TResponse>(
-			 MethodType.Unary,
-			  _serviceName,
-			  name,
-			  Marshallers.Create((arg) => arg != null ? MessageExtensions.ToByteArray(arg) : Array.Empty<byte>(), requestParser.ParseFrom),
-			  Marshallers.Create((arg) => arg != null ? MessageExtensions.ToByteArray(arg) : Array.Empty<byte>(), responseParser.ParseFrom));
+            var method = new Method<TRequest, TResponse>(
+             MethodType.Unary,
+              _serviceName,
+              name,
+              Marshallers.Create((arg) => arg != null ? arg.ToByteArray() : Array.Empty<byte>(), requestParser.ParseFrom),
+              Marshallers.Create((arg) => arg != null ? arg.ToByteArray() : Array.Empty<byte>(), responseParser.ParseFrom));
 
-			_builder.AddMethod(method, action);
-		}
+            _builder.AddMethod(method, action);
+        }
 
-		private MessageParser<T> GetOrCreateMessageParser<T>()
+        private MessageParser<T> GetOrCreateMessageParser<T>()
           where T : class, IMessage<T>, new()
         {
             if (_messageParsers.TryGetValue(typeof(T), out object o_parser))
@@ -389,7 +389,7 @@ namespace PipServices4.Grpc.Services
         /// in child classes.
         /// </summary>
         protected virtual void OnRegister()
-        { 
+        {
         }
 
         public void Register()

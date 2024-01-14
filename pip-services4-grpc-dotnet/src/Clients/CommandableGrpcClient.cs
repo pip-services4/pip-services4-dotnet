@@ -2,7 +2,7 @@ using PipServices4.Commons.Convert;
 using PipServices4.Commons.Errors;
 using PipServices4.Commons.Mapper;
 using PipServices4.Components.Context;
-using PipServices4.Grpc.Services;
+using PipServices4.Grpc.Controllers;
 using System;
 using System.Threading.Tasks;
 
@@ -109,7 +109,7 @@ namespace PipServices4.Grpc.Clients
             catch (Exception ex)
             {
                 InstrumentError(context, method, ex);
-                throw ex;
+                throw;
             }
             finally
             {

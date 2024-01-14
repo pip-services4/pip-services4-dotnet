@@ -60,10 +60,10 @@ namespace PipServices4.Grpc.Services {
       return parser.ParseFrom(context.PayloadAsNewBuffer());
     }
 
-    static readonly grpc::Marshaller<global::PipServices4.Grpc.Services.InvokeRequest> __Marshaller_commandable_InvokeRequest = grpc::Marshallers.Create(__Helper_SerializeMessage, context => __Helper_DeserializeMessage(context, global::PipServices4.Grpc.Services.InvokeRequest.Parser));
-    static readonly grpc::Marshaller<global::PipServices4.Grpc.Services.InvokeReply> __Marshaller_commandable_InvokeReply = grpc::Marshallers.Create(__Helper_SerializeMessage, context => __Helper_DeserializeMessage(context, global::PipServices4.Grpc.Services.InvokeReply.Parser));
+    static readonly grpc::Marshaller<global::PipServices4.Grpc.Controllers.InvokeRequest> __Marshaller_commandable_InvokeRequest = grpc::Marshallers.Create(__Helper_SerializeMessage, context => __Helper_DeserializeMessage(context, global::PipServices4.Grpc.Controllers.InvokeRequest.Parser));
+    static readonly grpc::Marshaller<global::PipServices4.Grpc.Controllers.InvokeReply> __Marshaller_commandable_InvokeReply = grpc::Marshallers.Create(__Helper_SerializeMessage, context => __Helper_DeserializeMessage(context, global::PipServices4.Grpc.Controllers.InvokeReply.Parser));
 
-    static readonly grpc::Method<global::PipServices4.Grpc.Services.InvokeRequest, global::PipServices4.Grpc.Services.InvokeReply> __Method_invoke = new grpc::Method<global::PipServices4.Grpc.Services.InvokeRequest, global::PipServices4.Grpc.Services.InvokeReply>(
+    static readonly grpc::Method<global::PipServices4.Grpc.Controllers.InvokeRequest, global::PipServices4.Grpc.Controllers.InvokeReply> __Method_invoke = new grpc::Method<global::PipServices4.Grpc.Controllers.InvokeRequest, global::PipServices4.Grpc.Controllers.InvokeReply>(
         grpc::MethodType.Unary,
         __ServiceName,
         "invoke",
@@ -73,14 +73,14 @@ namespace PipServices4.Grpc.Services {
     /// <summary>Service descriptor</summary>
     public static global::Google.Protobuf.Reflection.ServiceDescriptor Descriptor
     {
-      get { return global::PipServices4.Grpc.Services.CommandableReflection.Descriptor.Services[0]; }
+      get { return global::PipServices4.Grpc.Controllers.CommandableReflection.Descriptor.Services[0]; }
     }
 
     /// <summary>Base class for server-side implementations of Commandable</summary>
     [grpc::BindServiceMethod(typeof(Commandable), "BindService")]
     public abstract partial class CommandableBase
     {
-      public virtual global::System.Threading.Tasks.Task<global::PipServices4.Grpc.Services.InvokeReply> invoke(global::PipServices4.Grpc.Services.InvokeRequest request, grpc::ServerCallContext context)
+      public virtual global::System.Threading.Tasks.Task<global::PipServices4.Grpc.Controllers.InvokeReply> invoke(global::PipServices4.Grpc.Controllers.InvokeRequest request, grpc::ServerCallContext context)
       {
         throw new grpc::RpcException(new grpc::Status(grpc::StatusCode.Unimplemented, ""));
       }
@@ -110,19 +110,19 @@ namespace PipServices4.Grpc.Services {
       {
       }
 
-      public virtual global::PipServices4.Grpc.Services.InvokeReply invoke(global::PipServices4.Grpc.Services.InvokeRequest request, grpc::Metadata headers = null, global::System.DateTime? deadline = null, global::System.Threading.CancellationToken cancellationToken = default(global::System.Threading.CancellationToken))
+      public virtual global::PipServices4.Grpc.Controllers.InvokeReply invoke(global::PipServices4.Grpc.Controllers.InvokeRequest request, grpc::Metadata headers = null, global::System.DateTime? deadline = null, global::System.Threading.CancellationToken cancellationToken = default(global::System.Threading.CancellationToken))
       {
         return invoke(request, new grpc::CallOptions(headers, deadline, cancellationToken));
       }
-      public virtual global::PipServices4.Grpc.Services.InvokeReply invoke(global::PipServices4.Grpc.Services.InvokeRequest request, grpc::CallOptions options)
+      public virtual global::PipServices4.Grpc.Controllers.InvokeReply invoke(global::PipServices4.Grpc.Controllers.InvokeRequest request, grpc::CallOptions options)
       {
         return CallInvoker.BlockingUnaryCall(__Method_invoke, null, options, request);
       }
-      public virtual grpc::AsyncUnaryCall<global::PipServices4.Grpc.Services.InvokeReply> invokeAsync(global::PipServices4.Grpc.Services.InvokeRequest request, grpc::Metadata headers = null, global::System.DateTime? deadline = null, global::System.Threading.CancellationToken cancellationToken = default(global::System.Threading.CancellationToken))
+      public virtual grpc::AsyncUnaryCall<global::PipServices4.Grpc.Controllers.InvokeReply> invokeAsync(global::PipServices4.Grpc.Controllers.InvokeRequest request, grpc::Metadata headers = null, global::System.DateTime? deadline = null, global::System.Threading.CancellationToken cancellationToken = default(global::System.Threading.CancellationToken))
       {
         return invokeAsync(request, new grpc::CallOptions(headers, deadline, cancellationToken));
       }
-      public virtual grpc::AsyncUnaryCall<global::PipServices4.Grpc.Services.InvokeReply> invokeAsync(global::PipServices4.Grpc.Services.InvokeRequest request, grpc::CallOptions options)
+      public virtual grpc::AsyncUnaryCall<global::PipServices4.Grpc.Controllers.InvokeReply> invokeAsync(global::PipServices4.Grpc.Controllers.InvokeRequest request, grpc::CallOptions options)
       {
         return CallInvoker.AsyncUnaryCall(__Method_invoke, null, options, request);
       }
@@ -147,7 +147,7 @@ namespace PipServices4.Grpc.Services {
     /// <param name="serviceImpl">An object implementing the server-side handling logic.</param>
     public static void BindService(grpc::ServiceBinderBase serviceBinder, CommandableBase serviceImpl)
     {
-      serviceBinder.AddMethod(__Method_invoke, serviceImpl == null ? null : new grpc::UnaryServerMethod<global::PipServices4.Grpc.Services.InvokeRequest, global::PipServices4.Grpc.Services.InvokeReply>(serviceImpl.invoke));
+      serviceBinder.AddMethod(__Method_invoke, serviceImpl == null ? null : new grpc::UnaryServerMethod<global::PipServices4.Grpc.Controllers.InvokeRequest, global::PipServices4.Grpc.Controllers.InvokeReply>(serviceImpl.invoke));
     }
 
   }

@@ -401,7 +401,7 @@ namespace PipServices4.Grpc.Protos {
       if (other.StackTrace.Length != 0) {
         StackTrace = other.StackTrace;
       }
-      details_.Add(other.details_);
+      details_.MergeFrom(other.details_);
       _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
     }
 
@@ -1434,7 +1434,7 @@ namespace PipServices4.Grpc.Protos {
       if (other.TraceId.Length != 0) {
         TraceId = other.TraceId;
       }
-      filter_.Add(other.filter_);
+      filter_.MergeFrom(other.filter_);
       if (other.paging_ != null) {
         if (paging_ == null) {
           Paging = new global::PipServices4.Grpc.Protos.PagingParams();

@@ -3,24 +3,22 @@ using PipServices4.Components.Context;
 using PipServices4.Components.Refer;
 using PipServices4.Data.Keys;
 using PipServices4.Data.Query;
-using PipServices4.Grpc;
 using PipServices4.Grpc.Clients;
-using PipServices4.Grpc.Services;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
 using Xunit;
 
-namespace PipServices4.Grpc.Services
+namespace PipServices4.Grpc.Controllers
 {
     [Collection("Sequential")]
-    public class DummyGrpcServiceTest : IDisposable
+    public class DummyGrpcControllerTest : IDisposable
     {
         private readonly DummyGrpcClient client;
-        private readonly DummyGrpcService service;
+        private readonly DummyGrpcController controller;
         private readonly IContext context;
 
-        public DummyGrpcServiceTest()
+        public DummyGrpcControllerTest()
         {
             context = Context.FromTraceId(IdGenerator.NextLong());
 
@@ -33,15 +31,15 @@ namespace PipServices4.Grpc.Services
             client = new DummyGrpcClient();
             client.Configure(config);
 
-            service = new DummyGrpcService();
-            service.Configure(config);
+            controller = new DummyGrpcController();
+            controller.Configure(config);
 
             var references = References.FromTuples(
-                new Descriptor("pip-services4-dummies", "controller", "default", "default", "1.0"), new DummyController()
+                new Descriptor("pip-services4-dummies", "service", "default", "default", "1.0"), new DummyService()
             );
 
-            service.SetReferences(references);
-            service.OpenAsync(null).Wait();
+            controller.SetReferences(references);
+            controller.OpenAsync(null).Wait();
 
             client.OpenAsync(null).Wait();
         }
@@ -49,7 +47,7 @@ namespace PipServices4.Grpc.Services
         public void Dispose()
         {
             client.CloseAsync(null).Wait();
-            service.CloseAsync(null).Wait();
+            controller.CloseAsync(null).Wait();
         }
 
         [Fact]
@@ -82,8 +80,9 @@ namespace PipServices4.Grpc.Services
 
         private async Task It_Should_Be_Opened()
         {
-            Assert.True(service.IsOpen());
+            Assert.True(controller.IsOpen());
             Assert.True(client.IsOpen());
+            await Task.Delay(0);
         }
 
         private async Task It_Should_Create_Dummy()

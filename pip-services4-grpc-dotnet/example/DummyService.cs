@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace PipServices4.Grpc
 {
-    public sealed class DummyController : IDummyController, ICommandable
+    public sealed class DummyService : IDummyService, ICommandable
     {
         private readonly object _lock = new object();
         private readonly IList<Dummy> _entities = new List<Dummy>();

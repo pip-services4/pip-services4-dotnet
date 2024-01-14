@@ -1,7 +1,7 @@
 using PipServices4.Components.Config;
 using PipServices4.Components.Refer;
 using PipServices4.Grpc.Clients;
-using PipServices4.Grpc.Services;
+using PipServices4.Grpc.Controllers;
 using System;
 using System.Threading.Tasks;
 using Xunit;
@@ -19,32 +19,32 @@ namespace PipServices4.Grpc.Test.Clients
             //"connection.port", 3000
         );
 
-        private readonly DummyController _ctrl;
+        private readonly DummyService _service;
         private readonly DummyCommandableGrpcClient _client;
         private readonly DummyClientFixture _fixture;
 
-        private readonly DummyCommandableGrpcService _service;
+        private readonly DummyCommandableGrpcController _controller;
 
         public DummyCommandableGrpcClientTest()
         {
-            _ctrl = new DummyController();
+            _service = new DummyService();
 
-            _service = new DummyCommandableGrpcService();
+            _controller = new DummyCommandableGrpcController();
 
             _client = new DummyCommandableGrpcClient();
 
             var references = References.FromTuples(
-                new Descriptor("pip-services4-dummies", "controller", "default", "default", "1.0"), _ctrl,
-                new Descriptor("pip-services4-dummies", "service", "grpc", "default", "1.0"), _service,
+                new Descriptor("pip-services4-dummies", "service", "default", "default", "1.0"), _service,
+                new Descriptor("pip-services4-dummies", "controller", "grpc", "default", "1.0"), _controller,
                 new Descriptor("pip-services4-dummies", "client", "grpc", "default", "1.0"), _client
             );
-            _service.Configure(GrpcConfig);
+            _controller.Configure(GrpcConfig);
             _client.Configure(GrpcConfig);
 
             _client.SetReferences(references);
-            _service.SetReferences(references);
+            _controller.SetReferences(references);
 
-            _service.OpenAsync(null).Wait();
+            _controller.OpenAsync(null).Wait();
 
             _fixture = new DummyClientFixture(_client);
 
@@ -60,7 +60,7 @@ namespace PipServices4.Grpc.Test.Clients
         public void Dispose()
         {
             _client.CloseAsync(null).Wait();
-            _service.CloseAsync(null).Wait();
+            _controller.CloseAsync(null).Wait();
         }
     }
 }

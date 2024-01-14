@@ -2,14 +2,12 @@
 using PipServices4.Components.Context;
 using PipServices4.Components.Refer;
 using PipServices4.Data.Keys;
-using PipServices4.Grpc;
 using PipServices4.Grpc.Clients;
-using PipServices4.Grpc.Services;
 using System;
 using System.Threading.Tasks;
 using Xunit;
 
-namespace PipServices4.Grpc.Services
+namespace PipServices4.Grpc.Controllers
 {
     [Collection("Sequential")]
     public sealed class DummyGrpcEndpointTest : IDisposable
@@ -20,9 +18,9 @@ namespace PipServices4.Grpc.Services
             "connection.port", 3005
         );
 
-        private readonly DummyController _ctrl;
-        private readonly DummyCommandableGrpcService _service1;
-        private readonly DummyCommandableGrpcService _service2;
+        private readonly DummyService _service;
+        private readonly DummyCommandableGrpcController _controller1;
+        private readonly DummyCommandableGrpcController _controller2;
         private readonly DummyCommandableGrpcClient _client1;
         private readonly DummyCommandableGrpcClient _client2;
 
@@ -30,9 +28,9 @@ namespace PipServices4.Grpc.Services
 
         public DummyGrpcEndpointTest()
         {
-            _ctrl = new DummyController();
-            _service1 = new DummyCommandableGrpcService("dummy1");
-            _service2 = new DummyCommandableGrpcService("dummy2");
+            _service = new DummyService();
+            _controller1 = new DummyCommandableGrpcController("dummy1");
+            _controller2 = new DummyCommandableGrpcController("dummy2");
 
             _client1 = new DummyCommandableGrpcClient("dummy1");
             _client2 = new DummyCommandableGrpcClient("dummy2");
@@ -40,7 +38,7 @@ namespace PipServices4.Grpc.Services
             _grpcEndpoint = new GrpcEndpoint();
 
             var references = References.FromTuples(
-                new Descriptor("pip-services4-dummies", "controller", "default", "default", "1.0"), _ctrl,
+                new Descriptor("pip-services4-dummies", "service", "default", "default", "1.0"), _service,
                 new Descriptor("pip-services4", "endpoint", "grpc", "default", "1.0"), _grpcEndpoint
             );
 
@@ -49,8 +47,8 @@ namespace PipServices4.Grpc.Services
 
             _grpcEndpoint.Configure(grpcConfig);
 
-            _service1.SetReferences(references);
-            _service2.SetReferences(references);
+            _controller1.SetReferences(references);
+            _controller2.SetReferences(references);
 
             _grpcEndpoint.OpenAsync(null).Wait();
 
@@ -60,8 +58,8 @@ namespace PipServices4.Grpc.Services
 
         public void Dispose()
         {
-            _service1.CloseAsync(null).Wait();
-            _service2.CloseAsync(null).Wait();
+            _controller1.CloseAsync(null).Wait();
+            _controller2.CloseAsync(null).Wait();
         }
 
         [Fact]

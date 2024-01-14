@@ -9,7 +9,7 @@ using pb = global::Google.Protobuf;
 using pbc = global::Google.Protobuf.Collections;
 using pbr = global::Google.Protobuf.Reflection;
 using scg = global::System.Collections.Generic;
-namespace PipServices4.Grpc.Services {
+namespace PipServices4.Grpc.Controllers {
 
   /// <summary>Holder for reflection information generated from commandable.proto</summary>
   public static partial class CommandableReflection {
@@ -36,15 +36,15 @@ namespace PipServices4.Grpc.Services {
             "b21tYW5kYWJsZS5FcnJvckRlc2NyaXB0aW9uEhQKDHJlc3VsdF9lbXB0eRgC",
             "IAEoCBITCgtyZXN1bHRfanNvbhgDIAEoCTJPCgtDb21tYW5kYWJsZRJACgZp",
             "bnZva2USGi5jb21tYW5kYWJsZS5JbnZva2VSZXF1ZXN0GhguY29tbWFuZGFi",
-            "bGUuSW52b2tlUmVwbHkiAEJjCh1waXAtc2VydmljZXMuZ3JwYy5jb21tYW5k",
+            "bGUuSW52b2tlUmVwbHkiAEJmCh1waXAtc2VydmljZXMuZ3JwYy5jb21tYW5k",
             "YWJsZUIQQ29tbWFuZGFibGVQcm90b1ABWgZwcm90b3OiAghHUlBDX0NNRKoC",
-            "GlBpcFNlcnZpY2VzNC5HcnBjLlNlcnZpY2VzYgZwcm90bzM="));
+            "HVBpcFNlcnZpY2VzNC5HcnBjLkNvbnRyb2xsZXJzYgZwcm90bzM="));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { },
           new pbr::GeneratedClrTypeInfo(null, null, new pbr::GeneratedClrTypeInfo[] {
-            new pbr::GeneratedClrTypeInfo(typeof(global::PipServices4.Grpc.Services.ErrorDescription), global::PipServices4.Grpc.Services.ErrorDescription.Parser, new[]{ "Category", "Code", "TraceId", "Status", "Message", "Cause", "StackTrace", "Details" }, null, null, null, new pbr::GeneratedClrTypeInfo[] { null, }),
-            new pbr::GeneratedClrTypeInfo(typeof(global::PipServices4.Grpc.Services.InvokeRequest), global::PipServices4.Grpc.Services.InvokeRequest.Parser, new[]{ "Method", "TraceId", "ArgsEmpty", "ArgsJson" }, null, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::PipServices4.Grpc.Services.InvokeReply), global::PipServices4.Grpc.Services.InvokeReply.Parser, new[]{ "Error", "ResultEmpty", "ResultJson" }, null, null, null, null)
+            new pbr::GeneratedClrTypeInfo(typeof(global::PipServices4.Grpc.Controllers.ErrorDescription), global::PipServices4.Grpc.Controllers.ErrorDescription.Parser, new[]{ "Category", "Code", "TraceId", "Status", "Message", "Cause", "StackTrace", "Details" }, null, null, null, new pbr::GeneratedClrTypeInfo[] { null, }),
+            new pbr::GeneratedClrTypeInfo(typeof(global::PipServices4.Grpc.Controllers.InvokeRequest), global::PipServices4.Grpc.Controllers.InvokeRequest.Parser, new[]{ "Method", "TraceId", "ArgsEmpty", "ArgsJson" }, null, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::PipServices4.Grpc.Controllers.InvokeReply), global::PipServices4.Grpc.Controllers.InvokeReply.Parser, new[]{ "Error", "ResultEmpty", "ResultJson" }, null, null, null, null)
           }));
     }
     #endregion
@@ -65,7 +65,7 @@ namespace PipServices4.Grpc.Services {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public static pbr::MessageDescriptor Descriptor {
-      get { return global::PipServices4.Grpc.Services.CommandableReflection.Descriptor.MessageTypes[0]; }
+      get { return global::PipServices4.Grpc.Controllers.CommandableReflection.Descriptor.MessageTypes[0]; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -386,7 +386,7 @@ namespace PipServices4.Grpc.Services {
       if (other.StackTrace.Length != 0) {
         StackTrace = other.StackTrace;
       }
-      details_.Add(other.details_);
+      details_.MergeFrom(other.details_);
       _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
     }
 
@@ -505,7 +505,7 @@ namespace PipServices4.Grpc.Services {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public static pbr::MessageDescriptor Descriptor {
-      get { return global::PipServices4.Grpc.Services.CommandableReflection.Descriptor.MessageTypes[1]; }
+      get { return global::PipServices4.Grpc.Controllers.CommandableReflection.Descriptor.MessageTypes[1]; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -808,7 +808,7 @@ namespace PipServices4.Grpc.Services {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public static pbr::MessageDescriptor Descriptor {
-      get { return global::PipServices4.Grpc.Services.CommandableReflection.Descriptor.MessageTypes[2]; }
+      get { return global::PipServices4.Grpc.Controllers.CommandableReflection.Descriptor.MessageTypes[2]; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -842,10 +842,10 @@ namespace PipServices4.Grpc.Services {
 
     /// <summary>Field number for the "error" field.</summary>
     public const int ErrorFieldNumber = 1;
-    private global::PipServices4.Grpc.Services.ErrorDescription error_;
+    private global::PipServices4.Grpc.Controllers.ErrorDescription error_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public global::PipServices4.Grpc.Services.ErrorDescription Error {
+    public global::PipServices4.Grpc.Controllers.ErrorDescription Error {
       get { return error_; }
       set {
         error_ = value;
@@ -989,7 +989,7 @@ namespace PipServices4.Grpc.Services {
       }
       if (other.error_ != null) {
         if (error_ == null) {
-          Error = new global::PipServices4.Grpc.Services.ErrorDescription();
+          Error = new global::PipServices4.Grpc.Controllers.ErrorDescription();
         }
         Error.MergeFrom(other.Error);
       }
@@ -1016,7 +1016,7 @@ namespace PipServices4.Grpc.Services {
             break;
           case 10: {
             if (error_ == null) {
-              Error = new global::PipServices4.Grpc.Services.ErrorDescription();
+              Error = new global::PipServices4.Grpc.Controllers.ErrorDescription();
             }
             input.ReadMessage(Error);
             break;
@@ -1046,7 +1046,7 @@ namespace PipServices4.Grpc.Services {
             break;
           case 10: {
             if (error_ == null) {
-              Error = new global::PipServices4.Grpc.Services.ErrorDescription();
+              Error = new global::PipServices4.Grpc.Controllers.ErrorDescription();
             }
             input.ReadMessage(Error);
             break;
