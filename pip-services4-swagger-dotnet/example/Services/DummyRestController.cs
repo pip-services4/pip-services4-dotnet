@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace PipServices4.Swagger.Services
 {
-    public class DummyRestService : RestService
+    public class DummyRestController : RestController
     {
         private DummyRestOperations _operations = new DummyRestOperations();
         private int _numberOfCalls = 0;

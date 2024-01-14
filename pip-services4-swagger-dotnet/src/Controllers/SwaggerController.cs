@@ -7,7 +7,7 @@ using System.Collections.Generic;
 
 namespace PipServices4.Swagger.Services
 {
-    public class SwaggerService : IConfigurable, IReferenceable, ISwaggerService, IInitializable
+    public class SwaggerController : IConfigurable, IReferenceable, ISwaggerController, IInitializable
     {
         private static readonly ConfigParams _defaultConfig = ConfigParams.FromTuples(
             "dependencies.endpoint", "*:endpoint:http:*:1.0"

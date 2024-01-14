@@ -11,12 +11,12 @@ namespace PipServices4.Swagger
     {
         static void Main(string[] args)
         {
-            var controller = new DummyController();
-            var service = new DummyCommandableHttpService();
+            var controller = new DummyService();
+            var service = new DummyCommandableHttpController();
             //var service = new DummyRestService();
             var logger = new ConsoleLogger();
             var endpoint = new HttpEndpoint();
-            var swagger = new SwaggerService();
+            var swagger = new SwaggerController();
 
             var config = ConfigParams.FromTuples(
                 "connection.protocol", "http",

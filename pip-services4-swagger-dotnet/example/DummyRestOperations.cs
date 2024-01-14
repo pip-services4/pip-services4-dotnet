@@ -13,19 +13,19 @@ namespace PipServices4.Swagger.Services
 {
     public class DummyRestOperations: RestOperations
     {
-        private IDummyController _controller;
+        private IDummyService _controller;
 
         public DummyRestOperations()
         {
-            _dependencyResolver.Put("controller",
-                new Descriptor("pip-services4-dummies", "controller", "default", "*", "*"));
+            _dependencyResolver.Put("service",
+                new Descriptor("pip-services4-dummies", "service", "default", "*", "*"));
         }
         
         public new void SetReferences(IReferences references)
         {
             base.SetReferences(references);
 
-            _controller = _dependencyResolver.GetOneRequired<IDummyController>("controller");
+            _controller = _dependencyResolver.GetOneRequired<IDummyService>("service");
         }
 
         public async Task GetPageByFilterAsync(HttpRequest request, HttpResponse response, ClaimsPrincipal user,

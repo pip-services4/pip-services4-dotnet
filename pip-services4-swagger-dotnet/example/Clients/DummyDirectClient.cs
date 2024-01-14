@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace PipServices4.Swagger.Clients
 {
-    public class DummyDirectClient : DirectClient<IDummyController>, IDummyClient
+    public class DummyDirectClient : DirectClient<IDummyService>, IDummyClient
     {
         public DummyDirectClient()
         {
