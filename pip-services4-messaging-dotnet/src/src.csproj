@@ -5,9 +5,9 @@
     <AssemblyName>PipServices4.Messaging</AssemblyName>
     <ApplicationIcon />
     <Win32Resource />
-    <Version>0.0.1</Version>
+    <Version>0.0.2</Version>
     <Authors>Sergey Seroukhov, Volodymyr Tkachenko, Alex Mazur, Danyil Tretiakov</Authors>
-    <Copyright>Conceptual Vision Consulting LLC. 2017-2023</Copyright>
+    <Copyright>Conceptual Vision Consulting LLC. 2017-2024</Copyright>
     <Description>Asynchronous messaging for Pip.Services in .NET</Description>
     <Company>Conceptual Vision Consulting LLC.</Company>
     <Product>PipServices4.Messaging</Product>

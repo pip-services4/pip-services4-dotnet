@@ -41,13 +41,6 @@ namespace PipServices4.Messaging.Queues
         private CancellationTokenSource _cancel = new CancellationTokenSource();
         private bool _opened = false;
 
-        private class LockedMessage
-        {
-            public MessageEnvelope Message { get; set; }
-            public DateTime ExpirationTimeUtc { get; set; }
-            public TimeSpan Timeout { get; set; }
-        }
-
         /// <summary>
         /// Creates a new instance of the message queue.
         /// </summary>
