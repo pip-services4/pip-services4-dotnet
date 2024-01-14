@@ -12,10 +12,10 @@ using System.Text;
 using System.Threading.Tasks;
 using Xunit;
 
-namespace PipServices4.Http.Test.Services
+namespace PipServices4.Http.Test.Controllers
 {
     [Collection("Sequential")]
-    public class DummyRestServiceTest : IDisposable
+    public class DummyRestControllerTest : IDisposable
     {
         private static readonly ConfigParams RestConfig = ConfigParams.FromTuples(
             "connection.protocol", "http",
@@ -23,43 +23,43 @@ namespace PipServices4.Http.Test.Services
             "connection.port", 3003 
         );
 
-        private static readonly ConfigParams ServiceConfig = ConfigParams.FromTuples(
+        private static readonly ConfigParams ControllerConfig = ConfigParams.FromTuples(
             "base_route", "/api/v1",
             "openapi_content", "swagger yaml or json content",  // for test only
             "swagger.enable", "true"
         );
 
-        private DummyRestService _service;
+        private DummyRestController _controller;
         private HttpEndpoint _httpEndpoint;
         private HttpClient _httpClient;
 
-        public DummyRestServiceTest()
+        public DummyRestControllerTest()
         {
             _httpClient = new HttpClient();
             _httpEndpoint = new HttpEndpoint();
-            _service = CreateService(_httpEndpoint, ServiceConfig);
+            _controller = CreateController(_httpEndpoint, ControllerConfig);
 
             _httpEndpoint.Configure(RestConfig);
             _httpEndpoint.OpenAsync(null).Wait();
         }
 
-        private DummyRestService CreateService(HttpEndpoint httpEndpoint, ConfigParams config)
+        private DummyRestController CreateController(HttpEndpoint httpEndpoint, ConfigParams config)
         {
-            var service = new DummyRestService();
+            var controller = new DummyRestController();
 
             var references = References.FromTuples(
-                new Descriptor("pip-services4-dummies", "controller", "default", "default", "1.0"), new DummyController(),
+                new Descriptor("pip-services4-dummies", "service", "default", "default", "1.0"), new DummyService(),
                 new Descriptor("pip-services4", "endpoint", "http", "default", "1.0"), httpEndpoint
             );
 
-            service.Configure(config);
-            service.SetReferences(references);
-            return service;
+            controller.Configure(config);
+            controller.SetReferences(references);
+            return controller;
         }
 
         public void Dispose()
         {
-            _service.CloseAsync(null).Wait();
+            _controller.CloseAsync(null).Wait();
             _httpEndpoint.CloseAsync(null).Wait();
         }
 
@@ -84,8 +84,8 @@ namespace PipServices4.Http.Test.Services
         [Fact]
         public async Task It_Should_Return_OpenApi_Content()
         {
-            var baseRoute = ServiceConfig.GetAsString("base_route");
-            var openApiContent = ServiceConfig.GetAsString("openapi_content");
+            var baseRoute = ControllerConfig.GetAsString("base_route");
+            var openApiContent = ControllerConfig.GetAsString("openapi_content");
 
             var result = await SendRequestAsync("get", string.Format("{0}/swagger", baseRoute), new { });
             Assert.Equal(openApiContent, result);
@@ -102,10 +102,10 @@ namespace PipServices4.Http.Test.Services
 
             // recreate service with new configuration
             await _httpEndpoint.CloseAsync(null);
-            await _service.CloseAsync(null);
+            await _controller.CloseAsync(null);
 
             _httpEndpoint = new HttpEndpoint();
-            _service = CreateService(_httpEndpoint, ConfigParams.FromTuples(
+            _controller = CreateController(_httpEndpoint, ConfigParams.FromTuples(
                 "base_route", "/api/v1",
                 "openapi_file", fileName,  // for test only
                 "swagger.enable", "true"
@@ -127,12 +127,12 @@ namespace PipServices4.Http.Test.Services
 
             // recreate service with new configuration
             await _httpEndpoint.CloseAsync(null);
-            await _service.CloseAsync(null);
+            await _controller.CloseAsync(null);
 
             _httpEndpoint = new HttpEndpoint();
-            _service = CreateService(_httpEndpoint, ConfigParams.FromTuples(
+            _controller = CreateController(_httpEndpoint, ConfigParams.FromTuples(
                 "base_route", "/api/v1",
-                "openapi_resource", "DummyRestServiceSwagger.yaml",  // for test only
+                "openapi_resource", "DummyRestControllerSwagger.yaml",  // for test only
                 "swagger.enable", "true"
             ));
 

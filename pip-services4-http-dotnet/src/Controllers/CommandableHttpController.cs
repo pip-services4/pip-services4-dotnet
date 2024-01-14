@@ -62,7 +62,7 @@ namespace PipServices4.Http.Controllers
     /// Console.Out.WriteLine("The REST service is running on port 8080");
     /// </code>
     /// </example>
-    public class CommandableHttpService : RestService
+    public class CommandableHttpController : RestController
     {
         protected bool _swaggerAuto = true;
 
@@ -70,10 +70,10 @@ namespace PipServices4.Http.Controllers
         /// Creates a new instance of the service.
         /// </summary>
         /// <param name="baseRoute">a service base route.</param>
-        public CommandableHttpService(string baseRoute)
+        public CommandableHttpController(string baseRoute)
         {
             _baseRoute = baseRoute;
-            _dependencyResolver.Put("controller", "none");
+            _dependencyResolver.Put("service", "none");
         }
 
         public override void Configure(ConfigParams config)
@@ -88,8 +88,8 @@ namespace PipServices4.Http.Controllers
         /// </summary>
         public override void Register()
         {
-            var controller = _dependencyResolver.GetOneRequired<ICommandable>("controller");
-            var commands = controller.GetCommandSet().Commands;
+            var service = _dependencyResolver.GetOneRequired<ICommandable>("service");
+            var commands = service.GetCommandSet().Commands;
 
             foreach (var command in commands)
             {

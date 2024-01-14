@@ -14,19 +14,19 @@ namespace PipServices4.Http.Services
 {
     public class DummyRestOperations: RestOperations
     {
-        private IDummyController _controller;
+        private IDummyService _service;
 
         public DummyRestOperations()
         {
-            _dependencyResolver.Put("controller",
-                new Descriptor("pip-services4-dummies", "controller", "default", "*", "*"));
+            _dependencyResolver.Put("service",
+                new Descriptor("pip-services4-dummies", "service", "default", "*", "*"));
         }
         
         public new void SetReferences(IReferences references)
         {
             base.SetReferences(references);
 
-            _controller = _dependencyResolver.GetOneRequired<IDummyController>("controller");
+            _service = _dependencyResolver.GetOneRequired<IDummyService>("service");
         }
 
         public async Task GetPageByFilterAsync(HttpRequest request, HttpResponse response, ClaimsPrincipal user,
@@ -38,7 +38,7 @@ namespace PipServices4.Http.Services
             var sort = GetSortParams(request);
             var context = Context.FromTraceId(traceId);
 
-            var result = await _controller.GetPageByFilterAsync(context, filter, paging);
+            var result = await _service.GetPageByFilterAsync(context, filter, paging);
 
             await SendResultAsync(response, result);
         }
@@ -51,7 +51,7 @@ namespace PipServices4.Http.Services
             var dummy = JsonConverter.FromJson<Dummy>(JsonConverter.ToJson(parameters.GetAsObject("dummy")));
             var context = Context.FromTraceId(traceId);
 
-            var result = await _controller.CreateAsync(context, dummy);
+            var result = await _service.CreateAsync(context, dummy);
 
             await SendResultAsync(response, result);
         }
@@ -77,7 +77,7 @@ namespace PipServices4.Http.Services
             var json = Encoding.UTF8.GetString(fileContent);
             var dummy = JsonConverter.FromJson<Dummy>(json);
             
-            var result = await _controller.CreateAsync(context, dummy);
+            var result = await _service.CreateAsync(context, dummy);
 
             await SendResultAsync(response, result);
         }
@@ -90,7 +90,7 @@ namespace PipServices4.Http.Services
             var dummy = JsonConverter.FromJson<Dummy>(parameters.RequestBody);
             var context = Context.FromTraceId(traceId);
 
-            var result = await _controller.UpdateAsync(context, dummy);
+            var result = await _service.UpdateAsync(context, dummy);
 
             await SendResultAsync(response, result);
         }
@@ -103,7 +103,7 @@ namespace PipServices4.Http.Services
             var id = parameters.GetAsNullableString("dummy_id") ?? parameters.GetAsNullableString("id");
             var context = Context.FromTraceId(traceId);
 
-            var result = await _controller.GetOneByIdAsync(context, id);
+            var result = await _service.GetOneByIdAsync(context, id);
 
             await SendResultAsync(response, result);
         }
@@ -116,7 +116,7 @@ namespace PipServices4.Http.Services
             var id = parameters.GetAsNullableString("dummy_id") ?? parameters.GetAsNullableString("id");
             var context = Context.FromTraceId(traceId);
 
-            var result = await _controller.DeleteByIdAsync(context, id);
+            var result = await _service.DeleteByIdAsync(context, id);
 
             await SendResultAsync(response, result);
         }
@@ -127,7 +127,7 @@ namespace PipServices4.Http.Services
             var traceId = GetTraceId(request);
             var context = Context.FromTraceId(traceId);
 
-            var result = await _controller.CheckTraceId(context);
+            var result = await _service.CheckTraceId(context);
             await SendResultAsync(response, result);
         }
     }

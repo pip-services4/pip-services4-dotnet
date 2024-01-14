@@ -17,29 +17,29 @@ namespace PipServices4.Http.Test.Clients
                 "connection.protocol", "ftp"
             );
 
-            DummyController _ctrl;
+            DummyService _service;
             DummyCommandableHttpClient _client;
-            DummyCommandableHttpService _service;
+            DummyCommandableHttpController _controller;
 
 
-            _ctrl = new DummyController();
+            _service = new DummyService();
 
-            _service = new DummyCommandableHttpService();
+            _controller = new DummyCommandableHttpController();
 
             _client = new DummyCommandableHttpClient();
 
             var references = References.FromTuples(
-                new Descriptor("pip-services4-dummies", "controller", "default", "default", "1.0"), _ctrl,
-                new Descriptor("pip-services4-dummies", "service", "rest", "default", "1.0"), _service,
+                new Descriptor("pip-services4-dummies", "service", "default", "default", "1.0"), _service,
+                new Descriptor("pip-services4-dummies", "controller", "rest", "default", "1.0"), _controller,
                 new Descriptor("pip-services4-dummies", "client", "rest", "default", "1.0"), _client
             );
-            _service.Configure(restConfig);
+            _controller.Configure(restConfig);
             _client.Configure(restConfig);
 
             _client.SetReferences(references);
-            _service.SetReferences(references);
+            _controller.SetReferences(references);
 
-            _service.OpenAsync(null).Wait();
+            _controller.OpenAsync(null).Wait();
 
 
             var response = Record.ExceptionAsync(async () => await _client.OpenAsync(null));
@@ -53,7 +53,7 @@ namespace PipServices4.Http.Test.Clients
             var task = _client.CloseAsync(null);
             task.Wait();
 
-            task = _service.CloseAsync(null);
+            task = _controller.CloseAsync(null);
             task.Wait();
         }
 
@@ -65,15 +65,15 @@ namespace PipServices4.Http.Test.Clients
                 "connection.port", "0"          // default is 8080
                 );
 
-            DummyController _ctrl;
+            DummyService _ctrl;
             DummyCommandableHttpClient _client;
 
-            DummyCommandableHttpService _service;
+            DummyCommandableHttpController _service;
 
 
-            _ctrl = new DummyController();
+            _ctrl = new DummyService();
 
-            _service = new DummyCommandableHttpService();
+            _service = new DummyCommandableHttpController();
 
             _client = new DummyCommandableHttpClient();
 

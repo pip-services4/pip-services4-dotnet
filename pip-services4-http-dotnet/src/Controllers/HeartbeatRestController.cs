@@ -50,14 +50,14 @@ namespace PipServices4.Http.Controllers
     /// Console.Out.WriteLine("The Heartbeat service is accessible at http://+:8080/ping");
     /// </code>
     /// </example>
-    public class HeartbeatRestService: RestService
+    public class HeartbeatRestController: RestController
     {
         private string _route = "heartbeat";
 
         /// <summary>
         /// Creates a new instance of this service.
         /// </summary>
-        public HeartbeatRestService()
+        public HeartbeatRestController()
         {
         }
 

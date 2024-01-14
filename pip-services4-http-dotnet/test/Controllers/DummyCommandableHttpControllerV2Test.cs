@@ -9,10 +9,10 @@ using System.Text;
 using System.Threading.Tasks;
 using Xunit;
 
-namespace PipServices4.Http.Test.Services
+namespace PipServices4.Http.Test.Controllers
 {
     [Collection("Sequential")]
-    public sealed class DummyCommandableHttpServiceV2Test
+    public sealed class DummyCommandableHttpControllerV2Test
     {
         private static int testPort = 3001;
 
@@ -26,25 +26,25 @@ namespace PipServices4.Http.Test.Services
         private readonly Dummy DUMMY1 = new(null, "Key 1", "Content 1");
         private readonly Dummy DUMMY2 = new(null, "Key 2", "Content 2");
 
-        private DummyCommandableHttpServiceV2 _service;
+        private DummyCommandableHttpControllerV2 _controller;
         private HttpClient _httpClient;
 
-        public DummyCommandableHttpServiceV2Test()
+        public DummyCommandableHttpControllerV2Test()
         {
-            var ctrl = new DummyController();
+            var service = new DummyService();
 
             _httpClient = new HttpClient();
-            _service = new DummyCommandableHttpServiceV2();
-            _service.Configure(restConfig);
+            _controller = new DummyCommandableHttpControllerV2();
+            _controller.Configure(restConfig);
 
             References references = References.FromTuples(
-                new Descriptor("pip-services4-dummies", "controller", "default", "default", "1.0"), ctrl,
-                new Descriptor("pip-services-dummies", "service", "http", "default", "1.0"), _service
+                new Descriptor("pip-services4-dummies", "service", "default", "default", "1.0"), service,
+                new Descriptor("pip-services-dummies", "controller", "http", "default", "1.0"), _controller
             );
 
-            _service.SetReferences(references);
+            _controller.SetReferences(references);
 
-            _service.OpenAsync(null).Wait();
+            _controller.OpenAsync(null).Wait();
         }
 
         [Fact]

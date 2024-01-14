@@ -17,10 +17,10 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Remove="Services\DummyRestServiceSwagger.yaml" />
+    <None Remove="Controllers\DummyRestControllerSwagger.yaml" />
   </ItemGroup>
 
   <ItemGroup>
-    <EmbeddedResource Include="Services\DummyRestServiceSwagger.yaml" />
+    <EmbeddedResource Include="Controllers\DummyRestControllerSwagger.yaml" />
   </ItemGroup>
 </Project>

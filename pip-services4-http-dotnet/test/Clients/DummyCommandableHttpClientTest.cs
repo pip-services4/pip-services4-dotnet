@@ -12,7 +12,7 @@ using Xunit;
 namespace PipServices4.Http.Test.Clients
 {
     [Collection("Sequential")]
-    public sealed class DummyCommandableHttpServiceTest : IDisposable
+    public sealed class DummyCommandableHttpClientTest : IDisposable
     {
         private static readonly ConfigParams RestConfig = ConfigParams.FromTuples(
             "connection.uri", "http://localhost:3000",
@@ -23,33 +23,33 @@ namespace PipServices4.Http.Test.Clients
             //"connection.port", 3000
         );
 
-        private readonly DummyController _ctrl;
+        private readonly DummyService _service;
         private readonly DummyCommandableHttpClient _client;
         private readonly DummyClientFixture _fixture;
         private readonly CancellationTokenSource _source;
 
-        private readonly DummyCommandableHttpService _service;
+        private readonly DummyCommandableHttpController _controller;
 
-        public DummyCommandableHttpServiceTest()
+        public DummyCommandableHttpClientTest()
         {
-            _ctrl = new DummyController();
+            _service = new DummyService();
 
-            _service = new DummyCommandableHttpService();
+            _controller = new DummyCommandableHttpController();
 
             _client = new DummyCommandableHttpClient();
 
             var references = References.FromTuples(
-                new Descriptor("pip-services4-dummies", "controller", "default", "default", "1.0"), _ctrl,
-                new Descriptor("pip-services4-dummies", "service", "rest", "default", "1.0"), _service,
+                new Descriptor("pip-services4-dummies", "service", "default", "default", "1.0"), _service,
+                new Descriptor("pip-services4-dummies", "controller", "rest", "default", "1.0"), _controller,
                 new Descriptor("pip-services4-dummies", "client", "rest", "default", "1.0"), _client
             );
-            _service.Configure(RestConfig);
+            _controller.Configure(RestConfig);
             _client.Configure(RestConfig);
 
             _client.SetReferences(references);
-            _service.SetReferences(references);
+            _controller.SetReferences(references);
 
-            _service.OpenAsync(null).Wait();
+            _controller.OpenAsync(null).Wait();
 
             _fixture = new DummyClientFixture(_client);
 
@@ -86,7 +86,7 @@ namespace PipServices4.Http.Test.Clients
             var task = _client.CloseAsync(null);
             task.Wait();
 
-            task = _service.CloseAsync(null);
+            task = _controller.CloseAsync(null);
             task.Wait();
         }
     }

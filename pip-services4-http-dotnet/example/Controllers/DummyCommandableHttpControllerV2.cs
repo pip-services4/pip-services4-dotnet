@@ -3,12 +3,12 @@ using PipServices4.Http.Controllers;
 
 namespace PipServices4.Http.Services
 {
-    public sealed class DummyCommandableHttpServiceV2 : CommandableHttpService
+    public sealed class DummyCommandableHttpControllerV2 : CommandableHttpController
     {
-        public DummyCommandableHttpServiceV2() 
+        public DummyCommandableHttpControllerV2() 
             : base("dummy")
         {
-            _dependencyResolver.Put("controller", new Descriptor("pip-services4-dummies", "controller", "default", "*", "1.0"));
+            _dependencyResolver.Put("service", new Descriptor("pip-services4-dummies", "service", "default", "*", "1.0"));
         }
 
         public override void Register()

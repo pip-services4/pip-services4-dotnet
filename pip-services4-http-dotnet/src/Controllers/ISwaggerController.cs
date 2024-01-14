@@ -4,7 +4,7 @@ namespace PipServices4.Http.Controllers
     /// <summary>
     /// Interface to perform Swagger registrations.
     /// </summary>
-    public interface ISwaggerService
+    public interface ISwaggerController
     {
         /// <summary>
         /// Perform required Swagger registration steps.

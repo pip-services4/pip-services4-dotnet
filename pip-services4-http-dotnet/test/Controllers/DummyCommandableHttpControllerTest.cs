@@ -5,10 +5,10 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using Xunit;
 
-namespace PipServices4.Http.Test.Services
+namespace PipServices4.Http.Test.Controllers
 {
     [Collection("Sequential")]
-    public sealed class DummyCommandableHttpServiceTest
+    public sealed class DummyCommandableHttpControllerTest
     {
         private static readonly ConfigParams RestConfig = ConfigParams.FromTuples(
             "connection.uri", "http://localhost:3000",
@@ -19,31 +19,31 @@ namespace PipServices4.Http.Test.Services
             //"connection.port", 3000
         );
 
-        public DummyCommandableHttpServiceTest()
+        public DummyCommandableHttpControllerTest()
         {
         }
 
-        private DummyCommandableHttpService CreateAndOpenService(ConfigParams config)
+        private DummyCommandableHttpController CreateAndOpenController(ConfigParams config)
         {
-            var service = new DummyCommandableHttpService();
+            var controller = new DummyCommandableHttpController();
 
             var references = References.FromTuples(
-                new Descriptor("pip-services4-dummies", "controller", "default", "default", "1.0"), new DummyController(),
-                new Descriptor("pip-services4-dummies", "service", "rest", "default", "1.0"), service
+                new Descriptor("pip-services4-dummies", "service", "default", "default", "1.0"), new DummyService(),
+                new Descriptor("pip-services4-dummies", "controller", "rest", "default", "1.0"), controller
             );
 
-            service.Configure(config);
-            service.SetReferences(references);
+            controller.Configure(config);
+            controller.SetReferences(references);
 
-            service.OpenAsync(null).Wait();
+            controller.OpenAsync(null).Wait();
 
-            return service;
+            return controller;
         }
         
         [Fact]
         public async Task TestOpenApiAsync()
         {
-            DummyCommandableHttpService service = CreateAndOpenService(RestConfig);
+            DummyCommandableHttpController service = CreateAndOpenController(RestConfig);
 
             try
             {
@@ -67,7 +67,7 @@ namespace PipServices4.Http.Test.Services
             // turn off and override standard swagger document formation
             var config = RestConfig.SetDefaults(ConfigParams.FromTuples("swagger.auto", false));
 
-            DummyCommandableHttpService service = CreateAndOpenService(config);
+            DummyCommandableHttpController controller = CreateAndOpenController(config);
 
             try
             {
@@ -81,7 +81,7 @@ namespace PipServices4.Http.Test.Services
             }
             finally
             {
-                await service.CloseAsync(null);
+                await controller.CloseAsync(null);
             }
         }
     }

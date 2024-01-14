@@ -5,28 +5,28 @@ using System;
 using System.Threading.Tasks;
 using Xunit;
 
-namespace PipServices4.Http.Test.Services
+namespace PipServices4.Http.Test.Controllers
 {
-    public class HeartbeatRestServiceTest: IDisposable
+    public class HeartbeatRestControllerTest: IDisposable
     {
-        private HeartbeatRestService _service;
+        private HeartbeatRestController _controller;
 
-        public HeartbeatRestServiceTest()
+        public HeartbeatRestControllerTest()
         {
             var config = ConfigParams.FromTuples(
                 "connection.protocol", "http",
                 "connection.host", "localhost",
                 "connection.port", "3005"
             );
-            _service = new HeartbeatRestService();
-            _service.Configure(config);
+            _controller = new HeartbeatRestController();
+            _controller.Configure(config);
 
-            _service.OpenAsync(null).Wait();
+            _controller.OpenAsync(null).Wait();
         }
 
         public void Dispose()
         {
-            _service.CloseAsync(null).Wait();
+            _controller.CloseAsync(null).Wait();
         }
 
         [Fact]

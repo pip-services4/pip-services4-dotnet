@@ -84,7 +84,7 @@ namespace PipServices4.Http.Controllers
     /// Console.Out.WriteLine("The REST service is running on port 8080");
     /// </code>
     /// </example>
-    public abstract class RestService : IOpenable, IConfigurable, IReferenceable, IUnreferenceable, IRegisterable
+    public abstract class RestController : IOpenable, IConfigurable, IReferenceable, IUnreferenceable, IRegisterable
     {
         private static readonly ConfigParams _defaultConfig = ConfigParams.FromTuples(
             "base_route", "",
@@ -114,9 +114,9 @@ namespace PipServices4.Http.Controllers
         protected string _baseRoute;
 
         /// <summary>
-        ///  The Swagger service
+        ///  The Swagger controller
         /// </summary>
-        protected ISwaggerService _swaggerService;
+        protected ISwaggerController _swaggerController;
 
         protected bool _swaggerEnable = false;
         protected string _swaggerRoute = "swagger";
@@ -167,7 +167,7 @@ namespace PipServices4.Http.Controllers
             // Add registration callback to the endpoint
             _endpoint.Register(this);
 
-            _swaggerService = _dependencyResolver.GetOneOptional<ISwaggerService>("swagger");
+            _swaggerController = _dependencyResolver.GetOneOptional<ISwaggerController>("swagger");
         }
 
         /// <summary>
@@ -527,9 +527,9 @@ namespace PipServices4.Http.Controllers
                     await response.WriteAsync(responseContent);
                 });
 
-                if (_swaggerService != null)
+                if (_swaggerController != null)
                 {
-                    _swaggerService.RegisterOpenApiSpec(_baseRoute, _swaggerRoute);
+                    _swaggerController.RegisterOpenApiSpec(_baseRoute, _swaggerRoute);
                 }
             }
         }

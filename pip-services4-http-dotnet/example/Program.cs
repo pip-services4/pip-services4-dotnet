@@ -10,25 +10,25 @@ namespace PipServices4.Http
     {
         static void Main(string[] args)
         {
-            var controller = new DummyController();
+            var service = new DummyService();
             //var service = new DummyCommandableHttpService();
-            var service = new DummyRestService();
+            var controller = new DummyRestController();
             var logger = new ConsoleLogger();
 
-            service.Configure(ConfigParams.FromTuples(
+            controller.Configure(ConfigParams.FromTuples(
                 "connection.protocol", "http",
                 "connection.host", "localhost",
                 "connection.port", 3000,
                 "swagger.enable", "true"
             ));
 
-            service.SetReferences(References.FromTuples(
-                new Descriptor("pip-services4-dummies", "controller", "default", "default", "1.0"), controller,
-                new Descriptor("pip-services4-dummies", "service", "rest", "default", "1.0"), service,
+            controller.SetReferences(References.FromTuples(
+                new Descriptor("pip-services4-dummies", "service", "default", "default", "1.0"), service,
+                new Descriptor("pip-services4-dummies", "controller", "rest", "default", "1.0"), controller,
                 new Descriptor("pip-services4-commons", "logger", "console", "default", "1.0"), logger
             ));
 
-            service.OpenAsync(null).Wait();
+            controller.OpenAsync(null).Wait();
 
             Console.WriteLine("Press ENTER to exit...");
             Console.ReadLine();

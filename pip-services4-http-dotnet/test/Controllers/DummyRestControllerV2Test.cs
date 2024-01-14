@@ -13,10 +13,10 @@ using System.Text;
 using System.Threading.Tasks;
 using Xunit;
 
-namespace PipServices4.Http.Test.Services
+namespace PipServices4.Http.Test.Controllers
 {
     [Collection("Sequential")]
-    public class DummyRestServiceV2Test : IDisposable
+    public class DummyRestControllerV2Test : IDisposable
     {
         private static int testPort = 3004;
 
@@ -28,33 +28,33 @@ namespace PipServices4.Http.Test.Services
             "swagger.content", "swagger yaml or json content"  // for test only
         );
 
-        private DummyRestServiceV2 _service;
+        private DummyRestControllerV2 _controller;
         private HttpClient _httpClient;
 
         private readonly Dummy DUMMY1 = new(null, "Key 1", "Content 1");
         private readonly Dummy DUMMY2 = new(null, "Key 2", "Content 2");
 
-        public DummyRestServiceV2Test()
+        public DummyRestControllerV2Test()
         {
             _httpClient = new HttpClient();
-            _service = new DummyRestServiceV2();
+            _controller = new DummyRestControllerV2();
 
-            var ctrl = new DummyController();
+            var service = new DummyService();
 
             var references = References.FromTuples(
-                new Descriptor("pip-services4-dummies", "controller", "default", "default", "1.0"), ctrl,
-                new Descriptor("pip-services-dummies", "service", "rest", "default", "1.0"), _service
+                new Descriptor("pip-services4-dummies", "service", "default", "default", "1.0"), service,
+                new Descriptor("pip-services-dummies", "controller", "rest", "default", "1.0"), _controller
             );
 
-            _service.Configure(restConfig);
-            _service.SetReferences(references);
+            _controller.Configure(restConfig);
+            _controller.SetReferences(references);
 
-            _service.OpenAsync(null).Wait();
+            _controller.OpenAsync(null).Wait();
         }
 
         public void Dispose()
         {
-            _service.CloseAsync(null).Wait();
+            _controller.CloseAsync(null).Wait();
         }
 
         [Fact(Skip = "TODO: Doesn't work")]
@@ -130,7 +130,7 @@ namespace PipServices4.Http.Test.Services
             Assert.Empty(result);
 
             // Check interceptor
-            Assert.Equal(6, _service.GetNumberOfCalls());
+            Assert.Equal(6, _controller.GetNumberOfCalls());
 
             // Failed validation
             result = await SendRequestAsync("post", "/dummies", new
@@ -161,7 +161,7 @@ namespace PipServices4.Http.Test.Services
 
             traceId = JsonConverter.FromJson<string>(result);
 
-            Assert.Equal(2, _service.GetNumberOfCalls()); // Check interceptor
+            Assert.Equal(2, _controller.GetNumberOfCalls()); // Check interceptor
             Assert.Equal("test_trace_id_header", traceId);
         }
 
@@ -193,7 +193,7 @@ namespace PipServices4.Http.Test.Services
                 }
 
                 // recreate service with new configuration
-                await _service.CloseAsync(null);
+                await _controller.CloseAsync(null);
 
                 var serviceConfig = ConfigParams.FromTuples(
                     "connection.protocol", "http",
@@ -203,17 +203,17 @@ namespace PipServices4.Http.Test.Services
                     "swagger.path", filename  // for test only
                 );
 
-                var ctrl = new DummyController();
-                _service = new DummyRestServiceV2();
-                _service.Configure(serviceConfig);
+                var service = new DummyService();
+                _controller = new DummyRestControllerV2();
+                _controller.Configure(serviceConfig);
 
                 References references = References.FromTuples(
-                    new Descriptor("pip-services4-dummies", "controller", "default", "default", "1.0"), ctrl,
-                    new Descriptor("pip-services-dummies", "service", "rest", "default", "1.0"), _service
+                    new Descriptor("pip-services4-dummies", "service", "default", "default", "1.0"), service,
+                    new Descriptor("pip-services-dummies", "controller", "rest", "default", "1.0"), _controller
                 );
 
-                _service.SetReferences(references);
-                await _service.OpenAsync(null);
+                _controller.SetReferences(references);
+                await _controller.OpenAsync(null);
 
                 var content = await SendRequestAsync("get", "/swagger", new { });
 

@@ -62,7 +62,7 @@ namespace PipServices4.Http.Controllers
     /// Console.Out.WriteLine("The Status service is accessible at http://+:8080/status");
     /// </code>
     /// </example>
-    public class StatusRestService: RestService
+    public class StatusRestController: RestController
     {
         private DateTime _startTime = DateTime.UtcNow;
         private IReferences _references;
@@ -72,7 +72,7 @@ namespace PipServices4.Http.Controllers
         /// <summary>
         /// Creates a new instance of this service.
         /// </summary>
-        public StatusRestService()
+        public StatusRestController()
         {
             _dependencyResolver.Put("context-info", new Descriptor("pip-services", "context-info", "default", "*", "1.0"));
         }

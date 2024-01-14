@@ -7,21 +7,21 @@ using System;
 using System.Threading.Tasks;
 using Xunit;
 
-namespace PipServices4.Http.Test.Services
+namespace PipServices4.Http.Test.Controllers
 {
-    public class StatusRestServiceTest : IDisposable
+    public class StatusRestControllerTest : IDisposable
     {
-        private StatusRestService _service;
+        private StatusRestController _controller;
 
-        public StatusRestServiceTest()
+        public StatusRestControllerTest()
         {
             var config = ConfigParams.FromTuples(
                 "connection.protocol", "http",
                 "connection.host", "localhost",
                 "connection.port", "3006"
             );
-            _service = new StatusRestService();
-            _service.Configure(config);
+            _controller = new StatusRestController();
+            _controller.Configure(config);
 
             var contextInfo = new ContextInfo();
             contextInfo.Name = "Test";
@@ -29,16 +29,16 @@ namespace PipServices4.Http.Test.Services
 
             var references = References.FromTuples(
                 new Descriptor("pip-services", "context-info", "default", "default", "1.0"), contextInfo,
-                new Descriptor("pip-services", "status-service", "http", "default", "1.0"), _service
+                new Descriptor("pip-services", "status-controller", "http", "default", "1.0"), _controller
             );
-            _service.SetReferences(references);
+            _controller.SetReferences(references);
 
-            _service.OpenAsync(null).Wait();
+            _controller.OpenAsync(null).Wait();
         }
 
         public void Dispose()
         {
-            _service.CloseAsync(null).Wait();
+            _controller.CloseAsync(null).Wait();
         }
 
         [Fact]

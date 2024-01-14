@@ -12,7 +12,7 @@ using TypeCode = PipServices4.Commons.Convert.TypeCode;
 
 namespace PipServices4.Http.Services
 {
-    public class DummyRestServiceV2 : RestService
+    public class DummyRestControllerV2 : RestController
     {
         private DummyRestOperations _operations = new DummyRestOperations();
         private int _numberOfCalls = 0;

@@ -8,7 +8,7 @@ using System.Net.Http;
 using System.Text;
 using Xunit;
 
-namespace PipServices4.Http.Test.Services
+namespace PipServices4.Http.Test.Controllers
 {
     [Collection("Sequential")]
     public sealed class DummyHttpEndpointTest : IDisposable
@@ -20,44 +20,44 @@ namespace PipServices4.Http.Test.Services
             "cors_headers", "trace_id"
         );
 
-        private readonly DummyController _ctrl;
-        private readonly DummyCommandableHttpService _serviceV1;
-        private readonly DummyCommandableHttpService _serviceV2;
+        private readonly DummyService _service;
+        private readonly DummyCommandableHttpController _controllerV1;
+        private readonly DummyCommandableHttpController _controllerV2;
 
         private readonly HttpEndpoint _httpEndpoint;
 
         public DummyHttpEndpointTest()
         {
-            _ctrl = new DummyController();
-            _serviceV1 = new DummyCommandableHttpService();
-            _serviceV2 = new DummyCommandableHttpService();
+            _service = new DummyService();
+            _controllerV1 = new DummyCommandableHttpController();
+            _controllerV2 = new DummyCommandableHttpController();
 
             _httpEndpoint = new HttpEndpoint();
 
             var references = References.FromTuples(
-                new Descriptor("pip-services4-dummies", "controller", "default", "default", "1.0"), _ctrl,
+                new Descriptor("pip-services4-dummies", "service", "default", "default", "1.0"), _service,
                 new Descriptor("pip-services4", "endpoint", "http", "default", "1.0"), _httpEndpoint
             );
 
-            _serviceV1.Configure(ConfigParams.FromTuples(
+            _controllerV1.Configure(ConfigParams.FromTuples(
                 "base_route", "/api/v1/dummy"
             ));
 
-            _serviceV2.Configure(ConfigParams.FromTuples(
+            _controllerV2.Configure(ConfigParams.FromTuples(
                 "base_route", "/api/v2/dummy"
             ));
 
             _httpEndpoint.Configure(RestConfig);
 
-            _serviceV1.SetReferences(references);
-            _serviceV2.SetReferences(references);
+            _controllerV1.SetReferences(references);
+            _controllerV2.SetReferences(references);
 
             _httpEndpoint.OpenAsync(null).Wait();
         }
 
         public void Dispose()
         {
-            var task = _serviceV1.CloseAsync(null);
+            var task = _controllerV1.CloseAsync(null);
             task.Wait();
         }
 
