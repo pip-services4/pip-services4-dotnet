@@ -1,7 +1,7 @@
 ﻿using PipServices4.Components.Config;
 using PipServices4.Mongodb.Test.Fixtures;
 using System;
-
+using System.Threading.Tasks;
 using Xunit;
 
 namespace PipServices4.Mongodb.Test.Persistence
@@ -38,165 +38,165 @@ namespace PipServices4.Mongodb.Test.Persistence
         }
 
         [Fact]
-        public void TestCrudOperations()
+        public async Task TestCrudOperations()
         {
-            Fixture?.TestCrudOperationsAsync().Wait();
+            await Fixture?.TestCrudOperationsAsync();
         }
 
         [Fact]
-        public void TestMultithreading()
+        public async Task TestMultithreading()
         {
-            Fixture?.TestMultithreading().Wait();
+            await Fixture?.TestMultithreading();
         }
 
         [Fact]
-        public void It_Should_Not_Get_By_Wrong_Id_And_Projection()
+        public async Task It_Should_Not_Get_By_Wrong_Id_And_Projection()
         {
-            Fixture?.TestGetByWrongIdAndProjection().Wait();
+            await Fixture?.TestGetByWrongIdAndProjection();
         }
 
         [Fact]
-        public void It_Should_Get_By_Id_And_Projection()
+        public async Task It_Should_Get_By_Id_And_Projection()
         {
-            Fixture?.TestGetByIdAndProjection().Wait();
+            await Fixture?.TestGetByIdAndProjection();
         }
 
         [Fact]
-        public void It_Should_Get_By_Id_And_Projection_From_Array()
+        public async Task It_Should_Get_By_Id_And_Projection_From_Array()
         {
-            Fixture?.TestGetByIdAndProjectionFromArray().Wait();
+            await Fixture?.TestGetByIdAndProjectionFromArray();
         }
 
         [Fact]
-        public void It_Should_Get_By_Id_And_Wrong_Projection()
+        public async Task It_Should_Get_By_Id_And_Wrong_Projection()
         {
-            Fixture?.TestGetByIdAndWrongProjection().Wait();
+            await Fixture?.TestGetByIdAndWrongProjection();
         }
 
         [Fact]
-        public void It_Should_Get_By_Id_And_Null_Projection()
+        public async Task It_Should_Get_By_Id_And_Null_Projection()
         {
-            Fixture?.TestGetByIdAndNullProjection().Wait();
+            await Fixture?.TestGetByIdAndNullProjection();
         }
 
         [Fact]
-        public void It_Should_Get_By_Id_And_Id_Projection()
+        public async Task It_Should_Get_By_Id_And_Id_Projection()
         {
-            Fixture?.TestGetByIdAndIdProjection().Wait();
+            await Fixture?.TestGetByIdAndIdProjection();
         }
 
         [Fact]
-        public void It_Should_Get_Page_By_Filter()
+        public async Task It_Should_Get_Page_By_Filter()
         {
-            Fixture?.TestGetPageByFilter().Wait();
+            await Fixture?.TestGetPageByFilter();
         }
 
         [Fact]
-        public void It_Should_Get_Page_By_Projection()
+        public async Task It_Should_Get_Page_By_Projection()
         {
-            Fixture?.TestGetPageByProjection().Wait();
+            await Fixture?.TestGetPageByProjection();
         }
 
         [Fact]
-        public void It_Should_Get_Page_By_Null_Projection()
+        public async Task It_Should_Get_Page_By_Null_Projection()
         {
-            Fixture?.TestGetPageByNullProjection().Wait();
+            await Fixture?.TestGetPageByNullProjection();
         }
 
         [Fact]
-        public void It_Should_Not_Get_Page_By_Wrong_Projection()
+        public async Task It_Should_Not_Get_Page_By_Wrong_Projection()
         {
-            Fixture?.TestGetPageByWrongProjection().Wait();
+            await Fixture?.TestGetPageByWrongProjection();
         }
 
         [Fact]
-        public void It_Should_Modify_Object_With_Existing_Properties_By_Selected_Fields()
+        public async Task It_Should_Modify_Object_With_Existing_Properties_By_Selected_Fields()
         {
-            Fixture?.TestModifyExistingPropertiesBySelectedFields().Wait();
+            await Fixture?.TestModifyExistingPropertiesBySelectedFields();
         }
 
         [Fact]
-        public void It_Should_Modify_Object_With_Existing_Properties_By_Selected_Not_Changed_Fields()
+        public async Task It_Should_Modify_Object_With_Existing_Properties_By_Selected_Not_Changed_Fields()
         {
-            Fixture?.TestModifyExistingPropertiesBySelectedNotChangedFields().Wait();
+            await Fixture?.TestModifyExistingPropertiesBySelectedNotChangedFields();
         }
 
         [Fact]
-        public void It_Should_Modify_Object_With_Null_Properties_By_Selected_Fields()
+        public async Task It_Should_Modify_Object_With_Null_Properties_By_Selected_Fields()
         {
-            Fixture?.TestModifyExistingPropertiesBySelectedFields().Wait();
+            await Fixture?.TestModifyExistingPropertiesBySelectedFields();
         }
 
         [Fact]
-        public void It_Should_Modify_Nested_Collection_By_Selected_Fields()
+        public async Task It_Should_Modify_Nested_Collection_By_Selected_Fields()
         {
-            Fixture?.TestModifyNestedCollectionBySelectedFields().Wait();
+            await Fixture?.TestModifyNestedCollectionBySelectedFields();
         }
 
         [Fact]
-        public void It_Should_Search_Within_Nested_Collection_Filter()
+        public async Task It_Should_Search_Within_Nested_Collection_Filter()
         {
-            Fixture?.TestSearchWithinNestedCollectionByFilter().Wait();
+            await Fixture?.TestSearchWithinNestedCollectionByFilter();
         }
 
         [Fact]
-        public void It_Should_Search_Within_Nested_Collection_Filter_By_Null_Projection()
+        public async Task It_Should_Search_Within_Nested_Collection_Filter_By_Null_Projection()
         {
-            Fixture?.TestSearchWithinNestedCollectionByFilterAndNullProjection().Wait();
+            await Fixture?.TestSearchWithinNestedCollectionByFilterAndNullProjection();
         }
 
         [Fact]
-        public void It_Should_Search_Within_Deep_Nested_Collection_Filter()
+        public async Task It_Should_Search_Within_Deep_Nested_Collection_Filter()
         {
-            Fixture?.TestSearchWithinDeepNestedCollectionByFilter().Wait();
+            await Fixture?.TestSearchWithinDeepNestedCollectionByFilter();
         }
 
         [Fact]
-        public void It_Should_Search_Within_Deep_Nested_Collection_Filter_By_Null_Projection()
+        public async Task It_Should_Search_Within_Deep_Nested_Collection_Filter_By_Null_Projection()
         {
-            Fixture?.TestSearchWithinDeepNestedCollectionByFilterAndNullProjection().Wait();
+            await Fixture?.TestSearchWithinDeepNestedCollectionByFilterAndNullProjection();
         }
 
         [Fact]
-        public void It_Should_Modify_Nested_Collection()
+        public async Task It_Should_Modify_Nested_Collection()
         {
-            Fixture?.TestModifyNestedCollection().Wait();
+            await Fixture?.TestModifyNestedCollection();
         }
 
         [Fact]
-        public void It_Should_Get_Page_By_Ids_Filter()
+        public async Task It_Should_Get_Page_By_Ids_Filter()
         {
-            Fixture?.TestGetPageByIdsFilter().Wait();
+            await Fixture?.TestGetPageByIdsFilter();
         }
 
         [Fact]
-        public void It_Should_Get_Page_By_Array_Of_Keys_Filter()
+        public async Task It_Should_Get_Page_By_Array_Of_Keys_Filter()
         {
-            Fixture?.TestGetPageByArrayOfKeysFilter().Wait();
+            await Fixture?.TestGetPageByArrayOfKeysFilter();
         }
 
         [Fact]
-        public void It_Should_Get_Page_Sorted_By_One_Field()
+        public async Task It_Should_Get_Page_Sorted_By_One_Field()
         {
-            Fixture?.TestGetPageSortedByOneField().Wait();
+            await Fixture?.TestGetPageSortedByOneField();
         }
 
         [Fact]
-        public void It_Should_Get_Sales_Orders_Sorted_By_Multiple_Fields()
+        public async Task It_Should_Get_Sales_Orders_Sorted_By_Multiple_Fields()
         {
-            Fixture?.TestGetPageSortedByMultipleFields().Wait();
+            await Fixture?.TestGetPageSortedByMultipleFields();
         }
 
         [Fact]
-        public void It_Should_Get_Sales_Orders_By_Projection_And_Sorted_By_One_Field()
+        public async Task It_Should_Get_Sales_Orders_By_Projection_And_Sorted_By_One_Field()
         {
-            Fixture?.TestGetPageByProjectionAndSortedByOneField().Wait();
+            await Fixture?.TestGetPageByProjectionAndSortedByOneField();
         }
 
         [Fact]
-        public void It_Should_Get_Sales_Orders_By_Projection_And_Sorted_By_Multiple_Fields()
+        public async Task It_Should_Get_Sales_Orders_By_Projection_And_Sorted_By_Multiple_Fields()
         {
-            Fixture?.TestGetPageByProjectionAndSortedByMultipleFields().Wait();
+            await Fixture?.TestGetPageByProjectionAndSortedByMultipleFields();
         }
 
         public void Dispose()

@@ -1,6 +1,7 @@
 using PipServices4.Components.Config;
 using PipServices4.Mongodb.Connect;
 using System;
+using System.Threading.Tasks;
 using Xunit;
 
 namespace PipServices4.Mongodb.Test.Connect
@@ -34,7 +35,7 @@ namespace PipServices4.Mongodb.Test.Connect
         }
 
         [Fact]
-        public void TestOpenAsync_Success()
+        public async Task TestOpenAsync_Success()
         {
             Db.Configure(ConfigParams.FromTuples(
                 "connection.uri", mongoUri,
@@ -43,7 +44,7 @@ namespace PipServices4.Mongodb.Test.Connect
                 "connection.database", mongoDatabase
             ));
 
-            Db.OpenAsync(null).Wait();
+            await Db.OpenAsync(null);
 
             var actual = Db.IsOpen();
 
