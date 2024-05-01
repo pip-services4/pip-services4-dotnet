@@ -280,9 +280,9 @@ namespace PipServices4.Mongodb.Persistence
 
                     await Task.Delay(1000);
                 }
-                catch (Exception exception)
+                catch (Exception)
                 {
-                    throw exception;
+                    throw;
                 }
             }
 
