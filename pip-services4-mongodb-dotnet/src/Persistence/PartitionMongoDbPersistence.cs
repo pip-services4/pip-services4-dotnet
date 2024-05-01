@@ -269,13 +269,13 @@ namespace PipServices4.Mongodb.Persistence
                 {
                     return await invokeFunc();
                 }
-                catch (MongoConnectionException mongoConnectionException)
+                catch (MongoConnectionException)
                 {
                     _logger.Error(context, $"MongoConnectionException happened on {retry}/{maxRetries} attempt.");
 
                     if (retry >= maxRetries)
                     {
-                        throw mongoConnectionException;
+                        throw;
                     }
 
                     await Task.Delay(1000);

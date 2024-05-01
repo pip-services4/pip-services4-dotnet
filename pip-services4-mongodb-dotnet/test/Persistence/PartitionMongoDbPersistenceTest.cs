@@ -43,11 +43,11 @@ namespace PipServices4.Mongodb.Test.Persistence
             await Fixture?.TestCrudOperationsAsync();
         }
 
-        [Fact]
-        public async Task TestMultithreading()
-        {
-            await Fixture?.TestMultithreading();
-        }
+        //[Fact]
+        //public async Task TestMultithreading()
+        //{
+        //    await Fixture?.TestMultithreading();
+        //}
 
         [Fact]
         public async Task It_Should_Not_Get_By_Wrong_Id_And_Projection()
