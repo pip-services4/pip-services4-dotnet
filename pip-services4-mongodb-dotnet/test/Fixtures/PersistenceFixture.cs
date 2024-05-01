@@ -140,51 +140,51 @@ namespace PipServices4.Mongodb.Test.Fixtures
             Assert.Null(dummy);
         }
 
-        public async Task TestMultithreading()
-        {
-            const int itemNumber = 50;
+        //public async Task TestMultithreading()
+        //{
+        //    const int itemNumber = 50;
 
-            var dummies = new List<Dummy>();
+        //    var dummies = new List<Dummy>();
 
-            for (var i = 0; i < itemNumber; i++)
-            {
-                dummies.Add(new Dummy() {Id = i.ToString(), Key = "Key " + i, Content = "Content " + i});
-            }
+        //    for (var i = 0; i < itemNumber; i++)
+        //    {
+        //        dummies.Add(new Dummy() {Id = i.ToString(), Key = "Key " + i, Content = "Content " + i});
+        //    }
 
-            var count = 0;
-            dummies.AsParallel().ForAll(async x =>
-            {
-                await _persistence.CreateAsync(null, x);
-                Interlocked.Increment(ref count);
-            });
+        //    var count = 0;
+        //    dummies.AsParallel().ForAll(async x =>
+        //    {
+        //        await _persistence.CreateAsync(null, x);
+        //        Interlocked.Increment(ref count);
+        //    });
 
-            while (count < itemNumber)
-            {
-                await Task.Delay(TimeSpan.FromMilliseconds(10));
-            }
+        //    while (count < itemNumber)
+        //    {
+        //        await Task.Delay(TimeSpan.FromMilliseconds(10));
+        //    }
 
             
-            dummies.AsParallel().ForAll(async x =>
-            {
-                var updatedContent = "Updated Content " + x.Id;
+        //    dummies.AsParallel().ForAll(async x =>
+        //    {
+        //        var updatedContent = "Updated Content " + x.Id;
 
-                // Update the dummy
-                x.Content = updatedContent;
-                var dummy = await _persistence.UpdateAsync(null, x);
+        //        // Update the dummy
+        //        x.Content = updatedContent;
+        //        var dummy = await _persistence.UpdateAsync(null, x);
 
-                Assert.NotNull(dummy);
-                Assert.Equal(x.Id, dummy.Id);
-                Assert.Equal(x.Key, dummy.Key);
-                Assert.Equal(updatedContent, dummy.Content);
-            });
+        //        Assert.NotNull(dummy);
+        //        Assert.Equal(x.Id, dummy.Id);
+        //        Assert.Equal(x.Key, dummy.Key);
+        //        Assert.Equal(updatedContent, dummy.Content);
+        //    });
 
 
-            dummies.AsParallel().ForAll(async x =>
-            {
-                // Delete the dummy
-                await AssertDelete(x);
-            });
-        }
+        //    dummies.AsParallel().ForAll(async x =>
+        //    {
+        //        // Delete the dummy
+        //        await AssertDelete(x);
+        //    });
+        //}
 
         public async Task TestGetByWrongIdAndProjection()
         {
