@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 namespace PipServices4.Rpc.Clients
 {
     /// <summary>
-    /// Abstract client that calls controller directly in the same memory space.
+    /// Abstract client that calls service directly in the same memory space.
     /// 
     /// It is used when multiple microservices are deployed in a single container(monolyth)
     /// and communication between them can be done by direct calls rather then through the network.
@@ -20,30 +20,30 @@ namespace PipServices4.Rpc.Clients
     /// ### Configuration parameters ###
     /// 
     /// dependencies:
-    /// - controller:            override controller descriptor
+    /// - service:            override service descriptor
     /// 
     /// ### References ###
     /// 
     /// - *:logger:*:*:1.0         (optional) <a href="https://pip-services4-dotnet.github.io/pip-services4-components-dotnet/interface_pip_services_1_1_components_1_1_log_1_1_i_logger.html">ILogger</a> components to pass log messages
     /// - *:counters:*:*:1.0         (optional) <a href="https://pip-services4-dotnet.github.io/pip-services4-components-dotnet/interface_pip_services_1_1_components_1_1_count_1_1_i_counters.html">ICounters</a> components to pass collected measurements
-    /// - *:controller:*:*:1.0     controller to call business methods
+    /// - *:service:*:*:1.0     service to call business methods
     /// </summary>
     /// <typeparam name="T">the class type</typeparam>
     /// <example>
     /// <code>
-    /// class MyDirectClient: DirectClient<IMyController>, IMyClient 
+    /// class MyDirectClient: DirectClient<IMyservice>, IMyClient 
     /// {
     ///     public MyDirectClient()
     ///     {   
     ///         base();
-    ///         this._dependencyResolver.put('controller', new Descriptor("mygroup", "controller", "*", "*", "*"));
+    ///         this._dependencyResolver.put('service', new Descriptor("mygroup", "service", "*", "*", "*"));
     ///     }
     ///     ...
     ///     
     ///     public MyData GetData(IContext context, string id)
     ///     {
     ///         var timing = this.instrument(context, 'myclient.get_data');
-    ///         var result = this._controller.getData(context, id);
+    ///         var result = this._service.getData(context, id);
     ///         timing.EndTiming();
     ///         return result;
     ///     }
@@ -52,7 +52,7 @@ namespace PipServices4.Rpc.Clients
     /// 
     /// var client = new MyDirectClient();
     /// client.SetReferences(References.fromTuples(
-    /// new Descriptor("mygroup","controller","default","default","1.0"), controller));
+    /// new Descriptor("mygroup","service","default","default","1.0"), service));
     /// var data = client.GetData("123", "1");
     /// ...
     /// </code>
@@ -60,9 +60,9 @@ namespace PipServices4.Rpc.Clients
     public abstract class DirectClient<T> : IConfigurable, IOpenable, IReferenceable
     {
         /// <summary>
-        /// The controller reference.
+        /// The service reference.
         /// </summary>
-        protected T _controller;
+        protected T _service;
         /// <summary>
         /// The logger.
         /// </summary>
@@ -72,7 +72,7 @@ namespace PipServices4.Rpc.Clients
         /// </summary>
         protected CompositeCounters _counters = new CompositeCounters();
         /// <summary>
-        /// The dependency resolver to get controller reference.
+        /// The dependency resolver to get service reference.
         /// </summary>
         protected DependencyResolver _dependencyResolver = new DependencyResolver();
         /// <summary>
@@ -85,7 +85,7 @@ namespace PipServices4.Rpc.Clients
         /// </summary>
         public DirectClient()
         {
-            _dependencyResolver.Put("controller", "none");
+            _dependencyResolver.Put("service", "none");
         }
 
         /// <summary>
@@ -107,7 +107,7 @@ namespace PipServices4.Rpc.Clients
             _counters.SetReferences(references);
 
             _dependencyResolver.SetReferences(references);
-            _controller = _dependencyResolver.GetOneRequired<T>("controller");
+            _service = _dependencyResolver.GetOneRequired<T>("service");
         }
 
         /// <summary>
@@ -130,11 +130,11 @@ namespace PipServices4.Rpc.Clients
                 return Task.Delay(0);
             }
 
-            if (_controller == null)
+            if (_service == null)
             {
                 throw new ConnectionException(
                     context != null ? ContextResolver.GetTraceId(context) : null,
-                    "NO_CONTROLLER", "Controller reference is missing");
+                    "NO_service", "service reference is missing");
             }
 
             _logger.Info(context, "Opened Direct client {0}", GetType().Name);

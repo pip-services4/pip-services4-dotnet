@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 
 namespace PipServices4.Rpc.Test.Sample
 {
-    public interface IDummyController
+    public interface IDummyService
     {
         Task<DataPage<Dummy>> GetPageByFilterAsync(IContext context, FilterParams filter, PagingParams paging);
         Task<Dummy> GetOneByIdAsync(IContext context, string id);

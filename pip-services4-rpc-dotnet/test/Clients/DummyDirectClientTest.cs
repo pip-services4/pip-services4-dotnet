@@ -8,17 +8,17 @@ namespace PipServices4.Rpc.Test.Clients
 {
     public class DummyDirectClientTest: IDisposable
     {
-        private readonly DummyController _ctrl;
+        private readonly DummyService _service;
         private readonly DummyDirectClient _client;
         private readonly DummyClientFixture _fixture;
 
         public DummyDirectClientTest()
         {
-            _ctrl = new DummyController();
+            _service = new DummyService();
             _client = new DummyDirectClient();
 
             var references = References.FromTuples(
-                new Descriptor("pip-services4-dummies", "controller", "default", "default", "1.0"), _ctrl
+                new Descriptor("pip-services4-dummies", "service", "default", "default", "1.0"), _service
             );
             _client.SetReferences(references);
 

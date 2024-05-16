@@ -9,9 +9,9 @@ namespace PipServices4.Rpc.Test.Sample
 {
     public class DummyCommandSet : CommandSet
     {
-        private IDummyController _controller;
+        private IDummyService _controller;
 
-        public DummyCommandSet(IDummyController controller)
+        public DummyCommandSet(IDummyService controller)
         {
             _controller = controller;
 

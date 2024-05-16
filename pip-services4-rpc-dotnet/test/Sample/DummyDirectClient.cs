@@ -7,11 +7,11 @@ using System.Threading.Tasks;
 
 namespace PipServices3.Rpc.Clients
 {
-    public class DummyDirectClient : DirectClient<IDummyController>, IDummyClient
+    public class DummyDirectClient : DirectClient<IDummyService>, IDummyClient
     {
         public DummyDirectClient()
         {
-            _dependencyResolver.Put("controller", new Descriptor("pip-services4-dummies", "controller", "*", "*", "*"));
+            _dependencyResolver.Put("service", new Descriptor("pip-services4-dummies", "service", "*", "*", "*"));
         }
 
         public async Task<DataPage<Dummy>> GetPageByFilterAsync(IContext context, FilterParams filter, PagingParams paging)
@@ -21,7 +21,7 @@ namespace PipServices3.Rpc.Clients
 
             using (var timing = Instrument(context, "dummy.get_page_by_filter"))
             {
-                return await _controller.GetPageByFilterAsync(context, filter, paging);
+                return await _service.GetPageByFilterAsync(context, filter, paging);
             }
         }
 
@@ -29,7 +29,7 @@ namespace PipServices3.Rpc.Clients
         {
             using (var timing = Instrument(context, "dummy.get_one_by_id"))
             {
-                return await _controller.GetOneByIdAsync(context, id);
+                return await _service.GetOneByIdAsync(context, id);
             }
         }
 
@@ -37,7 +37,7 @@ namespace PipServices3.Rpc.Clients
         {
             using (var timing = Instrument(context, "dummy.create"))
             {
-                return await _controller.CreateAsync(context, entity);
+                return await _service.CreateAsync(context, entity);
             }
         }
 
@@ -45,7 +45,7 @@ namespace PipServices3.Rpc.Clients
         {
             using (var timing = Instrument(context, "dummy.update"))
             {
-                return await _controller.UpdateAsync(context, entity);
+                return await _service.UpdateAsync(context, entity);
             }
         }
 
@@ -53,20 +53,20 @@ namespace PipServices3.Rpc.Clients
         {
             using (var timing = Instrument(context, "dummy.delete_by_id"))
             {
-                return await _controller.DeleteByIdAsync(context, id);
+                return await _service.DeleteByIdAsync(context, id);
             }
         }
 
         public async Task RaiseExceptionAsync(IContext context)
         {
-            await _controller.RaiseExceptionAsync(context);
+            await _service.RaiseExceptionAsync(context);
         }
 
         public async Task<string> CheckCorrelationId(IContext context)
         {
             using (var timing = Instrument(context, "dummy.check_correlation_id"))
             {
-                return await _controller.CheckCorrelationId(context);
+                return await _service.CheckCorrelationId(context);
             }
         }
     }

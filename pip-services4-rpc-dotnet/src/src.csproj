@@ -6,7 +6,7 @@
     <AssemblyName>PipServices4.Rpc</AssemblyName>
     <ApplicationIcon />
     <Win32Resource />
-    <Version>0.0.1</Version>
+    <Version>0.0.2</Version>
     <Authors>Sergey Seroukhov, Volodymyr Tkachenko, Alex Mazur, Alexey Dvoykin, Danyil Tretiakov</Authors>
     <Copyright>Conceptual Vision Consulting LLC. 2017-2023</Copyright>
     <Description>Remove procedure calls for Pip.Services in .NET</Description>
