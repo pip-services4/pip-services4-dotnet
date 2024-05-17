@@ -41,6 +41,12 @@ namespace PipServices4.Http.Controllers
             _dependencyResolver.SetReferences(references);
         }
 
+        protected IContext GetContext(HttpRequest request)
+        {
+            var traceId = GetTraceId(request);
+            return Context.FromTraceId(traceId);
+        }
+
         protected string GetTraceId(HttpRequest request)
         {
             return HttpRequestHelper.GetTraceId(request);

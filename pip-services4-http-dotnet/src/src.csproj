@@ -6,7 +6,7 @@
     <AssemblyName>PipServices4.Http</AssemblyName>
     <ApplicationIcon />
     <Win32Resource />
-    <Version>0.0.3</Version>
+    <Version>0.0.4</Version>
     <Authors>Sergey Seroukhov, Volodymyr Tkachenko, Alex Mazur, Danyil Tretiakov</Authors>
     <Copyright>Conceptual Vision Consulting LLC. 2017-2023</Copyright>
     <Description>Http components for Pip.Services in .NET</Description>
