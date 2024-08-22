@@ -89,7 +89,7 @@ namespace PipServices4.Http.Controllers
         private static readonly ConfigParams _defaultConfig = ConfigParams.FromTuples(
             "base_route", "",
             "dependencies.endpoint", "*:endpoint:http:*:1.0",
-            "dependencies.swagger", "*:swagger-service:*:*:1.0"
+            "dependencies.swagger", "*:swagger-controller:*:*:1.0"
         );
 
         /// <summary>
