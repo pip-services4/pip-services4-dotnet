@@ -203,7 +203,7 @@ namespace PipServices4.Http.Controllers
             return _counters.BeginTiming(methodName + ".exec_time");
         }
 
-        protected virtual async Task SafeInvokeAsync(string methodName, HttpRequest request, HttpResponse response, Func<string, Task> invokeFunc)
+        protected virtual async Task SafeInvokeAsync(string methodName, HttpRequest request, HttpResponse response, Func<IContext, Task> invokeFunc)
         {
             var traceId = GetTraceId(request);
             var context = Context.FromTraceId(traceId);
@@ -212,7 +212,7 @@ namespace PipServices4.Http.Controllers
             {
                 try
                 {
-                    await invokeFunc(traceId);
+                    await invokeFunc(context);
                 }
                 catch (BadRequestException e)
                 {

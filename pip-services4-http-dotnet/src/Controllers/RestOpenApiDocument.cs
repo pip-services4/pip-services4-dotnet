@@ -296,7 +296,7 @@ namespace PipServices4.Http.Controllers
 
             var schema = @object as ObjectSchema;
 
-            if (schema.Properties == null)
+            if (schema?.Properties == null)
             {
                 return _objectType;
             }
